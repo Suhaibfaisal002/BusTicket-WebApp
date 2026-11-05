@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<section class="c-inner-hero"
+         style="background-image:url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1400&q=80')">
+    <div class="c-hero-overlay"></div>
+    <div class="c-hero-content">
+        <span class="sec-badge white">Get In Touch</span>
+        <h1>Contact <span class="text-accent">Us</span></h1>
+        <p>We're here to help — 24/7 support for all your travel needs</p>
+    </div>
+</section>
+
+<section style="padding:5rem 0">
+    <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem">
+
+            <!-- Contact Info -->
+            <div>
+                <span class="sec-badge">Contact Info</span>
+                <h2 class="sec-title">We'd Love to <span class="text-accent">Hear From You</span></h2>
+                <p style="color:#475569;line-height:1.8;margin-bottom:2.5rem">
+                    Have a question about booking, cancellation or our services? Our dedicated support team is ready to assist you.
+                </p>
+
+                <div style="display:flex;flex-direction:column;gap:1.5rem;margin-bottom:2.5rem">
+                    @foreach (var info in new[] {
+                                        new { icon="📍", title="Head Office", detail="SRC Travel Agencies, Karachi, Pakistan" },
+                                        new { icon="📞", title="Phone", detail="+92-21-1234567 | +92-300-0000000" },
+                                        new { icon="📧", title="Email", detail="info@srctravel.com | support@srctravel.com" },
+                                        new { icon="🕐", title="Working Hours", detail="Mon–Sat: 8AM–10PM | Sun: 9AM–6PM" }
+                                        })
+                    {
+                        <div style="display:flex;gap:1rem;align-items:flex-start">
+                            <div style="font-size:1.5rem;width:48px;height:48px;background:#fde8ea;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                @info.icon
+                            </div>
+                            <div>
+                                <strong style="display:block;color:var(--dark);font-size:0.9rem;margin-bottom:0.2rem">@info.title</strong>
+                                <p style="color:var(--muted);font-size:0.88rem">@info.detail</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Social -->
+                <div style="display:flex;gap:0.75rem">
+                    @foreach (var soc in new[] {
+                                        new { icon="fab fa-facebook-f", color="#1877f2" },
+                                        new { icon="fab fa-twitter", color="#1da1f2" },
+                                        new { icon="fab fa-instagram", color="#e1306c" },
+                                        new { icon="fab fa-youtube", color="#ff0000" }
+                                        })
+                    {
+                        <a style="width:40px;height:40px;border-radius:10px;background:@soc.color;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.25s"
+                           onmouseover="this.style.transform='translateY(-3px)'"
+                           onmouseout="this.style.transform='translateY(0)'">
+                            <i class="@soc.icon"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div style="background:#fff;border-radius:20px;padding:2.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+                <h3 style="font-family:var(--font-head);font-size:1.5rem;color:var(--dark);margin-bottom:1.5rem">
+                    Send Us a Message
+                </h3>
+                <form asp-action="Contact" asp-controller="Home"
+                      asp-area="Customer" method="post">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                        <div style="display:flex;flex-direction:column;gap:0.4rem">
+                            <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Full Name</label>
+                            <input name="name" type="text"
+                                   placeholder="Your name"
+                                   required
+                                   style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem" />
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:0.4rem">
+                            <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Email</label>
+                            <input name="email" type="email"
+                                   placeholder="your@email.com"
+                                   required
+                                   style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem" />
+                        </div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Subject</label>
+                        <input name="subject" type="text"
+                               placeholder="How can we help?"
+                               required
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem" />
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.5rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Message</label>
+                        <textarea name="message" rows="5"
+                                  placeholder="Write your message here..."
+                                  required
+                                  style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;resize:vertical"></textarea>
+                    </div>
+                    <button type="submit" class="btn-red" style="width:100%;border:none;padding:0.85rem">
+                        <i class="fa fa-paper-plane me-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

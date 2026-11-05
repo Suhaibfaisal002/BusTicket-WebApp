@@ -1,0 +1,119 @@
+﻿@model OnlineBusTicketReservationSystem.Models.ViewModels.CreateEmployeeViewModel
+@{
+    ViewData["Title"] = "Add Employee";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-user-plus me-2"></i>Add New Employee
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info">
+                    <i class="fa fa-info-circle me-1"></i>
+                    <small>
+                        Employee Code will be auto-generated (6-digit unique code).
+                    </small>
+                </div>
+
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"></div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="FullName"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="FullName"
+                                   class="form-control"
+                                   placeholder="Full name" />
+                            <span asp-validation-for="FullName"
+                                  class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="email@example.com" />
+                            <span asp-validation-for="Email"
+                                  class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Password"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="Password"
+                                   class="form-control"
+                                   type="password"
+                                   placeholder="Min 6 chars" />
+                            <span asp-validation-for="Password"
+                                  class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Age"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="Age"
+                                   class="form-control"
+                                   type="number" min="18" max="65" />
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Gender"
+                                   class="form-label fw-semibold"></label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">-- Select --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Location"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="Location"
+                                   class="form-control"
+                                   placeholder="e.g. Karachi" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Qualification"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="Qualification"
+                                   class="form-control"
+                                   placeholder="e.g. Graduate" />
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Address"
+                               class="form-label fw-semibold"></label>
+                        <textarea asp-for="Address"
+                                  class="form-control" rows="2"
+                                  placeholder="Full address"></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save me-1"></i>Create Employee
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i>Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

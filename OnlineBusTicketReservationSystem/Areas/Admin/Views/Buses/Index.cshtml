@@ -1,0 +1,112 @@
+﻿@model IEnumerable<OnlineBusTicketReservationSystem.Models.Bus>
+@{
+    ViewData["Title"] = "Buses";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">
+            <i class="fa fa-bus me-2 text-primary"></i>Bus Management
+        </h4>
+        <p class="text-muted mb-0">Manage all buses in the fleet</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus me-1"></i>Add New Bus
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background:linear-gradient(135deg,#0f3460,#e94560);color:white;">
+                    <tr>
+                        <th>Code</th>
+                        <th>Bus Number</th>
+                        <th>Type</th>
+                        <th>Seats</th>
+                        <th>Operator</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var bus in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="badge bg-secondary">
+                                    @bus.BusCode
+                                </span>
+                            </td>
+                            <td><strong>@bus.BusNumber</strong></td>
+                            <td>
+                                @{
+                                    var tc = bus.BusType switch
+                                    {
+                                        "Express" => "bg-info",
+                                        "Luxury" => "bg-warning text-dark",
+                                        "Volvo-NonAC" => "bg-secondary",
+                                        "Volvo-AC" => "bg-primary",
+                                        _ => "bg-secondary"
+                                    };
+                                }
+                                <span class="badge @tc">@bus.BusType</span>
+                            </td>
+                            <td>
+                                <i class="fa fa-chair me-1 text-muted"></i>
+                                @bus.TotalSeats
+                            </td>
+                            <td>@bus.OperatorName</td>
+                            <td>
+                                @if (bus.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a asp-action="Details"
+                                       asp-route-id="@bus.BusId"
+                                       class="btn btn-sm btn-outline-info">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a asp-action="Edit"
+                                       asp-route-id="@bus.BusId"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <form asp-action="ToggleStatus"
+                                          asp-route-id="@bus.BusId"
+                                          method="post" class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-sm @(bus.IsActive ? "btn-outline-warning" : "btn-outline-success")">
+                                            <i class="fa @(bus.IsActive ? "fa-pause" : "fa-play")"></i>
+                                        </button>
+                                    </form>
+                                    <a asp-action="Delete"
+                                       asp-route-id="@bus.BusId"
+                                       class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa fa-bus fa-3x mb-3 d-block opacity-25"></i>
+                No buses found.
+                <a asp-action="Create">Add your first bus.</a>
+            </div>
+        }
+    </div>
+</div>

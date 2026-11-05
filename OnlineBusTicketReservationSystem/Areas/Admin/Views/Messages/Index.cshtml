@@ -1,0 +1,219 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.ContactMessage>
+@{
+    ViewData["Title"] = "Contact Messages";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h4 class="fw-bold mb-0"><i class="fa fa-envelope me-2 text-primary"></i>Messages & Reviews</h4>
+        <small class="text-muted">Customer contact messages and feedback</small>
+    </div>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-4" id="msgTabs">
+    <li class="nav-item">
+        <!-- ❌ sirf yahan se active remove kiya -->
+        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#tabMessages" style="text-decoration:none">
+            ✉️ Contact Messages
+            @if (ViewBag.UnreadCount != null && (int)ViewBag.UnreadCount > 0)
+            {
+                <span class="badge bg-danger ms-1" style="font-size:0.65rem">@ViewBag.UnreadCount</span>
+            }
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#tabReviews" style="text-decoration:none">
+            ⭐ Customer Reviews
+            @if (ViewBag.ReviewCount != null && (int)ViewBag.ReviewCount > 0)
+            {
+                <span class="badge bg-warning text-dark ms-1" style="font-size:0.65rem">@ViewBag.ReviewCount</span>
+            }
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+    <!-- ❌ yahan se bhi show active remove kiya -->
+    <div class="tab-pane fade" id="tabMessages">
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                @if (!Model.Any())
+                {
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa fa-envelope fa-3x mb-3 d-block opacity-25"></i>
+                        <p>No messages yet.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var m in Model)
+                        {
+                            <div class="list-group-item list-group-item-action @(!m.IsRead ? "bg-light" : "")">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div style="width:42px;height:42px;background:@(!m.IsRead ? "var(--bs-primary)" : "#e2e8f0");color:@(!m.IsRead ? "#fff" : "#64748b");border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">
+                                        @m.Name.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div class="flex-grow-1 min-w-0">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <span class="fw-@(!m.IsRead ? "bold" : "semibold")">@m.Name</span>
+                                                <small class="text-muted ms-2">@m.Email</small>
+                                                @if (!m.IsRead)
+                                                {
+                                                    <span class="badge bg-danger ms-1" style="font-size:0.65rem">NEW</span>
+                                                }
+                                            </div>
+                                            <small class="text-muted text-nowrap ms-2">@m.SentAt.ToString("dd MMM, hh:mm tt")</small>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(m.Subject))
+                                        {
+                                            <div class="fw-semibold small text-dark mt-1">@m.Subject</div>
+                                        }
+                                        <p class="mb-1 small text-muted text-truncate" style="max-width:500px">@m.Message</p>
+                                    </div>
+                                    <div class="d-flex gap-1 flex-shrink-0">
+                                        <a asp-action="Details" asp-route-id="@m.MessageId"
+                                           class="btn btn-sm btn-outline-primary">Read</a>
+                                        <form asp-action="Delete" asp-route-id="@m.MessageId"
+                                              method="post" class="d-inline"
+                                              onsubmit="return confirm('Delete this message?')">
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div><!-- /tabMessages -->
+
+    <div class="tab-pane fade" id="tabReviews">
+        @{
+            var reviews = ViewBag.Reviews as List<OnlineBusTicketReservationSystem.Models.Review>;
+        }
+        @if (reviews != null && reviews.Any())
+        {
+            <!-- (poora review UI bilkul same rakha hai) -->
+            <div class="p-3 mb-4 rounded-3 d-flex align-items-center gap-4 flex-wrap"
+                 style="background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1px solid #fcd34d">
+                <div>
+                    <div class="fw-bold fs-4" style="color:#92400e">@ViewBag.AvgRating <span style="font-size:0.9rem;color:#f59e0b">★</span></div>
+                    <div class="small text-muted">Average Rating</div>
+                </div>
+                <div>
+                    <div class="fw-bold fs-4">@ViewBag.TotalReviews</div>
+                    <div class="small text-muted">Total Reviews</div>
+                </div>
+                <div style="color:#f59e0b;font-size:1.6rem">
+                    @{
+                        double avg2 = (double)(ViewBag.AvgRating ?? 0);
+                    }
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        @(i <= avg2 ? "★" : "☆")
+                    }
+                </div>
+            </div>
+
+            <div class="row g-3">
+                @foreach (var r in reviews)
+                {
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="fw-bold">@(r.User?.FullName ?? r.Booking?.CustomerName ?? "Customer")</div>
+                                        <small class="text-muted">
+                                            @(r.Booking?.Schedule?.Route?.SourceCity) →
+                                            @(r.Booking?.Schedule?.Route?.DestinationCity)
+                                        </small>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span style="color:#f59e0b;font-size:1.1rem">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                @(i <= r.Rating ? "★" : "☆")
+                                            }
+                                        </span>
+                                        <form asp-area="Admin" asp-controller="Messages" asp-action="DeleteReview"
+                                              asp-route-id="@r.ReviewId" method="post" class="d-inline"
+                                              onsubmit="return confirm('Delete this review?')">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger p-1" title="Delete">
+                                                <i class="fa fa-trash" style="font-size:0.7rem"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(r.Comment))
+                                {
+                                    <p class="text-muted small mb-1 fst-italic">"@r.Comment"</p>
+                                }
+                                <small class="text-muted">@r.CreatedAt.ToString("dd MMM yyyy")</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="fa fa-star fa-3x mb-3 d-block opacity-25"></i>
+                <p>No reviews yet. Reviews will appear here once customers rate their journeys.</p>
+            </div>
+        }
+    </div>
+
+</div><!-- /tab-content -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const msgTabs = document.querySelectorAll('#msgTabs a[data-bs-toggle="tab"]');
+
+        const savedHash = window.location.hash;
+        if (savedHash) {
+            const targetTab = document.querySelector(`#msgTabs a[href="${savedHash}"]`);
+            if (targetTab) {
+                bootstrap.Tab.getOrCreateInstance(targetTab).show();
+            }
+        } else {
+            const defaultTab = document.querySelector('#msgTabs a[href="#tabMessages"]');
+            if (defaultTab) {
+                bootstrap.Tab.getOrCreateInstance(defaultTab).show();
+            }
+        }
+
+        msgTabs.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function (e) {
+                window.location.hash = e.target.getAttribute('href');
+            });
+        });
+
+        document.querySelector('a[href="#tabReviews"]').addEventListener('click', function () {
+            fetch('/Admin/Messages/MarkReviewsRead', {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken':
+                        document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                }
+            }).then(() => {
+                const badge = this.querySelector('.badge');
+                if (badge) badge.remove();
+            });
+        });
+
+    });
+</script>

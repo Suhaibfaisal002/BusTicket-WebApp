@@ -1,0 +1,215 @@
+﻿@model OnlineBusTicketReservationSystem.Models.ViewModels.LoginViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Login";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SRC Travel - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            width: 420px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .bus-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #e94560, #c0392b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .login-card h2 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+            .login-card h2 span {
+                color: #e94560;
+            }
+
+        .login-card p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .form-control {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            border-radius: 10px;
+            padding: 12px 15px;
+        }
+
+            .form-control:focus {
+                background: rgba(255,255,255,0.12);
+                border-color: #e94560;
+                color: #fff;
+                box-shadow: 0 0 0 3px rgba(233,69,96,0.2);
+            }
+
+            .form-control::placeholder {
+                color: rgba(255,255,255,0.35);
+            }
+
+        .form-label {
+            color: rgba(255,255,255,0.75);
+            font-size: 0.85rem;
+        }
+
+        .input-group-text {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.5);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #e94560, #c0392b);
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+            .btn-login:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 5px 20px rgba(233,69,96,0.4);
+                color: #fff;
+            }
+
+        .creds-hint {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 20px;
+        }
+
+            .creds-hint p {
+                color: rgba(255,255,255,0.4);
+                font-size: 0.75rem;
+                margin: 2px 0;
+            }
+
+        .form-check-label {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.85rem;
+        }
+
+        .text-danger {
+            color: #ff6b6b !important;
+            font-size: 0.8rem;
+        }
+
+        .alert-danger {
+            background: rgba(233,69,96,0.15);
+            border-color: rgba(233,69,96,0.3);
+            color: #ff9999;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="bus-icon"><i class="fa fa-bus"></i></div>
+        <h2>SRC <span>Travel</span></h2>
+        <p class="mb-4">Online Bus Ticket Reservation System</p>
+
+        <form asp-controller="Account"
+              asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">
+                    Email Address
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa fa-envelope"></i>
+                    </span>
+                    <input asp-for="Email" class="form-control"
+                           placeholder="Enter your email" />
+                </div>
+                <span asp-validation-for="Email"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">
+                    Password
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa fa-lock"></i>
+                    </span>
+                    <input asp-for="Password" class="form-control"
+                           placeholder="Enter your password" />
+                </div>
+                <span asp-validation-for="Password"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check">
+                    <input asp-for="RememberMe"
+                           class="form-check-input" />
+                    <label asp-for="RememberMe"
+                           class="form-check-label">Remember me</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">
+                <i class="fa fa-sign-in-alt me-2"></i>Login to System
+            </button>
+        </form>
+
+        <div class="creds-hint">
+            <p>
+                <i class="fa fa-shield-alt me-1"></i>
+                Admin: admin@srctravel.com / Admin@123
+            </p>
+            <p>
+                <i class="fa fa-user me-1"></i>
+                Employee: employee@srctravel.com / Employee@123
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

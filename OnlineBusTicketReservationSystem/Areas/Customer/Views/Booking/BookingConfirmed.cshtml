@@ -1,0 +1,125 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Booking Confirmed";
+    var passengers = Model.Passengers ?? new List<OnlineBusTicketReservationSystem.Models.Passenger>();
+}
+
+<section style="padding:3rem 0;background:var(--light)">
+    <div style="max-width:700px;margin:0 auto;padding:0 1.5rem">
+
+        <!-- Success Banner -->
+        <div style="text-align:center;padding:2.5rem;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:20px;margin-bottom:2rem;border:2px solid #86efac">
+            <div style="font-size:3.5rem;margin-bottom:1rem">✅</div>
+            <h2 style="font-family:var(--font-head);font-size:2rem;color:#15803d;margin-bottom:0.5rem">
+                Booking Successfull!
+            </h2>
+            <p style="color:#475569">Your ticket has been booked successfully. Safe travels!</p>
+        </div>
+
+        <!-- Ticket -->
+        <div style="background:#fff;border-radius:20px;overflow:hidden;border:2px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.08);margin-bottom:2rem">
+
+            <!-- Top bar -->
+            <div style="background:#0f172a;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center">
+                <div style="font-family:var(--font-head);font-size:1.8rem;color:#fff;letter-spacing:2px">
+                    SRC<span style="color:var(--accent)">Travel</span>
+                </div>
+                <div style="text-align:right;font-size:0.82rem;color:#64748b">
+                    <div style="color:#fff;font-family:monospace;font-size:1rem">#@Model.BookingId.ToString("D6")</div>
+                    @if (!string.IsNullOrEmpty(Model.PNR))
+                    {
+                        <div style="color:#ffd700;font-family:monospace;font-size:0.85rem;margin-top:2px">PNR: @Model.PNR</div>
+                    }
+                    <div>@(Model.BookingDate.ToString("dd MMM yyyy HH:mm"))</div>
+                </div>
+            </div>
+
+            <!-- Route bar -->
+            <div style="background:var(--accent);padding:1.2rem 2rem;display:flex;align-items:center;gap:1rem">
+                <div style="flex:1">
+                    <span style="display:block;font-size:0.65rem;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.65);text-transform:uppercase">From</span>
+                    <span style="font-family:var(--font-head);font-size:1.8rem;color:#fff">@Model.Schedule?.Route?.SourceCity</span>
+                </div>
+                <div style="font-size:1.5rem">🚌</div>
+                <div style="flex:1;text-align:right">
+                    <span style="display:block;font-size:0.65rem;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.65);text-transform:uppercase">To</span>
+                    <span style="font-family:var(--font-head);font-size:1.8rem;color:#fff">@Model.Schedule?.Route?.DestinationCity</span>
+                </div>
+            </div>
+
+            <!-- Details grid -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+                <div style="padding:1rem 1.5rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)">
+                    <span style="display:block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.3rem">Departure</span>
+                    <strong style="color:var(--dark);font-size:0.9rem">@(Model.Schedule?.DepartureTime.ToString("HH:mm, dd MMM yyyy") ?? "-")</strong>
+                </div>
+                <div style="padding:1rem 1.5rem;border-bottom:1px solid var(--border)">
+                    <span style="display:block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.3rem">Arrival</span>
+                    <strong style="color:var(--dark);font-size:0.9rem">@(Model.Schedule?.ArrivalTime.ToString("HH:mm, dd MMM yyyy") ?? "-")</strong>
+                </div>
+                <div style="padding:1rem 1.5rem;border-right:1px solid var(--border)">
+                    <span style="display:block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.3rem">Bus</span>
+                    <strong style="color:var(--dark);font-size:0.9rem">@Model.Schedule?.Bus?.BusCode • @Model.Schedule?.Bus?.BusType</strong>
+                </div>
+                <div style="padding:1rem 1.5rem">
+                    <span style="display:block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.3rem">Passengers</span>
+                    <strong style="color:var(--dark);font-size:0.9rem">@passengers.Count passenger(s)</strong>
+                </div>
+            </div>
+
+            <!-- Passengers table -->
+            <div style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)">
+                <h4 style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.8rem">Passengers</h4>
+                <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+                    <thead>
+                        <tr style="background:var(--light)">
+                            <th style="padding:0.5rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">#</th>
+                            <th style="padding:0.5rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Name</th>
+                            <th style="padding:0.5rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Age</th>
+                            <th style="padding:0.5rem 0.8rem;text-align:right;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Fare</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int pNum = 1; }
+                        @foreach (var p in passengers)
+                        {
+                            <tr>
+                                <td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);color:var(--muted)">@(pNum++)</td>
+                                <td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--dark)">@p.FullName</td>
+                                <td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);color:var(--muted)">@p.Age yrs</td>
+                                <td style="padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);text-align:right;font-weight:700;color:var(--accent)">
+                                    @(p.FareAmount == 0 ? "FREE" : "Rs. " + p.FareAmount.ToString("N0"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Total -->
+            <div style="padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;background:var(--light)">
+                <span style="font-family:var(--font-head);font-size:1.1rem;color:var(--dark)">Total Amount</span>
+                <span style="font-family:var(--font-head);font-size:1.5rem;color:var(--accent)">
+                    Rs. @Model.TotalAmount.ToString("N0")
+                </span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+            <a asp-area="Customer" asp-controller="Booking" asp-action="PrintTicket"
+               asp-route-id="@Model.BookingId"
+               style="background:var(--dark);color:#fff;padding:0.75rem 2rem;border-radius:50px;font-weight:700;font-size:0.9rem">
+                🖨️ Print Ticket
+            </a>
+            <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+               style="background:var(--accent);color:#fff;padding:0.75rem 2rem;border-radius:50px;font-weight:700;font-size:0.9rem">
+                📋 My Bookings
+            </a>
+            <a asp-area="Customer" asp-controller="Booking" asp-action="Search"
+               style="background:transparent;color:var(--dark);padding:0.75rem 2rem;border-radius:50px;font-weight:700;font-size:0.9rem;border:2px solid var(--border)">
+                🔍 Book Another
+            </a>
+        </div>
+    </div>
+</section>

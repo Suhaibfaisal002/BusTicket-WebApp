@@ -1,0 +1,119 @@
+﻿@model IEnumerable<OnlineBusTicketReservationSystem.Models.PriceList>
+@{
+    ViewData["Title"] = "Price Lists";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">
+            <i class="fa fa-tags me-2 text-primary"></i>
+            Price List Management
+        </h4>
+        <p class="text-muted mb-0">Manage base fares by route and bus type</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus me-1"></i>Add Price
+    </a>
+</div>
+
+<!-- Fare Rules -->
+<div class="card mb-4 border-0"
+     style="background:linear-gradient(135deg,#0f3460,#1a4a8a)">
+    <div class="card-body text-white py-3">
+        <h6 class="mb-2">
+            <i class="fa fa-info-circle me-2"></i>Fare Calculation Rules
+        </h6>
+        <div class="d-flex flex-wrap gap-3">
+            <span class="badge bg-success p-2">Age 0–5: FREE</span>
+            <span class="badge bg-info p-2">Age 5–12: Half Fare (50%)</span>
+            <span class="badge bg-primary p-2">
+                Age 12–50: Full Fare (100%)
+            </span>
+            <span class="badge bg-warning text-dark p-2">
+                Age 50+: Senior Discount (70%)
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background:linear-gradient(135deg,#0f3460,#e94560);color:white;">
+                    <tr>
+                        <th>Route</th>
+                        <th>Bus Type</th>
+                        <th>Base Price</th>
+                        <th>Half Fare</th>
+                        <th>Senior Fare</th>
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>
+                                <small>
+                                    <i class="fa fa-map-marker-alt text-success me-1"></i>
+                                    @p.Route?.SourceCity<br />
+                                    <i class="fa fa-map-marker-alt text-danger me-1"></i>
+                                    @p.Route?.DestinationCity
+                                </small>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">
+                                    @p.BusType
+                                </span>
+                            </td>
+                            <td>
+                                <strong class="text-success">
+                                    Rs.@p.BasePrice.ToString("N2")
+                                </strong>
+                            </td>
+                            <td>
+                                <span class="text-info">
+                                    Rs.@((p.BasePrice * 0.5m).ToString("N2"))
+                                </span>
+                            </td>
+                            <td>
+                                <span class="text-warning">
+                                    Rs.@((p.BasePrice * 0.7m).ToString("N2"))
+                                </span>
+                            </td>
+                            <td>
+                                <small class="text-muted">
+                                    @p.LastUpdatedAt.ToString("dd-MMM-yyyy")
+                                </small>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a asp-action="Edit"
+                                       asp-route-id="@p.PriceId"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Delete"
+                                       asp-route-id="@p.PriceId"
+                                       class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa fa-tags fa-3x mb-3 d-block opacity-25"></i>
+                No prices found.
+                <a asp-action="Create">Add your first price.</a>
+            </div>
+        }
+    </div>
+</div>

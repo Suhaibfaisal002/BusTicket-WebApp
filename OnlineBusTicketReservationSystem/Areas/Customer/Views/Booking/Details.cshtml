@@ -1,0 +1,184 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Booking Details";
+    var passengers   = Model.Passengers   ?? new List<OnlineBusTicketReservationSystem.Models.Passenger>();
+    string statusColor = Model.BookingStatus == "Confirmed" ? "#16a34a"
+        : Model.BookingStatus == "Cancelled" ? "#b91c1c" : "#d97706";
+    string statusBg = Model.BookingStatus == "Confirmed" ? "#dcfce7"
+        : Model.BookingStatus == "Cancelled" ? "#fee2e2" : "#fef3c7";
+}
+
+<section style="padding:3rem 0;background:var(--light);min-height:80vh">
+    <div style="max-width:750px;margin:0 auto;padding:0 1.5rem">
+
+        <div style="margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+            <div>
+                <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+                   style="color:var(--accent);font-size:0.88rem;font-weight:600">← Back to My Bookings</a>
+                <h1 style="font-family:var(--font-head);font-size:2rem;color:var(--dark);margin-top:0.5rem">
+                    Booking #@Model.BookingId.ToString("D6")
+                </h1>
+            </div>
+            <span style="padding:0.4rem 1.2rem;border-radius:50px;font-weight:700;font-size:0.88rem;background:@statusBg;color:@statusColor">
+                @Model.BookingStatus
+            </span>
+        </div>
+
+        <!-- Journey Info -->
+        <div style="background:#0f172a;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;color:#fff">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:2rem">
+                <div>
+                    <span style="font-size:0.65rem;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase">From</span>
+                    <div style="font-family:var(--font-head);font-size:1.6rem">@Model.Schedule?.Route?.SourceCity</div>
+                    <div style="color:rgba(255,255,255,0.6);font-size:0.85rem">@(Model.Schedule?.DepartureTime.ToString("HH:mm, dd MMM yyyy") ?? "-")</div>
+                </div>
+                <div style="flex:1;text-align:center;font-size:1.5rem">🚌</div>
+                <div style="text-align:right">
+                    <span style="font-size:0.65rem;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase">To</span>
+                    <div style="font-family:var(--font-head);font-size:1.6rem">@Model.Schedule?.Route?.DestinationCity</div>
+                    <div style="color:rgba(255,255,255,0.6);font-size:0.85rem">@(Model.Schedule?.ArrivalTime.ToString("HH:mm, dd MMM yyyy") ?? "-")</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Info Card -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+            <h3 style="font-family:var(--font-head);font-size:1rem;color:var(--dark);margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                📋 Booking Information
+            </h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+                <div>
+                    <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Contact Name</span>
+                    <strong style="color:var(--dark)">@Model.CustomerName</strong>
+                </div>
+                <div>
+                    <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Contact Phone</span>
+                    <strong style="color:var(--dark)">@Model.CustomerPhone</strong>
+                </div>
+                <div>
+                    <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Booking Date</span>
+                    <strong style="color:var(--dark)">@(Model.BookingDate.ToString("dd MMM yyyy, HH:mm"))</strong>
+                </div>
+                <div>
+                    <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Bus</span>
+                    <strong style="color:var(--dark)">@Model.Schedule?.Bus?.BusCode • @Model.Schedule?.Bus?.BusType</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Passengers -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+            <h3 style="font-family:var(--font-head);font-size:1rem;color:var(--dark);margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                👥 Passengers (@passengers.Count)
+            </h3>
+            <table style="width:100%;border-collapse:collapse;font-size:0.88rem">
+                <thead>
+                    <tr style="background:var(--light)">
+                        <th style="padding:0.6rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">#</th>
+                        <th style="padding:0.6rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Name</th>
+                        <th style="padding:0.6rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Age</th>
+                        <th style="padding:0.6rem 0.8rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Gender</th>
+                        <th style="padding:0.6rem 0.8rem;text-align:right;font-weight:700;color:var(--dark);border-bottom:1px solid var(--border)">Fare</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int n = 1; }
+                    @foreach (var p in passengers)
+                    {
+                        <tr>
+                            <td style="padding:0.6rem 0.8rem;border-bottom:1px solid var(--border);color:var(--muted)">@(n++)</td>
+                            <td style="padding:0.6rem 0.8rem;border-bottom:1px solid var(--border);font-weight:600;color:var(--dark)">@p.FullName</td>
+                            <td style="padding:0.6rem 0.8rem;border-bottom:1px solid var(--border);color:var(--muted)">@p.Age yrs</td>
+                            <td style="padding:0.6rem 0.8rem;border-bottom:1px solid var(--border);color:var(--muted)">@p.Gender</td>
+                            <td style="padding:0.6rem 0.8rem;border-bottom:1px solid var(--border);text-align:right;font-weight:700;color:var(--accent)">
+                                @(p.FareAmount == 0 ? "FREE" : "Rs. " + p.FareAmount.ToString("N0"))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div style="margin-top:1rem;padding-top:0.8rem;border-top:2px solid var(--border);display:flex;justify-content:space-between">
+                <span style="font-weight:700;color:var(--dark)">Total Amount</span>
+                <span style="font-family:var(--font-head);font-size:1.3rem;color:var(--accent)">Rs. @Model.TotalAmount.ToString("N0")</span>
+            </div>
+        </div>
+
+        <!-- Payment Info -->
+        @if (Model.Payment != null)
+        {
+            <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+                <h3 style="font-family:var(--font-head);font-size:1rem;color:var(--dark);margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                    💳 Payment Information
+                </h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Amount Paid</span>
+                        <strong style="color:var(--dark)">Rs. @Model.Payment.AmountPaid.ToString("N0")</strong>
+                    </div>
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Method</span>
+                        <strong style="color:var(--dark)">@Model.Payment.PaymentMethod</strong>
+                    </div>
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Payment Date</span>
+                        <strong style="color:var(--dark)">@(Model.Payment.PaymentDate.ToString("dd MMM yyyy, HH:mm"))</strong>
+                    </div>
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px">Status</span>
+                        <strong style="color:#16a34a">@Model.Payment.PaymentStatus</strong>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Cancellation Info -->
+        @if (Model.Cancellation != null)
+        {
+            <div style="background:#fff3f3;border-radius:16px;padding:1.5rem;border:2px solid #fca5a5;margin-bottom:1.5rem">
+                <h3 style="font-family:var(--font-head);font-size:1rem;color:#b91c1c;margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:2px solid #fca5a5">
+                    ❌ Cancellation Details
+                </h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:#b91c1c;font-weight:600;text-transform:uppercase;letter-spacing:1px">Cancelled On</span>
+                        <strong style="color:var(--dark)">@(Model.Cancellation.CancellationDate.ToString("dd MMM yyyy, HH:mm"))</strong>
+                    </div>
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:#b91c1c;font-weight:600;text-transform:uppercase;letter-spacing:1px">Deduction</span>
+                        <strong style="color:var(--dark)">@Model.Cancellation.DeductionPercent% (Rs. @Model.Cancellation.DeductedAmount.ToString("N0"))</strong>
+                    </div>
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:#b91c1c;font-weight:600;text-transform:uppercase;letter-spacing:1px">Refund Amount</span>
+                        <strong style="color:#16a34a;font-size:1.1rem">Rs. @Model.Cancellation.RefundAmount.ToString("N0")</strong>
+                    </div>
+                    <div>
+                        <span style="display:block;font-size:0.72rem;color:#b91c1c;font-weight:600;text-transform:uppercase;letter-spacing:1px">Refund Status</span>
+                        <strong style="color:var(--dark)">@Model.Cancellation.RefundStatus</strong>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Actions -->
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+            <a asp-area="Customer" asp-controller="Booking"
+               asp-action="PrintTicket" asp-route-id="@Model.BookingId"
+               style="background:var(--dark);color:#fff;padding:0.7rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem">
+                🖨️ Print Ticket
+            </a>
+            @if (Model.BookingStatus == "Confirmed" &&
+                 Model.Schedule?.DepartureTime > DateTime.Now)
+            {
+                <a asp-area="Customer" asp-controller="Booking"
+                   asp-action="Cancel" asp-route-id="@Model.BookingId"
+                   style="background:#fee2e2;color:#b91c1c;padding:0.7rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem">
+                    Cancel Booking
+                </a>
+            }
+            <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+               style="background:var(--light);color:var(--dark);padding:0.7rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem;border:2px solid var(--border)">
+                ← All Bookings
+            </a>
+        </div>
+    </div>
+</section>

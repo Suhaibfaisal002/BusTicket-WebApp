@@ -1,0 +1,46 @@
+@model OnlineBusTicketReservationSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Delete Customer";
+}
+
+<div class="d-flex align-items-center mb-4 gap-2">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+        <i class="fa fa-arrow-left me-1"></i>Back
+    </a>
+    <h4 class="fw-bold mb-0 text-danger"><i class="fa fa-trash me-2"></i>Delete Customer</h4>
+</div>
+
+<div class="card border-danger shadow-sm" style="max-width:500px">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>Warning!</strong> This action cannot be undone.
+        </div>
+        <table class="table table-borderless mb-4">
+            <tr><td class="text-muted fw-semibold" style="width:120px">Name</td><td><strong>@Model.FullName</strong></td></tr>
+            <tr><td class="text-muted fw-semibold">Email</td><td>@Model.Email</td></tr>
+            <tr><td class="text-muted fw-semibold">Phone</td><td>@(Model.PhoneNumber ?? "—")</td></tr>
+            <tr><td class="text-muted fw-semibold">Joined</td><td>@Model.CreatedAt.ToString("dd MMM yyyy")</td></tr>
+            <tr>
+                <td class="text-muted fw-semibold">Status</td>
+                <td>
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Blocked</span>
+                    }
+                </td>
+            </tr>
+        </table>
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex gap-2">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash me-1"></i>Yes, Delete Customer
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

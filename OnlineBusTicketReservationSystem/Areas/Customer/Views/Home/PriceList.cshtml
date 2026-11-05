@@ -1,0 +1,95 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.PriceList>
+@{
+    ViewData["Title"] = "Price List";
+    int rowNum = 0;
+}
+
+<section class="c-inner-hero" style="background-image:url('https://images.unsplash.com/photo-1621532862315-1b28f3b13e58?w=1400&q=80')">
+    <div class="c-hero-overlay"></div>
+    <div class="c-hero-content">
+        <span class="sec-badge white">Transparent Pricing</span>
+        <h1>Price <span class="text-accent">List</span></h1>
+        <p style="color:rgba(255,255,255,0.7);max-width:560px;margin:1rem auto 0;font-size:1.05rem">
+            No hidden charges. Browse base fares for all routes and bus types.
+        </p>
+    </div>
+</section>
+
+<section style="padding:5rem 0;background:var(--light);min-height:60vh">
+    <div style="max-width:1100px;margin:0 auto;padding:0 1.5rem">
+
+        <!-- Fare Discount Info -->
+        <div style="background:#fff;border-radius:16px;padding:1.2rem 1.5rem;border:1px solid var(--border);margin-bottom:2rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;box-shadow:var(--shadow)">
+            <span style="font-weight:700;color:var(--dark);font-size:0.88rem">💰 Age-Based Discounts:</span>
+            <span style="background:#dcfce7;color:#16a34a;padding:0.25rem 0.8rem;border-radius:50px;font-size:0.8rem;font-weight:700">0–5 yrs: FREE</span>
+            <span style="background:#dbeafe;color:#2563eb;padding:0.25rem 0.8rem;border-radius:50px;font-size:0.8rem;font-weight:700">6–12 yrs: 50% OFF</span>
+            <span style="background:#f1f5f9;color:#475569;padding:0.25rem 0.8rem;border-radius:50px;font-size:0.8rem;font-weight:700">13–49 yrs: Full Fare</span>
+            <span style="background:#fef3c7;color:#d97706;padding:0.25rem 0.8rem;border-radius:50px;font-size:0.8rem;font-weight:700">50+ yrs: 30% OFF</span>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div style="text-align:center;padding:5rem 2rem;background:#fff;border-radius:20px;border:2px dashed var(--border)">
+                <div style="font-size:3.5rem;margin-bottom:1rem">💰</div>
+                <h3 style="color:var(--dark);margin-bottom:0.5rem">No price data available yet</h3>
+                <p style="color:var(--muted)">Price list will be updated soon. Please check back later.</p>
+            </div>
+        }
+        else
+        {
+            <div style="background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)">
+
+                <div style="background:var(--dark);padding:1rem 1.5rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:1rem">
+                    <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6)">Route</div>
+                    <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6)">Bus Type</div>
+                    <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6);text-align:right">Base Fare</div>
+                    <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6);text-align:right">Child (6-12)</div>
+                    <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.6);text-align:right">Senior 50+</div>
+                </div>
+
+                @foreach (var p in Model)
+                {
+                    string rowBg     = rowNum % 2 == 0 ? "#fff" : "#f8fafc";
+                    decimal childFare  = p.BasePrice * 0.5m;
+                    decimal seniorFare = p.BasePrice * 0.7m;
+                    rowNum++;
+
+                    <div style="padding:1rem 1.5rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:1rem;align-items:center;background:@rowBg;border-bottom:1px solid var(--border)"
+                         onmouseover="this.style.background='#fef2f2'"
+                         onmouseout="this.style.background='@rowBg'">
+                        <div>
+                            <strong style="color:var(--dark);font-size:0.92rem">
+                                @p.Route?.SourceCity → @p.Route?.DestinationCity
+                            </strong>
+                        </div>
+                        <div>
+                            <span style="background:var(--light);color:var(--dark);padding:0.2rem 0.7rem;border-radius:50px;font-size:0.78rem;font-weight:700;border:1px solid var(--border)">
+                                @p.BusType
+                            </span>
+                        </div>
+                        <div style="text-align:right;font-family:var(--font-head);font-size:1.1rem;color:var(--accent);font-weight:700">
+                            Rs. @p.BasePrice.ToString("N0")
+                        </div>
+                        <div style="text-align:right;color:#2563eb;font-weight:600;font-size:0.88rem">
+                            Rs. @childFare.ToString("N0")
+                        </div>
+                        <div style="text-align:right;color:#d97706;font-weight:600;font-size:0.88rem">
+                            Rs. @seniorFare.ToString("N0")
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <p style="color:var(--muted);font-size:0.82rem;margin-top:1rem;text-align:center">
+                * All fares are base fares. Final fare depends on passenger age. Children under 5 travel FREE.
+            </p>
+        }
+
+        <div style="text-align:center;margin-top:2.5rem">
+            <a asp-area="Customer" asp-controller="Booking" asp-action="Search"
+               style="background:var(--accent);color:#fff;padding:0.85rem 2.5rem;border-radius:50px;font-weight:700;font-size:1rem;display:inline-block">
+                Book Your Ticket Now →
+            </a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "FAQs";
+}
+
+<section class="c-inner-hero"
+         style="background-image:url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1400&q=80')">
+    <div class="c-hero-overlay"></div>
+    <div class="c-hero-content">
+        <span class="sec-badge white">Help Center</span>
+        <h1>Frequently Asked <span class="text-accent">Questions</span></h1>
+        <p>Everything you need to know about SRC Travel</p>
+    </div>
+</section>
+
+<section style="padding:5rem 0">
+    <div style="max-width:800px;margin:0 auto;padding:0 1.5rem">
+
+        <div style="text-align:center;margin-bottom:3rem">
+            <span class="sec-badge">Got Questions?</span>
+            <h2 class="sec-title">We Have <span class="text-accent">Answers</span></h2>
+        </div>
+
+        @foreach (var cat in new[] {
+                new {
+                title = "Booking",
+                icon = "🎫",
+                faqs = new[] {
+                new { q="How do I book a bus ticket?", a="Register or login to your account, go to Search Buses, enter your source city, destination and travel date. Select your preferred bus, add passenger details and confirm your booking. Your e-ticket will be generated instantly." },
+                new { q="Do I need to register to book a ticket?", a="Yes, registration is required to book tickets. This helps us keep your booking history safe and allows you to manage cancellations easily. Registration is completely free!" },
+                new { q="Can I book tickets for multiple passengers?", a="Yes! You can add multiple passengers in a single booking. Age-based discounts are automatically applied for children (5-12 years) and senior citizens (50+ years)." },
+                new { q="How far in advance can I book?", a="You can book tickets up to 30 days in advance. We recommend booking early to get the best seat availability, especially for popular routes." }
+                }
+                },
+                new {
+                title = "Payment & Pricing",
+                icon = "💳",
+                faqs = new[] {
+                new { q="What are the age-based fare discounts?", a="Children aged 0-5 travel FREE. Children aged 5-12 get 50% off the base fare. Passengers aged 12-50 pay the full fare. Senior citizens aged 50+ receive a 30% discount automatically." },
+                new { q="Are there any hidden charges?", a="No! SRC Travel believes in transparent pricing. The fare shown at booking is exactly what you pay — no hidden service charges or booking fees." },
+                new { q="What payment methods are accepted?", a="We accept cash payment at the counter. Online payment options are being added soon. You can also pay at any SRC Travel branch across Pakistan." }
+                }
+                },
+                new {
+                title = "Cancellation & Refunds",
+                icon = "↩️",
+                faqs = new[] {
+                new { q="Can I cancel my ticket?", a="Yes, you can cancel your ticket through your account under 'My Bookings'. Cancellations are allowed up to the departure time of the bus." },
+                new { q="What is the refund policy?", a="If you cancel 2+ days before departure, you get a 100% refund. Cancelling 1 day before incurs a 15% fee (85% refund). Same-day cancellation has a 30% fee (70% refund)." },
+                new { q="How long does the refund take?", a="Refunds are processed within 3-5 business days. You will be notified by our staff once the refund has been processed." }
+                }
+                },
+                new {
+                title = "Journey & Bus Info",
+                icon = "🚌",
+                faqs = new[] {
+                new { q="What bus types are available?", a="We offer 4 bus types: Express (budget-friendly), Luxury (premium leather seats, personal TV), Volvo Non-AC (wide seats, smooth ride) and Volvo AC (full AC, push-back seats, WiFi)." },
+                new { q="What should I carry on the day of journey?", a="Please carry a printout or digital copy of your e-ticket, along with a valid CNIC or ID. Arrive at least 15 minutes before departure." },
+                new { q="Is there a luggage allowance?", a="Standard luggage allowance is 15kg per passenger for Express and Volvo Non-AC buses, and 20kg for Luxury and Volvo AC buses. Extra luggage may be charged." }
+                }
+                }
+                })
+        {
+            <div style="margin-bottom:2.5rem">
+                <h3 style="font-family:var(--font-head);font-size:1.3rem;color:var(--dark);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+                    <span>@cat.icon</span> @cat.title
+                </h3>
+                <div style="display:flex;flex-direction:column;gap:0.6rem">
+                    @foreach (var faq in cat.faqs)
+                    {
+                        <div class="faq-item" style="background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)">
+                            <div class="faq-q"
+                                 onclick="toggleFaq(this)"
+                                 style="padding:1.1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;color:var(--dark);transition:background 0.25s">
+                                <span>@faq.q</span>
+                                <span class="faq-icon" style="color:var(--accent);font-size:1.2rem;font-weight:700;flex-shrink:0;margin-left:1rem;transition:transform 0.25s">+</span>
+                            </div>
+                            <div class="faq-a" style="display:none;padding:0 1.5rem 1.2rem;color:#475569;line-height:1.8;font-size:0.9rem;border-top:1px solid var(--border);padding-top:1rem">
+                                @faq.a
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- Still have questions -->
+        <div style="background:linear-gradient(135deg,var(--accent),#c0392b);border-radius:20px;padding:2.5rem;text-align:center;color:#fff;margin-top:3rem">
+            <h3 style="font-family:var(--font-head);font-size:1.5rem;margin-bottom:0.8rem">
+                Still Have Questions?
+            </h3>
+            <p style="opacity:0.85;margin-bottom:1.5rem">
+                Our support team is available 24/7 to help you
+            </p>
+            <a asp-area="Customer" asp-controller="Home"
+               asp-action="Contact"
+               style="background:#fff;color:var(--accent);padding:0.75rem 2rem;border-radius:50px;font-weight:700;font-size:0.9rem">
+                <i class="fa fa-envelope me-2"></i>Contact Us
+            </a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function toggleFaq(el) {
+            const answer = el.nextElementSibling;
+            const icon = el.querySelector('.faq-icon');
+            const isOpen = answer.style.display === 'block';
+
+            // Close all
+            document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
+            document.querySelectorAll('.faq-q').forEach(q => {
+                q.style.background = '';
+                q.querySelector('.faq-icon').textContent = '+';
+                q.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+            });
+
+            if (!isOpen) {
+                answer.style.display = 'block';
+                el.style.background = '#fde8ea';
+                el.style.color = 'var(--accent)';
+                icon.textContent = '+';
+                icon.style.transform = 'rotate(45deg)';
+            }
+        }
+    </script>
+}

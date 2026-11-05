@@ -1,0 +1,124 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.PromoCode>
+@{
+    ViewData["Title"] = "Promo Codes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-1"><i class="fa fa-tags me-2 text-primary"></i>Promo Codes</h4>
+        <small class="text-muted">Manage discount codes for customers</small>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus me-1"></i> New Promo Code
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead style="background:linear-gradient(135deg,#0f3460,#e94560);color:white">
+                    <tr>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Discount</th>
+                        <th>Min Order</th>
+                        <th>Usage</th>
+                        <th>Expiry</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        bool expired = p.ExpiryDate.HasValue && p.ExpiryDate < DateTime.Now;
+                        bool limitReached = p.UsageLimit.HasValue && p.TimesUsed >= p.UsageLimit;
+                        <tr>
+                            <td>
+                                <span class="badge bg-dark fs-6 px-3">@p.Code</span>
+                            </td>
+                            <td>
+                                <small class="text-muted">@p.Description</small>
+                            </td>
+                            <td>
+                                @if (p.DiscountType == "Percentage")
+                                {
+                                    <span class="badge bg-info">@p.DiscountValue%</span>
+                                    @if (p.MaxDiscount.HasValue)
+                                    {
+                                        <small class="text-muted ms-1">max Rs.@p.MaxDiscount.Value.ToString("N0")</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Rs. @p.DiscountValue.ToString("N0")</span>
+                                }
+                            </td>
+                            <td><small>Rs. @p.MinOrderAmount.ToString("N0")</small></td>
+                            <td>
+                                <small>@p.TimesUsed / @(p.UsageLimit?.ToString() ?? "∞")</small>
+                            </td>
+                            <td>
+                                @if (p.ExpiryDate.HasValue)
+                                {
+                                    <small class="@(expired ? "text-danger" : "text-muted")">
+                                        @p.ExpiryDate.Value.ToString("dd MMM yyyy")
+                                        @if (expired) { <span>(Expired)</span> }
+                                    </small>
+                                }
+                                else
+                                {
+                                    <small class="text-muted">No expiry</small>
+                                }
+                            </td>
+                            <td>
+                                @if (!p.IsActive || expired || limitReached)
+                                {
+                                    <span class="badge bg-danger">Inactive</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <form asp-action="Toggle" asp-route-id="@p.PromoCodeId" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm @(p.IsActive ? "btn-outline-warning" : "btn-outline-success")"
+                                                title="@(p.IsActive ? "Deactivate" : "Activate")">
+                                            <i class="fa fa-@(p.IsActive ? "pause" : "play")"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-action="Delete" asp-route-id="@p.PromoCodeId" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this promo code?')">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="fa fa-tags fa-3x mb-3 d-block opacity-25"></i>
+                No promo codes yet. <a asp-action="Create">Create one</a>
+            </div>
+        }
+    </div>
+</div>

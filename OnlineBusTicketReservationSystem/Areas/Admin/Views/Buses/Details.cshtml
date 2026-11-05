@@ -1,0 +1,71 @@
+﻿@model OnlineBusTicketReservationSystem.Models.Bus
+@{
+    ViewData["Title"] = "Bus Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-info-circle me-2"></i>Bus Details
+                </h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <th width="40%">Bus Code</th>
+                        <td>
+                            <span class="badge bg-secondary fs-6">
+                                @Model.BusCode
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Bus Number</th>
+                        <td><strong>@Model.BusNumber</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Bus Type</th>
+                        <td>
+                            <span class="badge bg-primary">
+                                @Model.BusType
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Seats</th>
+                        <td>@Model.TotalSeats</td>
+                    </tr>
+                    <tr>
+                        <th>Operator</th>
+                        <td>@Model.OperatorName</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactive</span>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.BusId"
+                   class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit me-1"></i>Edit
+                </a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-arrow-left me-1"></i>Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

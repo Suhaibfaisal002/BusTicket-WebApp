@@ -1,0 +1,127 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Cancel Booking";
+    var reasons = ViewBag.AdminReasons as List<string> ?? new List<string>();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0" style="color:var(--primary)">
+            <i class="fa fa-times-circle me-2 text-danger"></i>Cancel Booking #@Model.BookingId.ToString("D4")
+        </h4>
+        <small class="text-muted">Provide a reason before cancelling this booking</small>
+    </div>
+    <a asp-area="Admin" asp-controller="Bookings" asp-action="Details" asp-route-id="@Model.BookingId"
+       class="btn btn-outline-secondary btn-sm">
+        <i class="fa fa-arrow-left me-1"></i>Back
+    </a>
+</div>
+
+<div class="row g-4">
+    <!-- Booking Summary -->
+    <div class="col-md-5">
+        <div class="card h-100">
+            <div class="card-header bg-dark text-white">
+                <i class="fa fa-ticket-alt me-2"></i>Booking Summary
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-borderless mb-0" style="font-size:0.9rem">
+                    <tr class="border-bottom">
+                        <td class="text-muted ps-3">Customer</td>
+                        <td class="fw-semibold">@Model.CustomerName</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="text-muted ps-3">Route</td>
+                        <td class="fw-semibold">@Model.Schedule?.Route?.SourceCity → @Model.Schedule?.Route?.DestinationCity</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="text-muted ps-3">Departure</td>
+                        <td class="fw-semibold">@(Model.Schedule?.DepartureTime.ToString("dd MMM yyyy, HH:mm"))</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="text-muted ps-3">Bus</td>
+                        <td class="fw-semibold">@Model.Schedule?.Bus?.BusNumber</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="text-muted ps-3">Passengers</td>
+                        <td class="fw-semibold">@(Model.Passengers?.Count ?? 0)</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="text-muted ps-3">Status</td>
+                        <td>
+                            <span class="badge @(Model.BookingStatus == "Confirmed" ? "bg-success" : "bg-warning text-dark")">
+                                @Model.BookingStatus
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted ps-3">Total Amount</td>
+                        <td class="fw-bold text-danger fs-6">Rs. @Model.TotalAmount.ToString("N0")</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Refund Info -->
+        <div class="card mt-3" style="border:2px solid #22c55e">
+            <div class="card-body text-center py-3">
+                <div class="text-muted small mb-1">Full Refund to Customer</div>
+                <div class="fw-bold text-success" style="font-size:1.6rem">
+                    Rs. @Model.TotalAmount.ToString("N0")
+                </div>
+                <div class="badge bg-success mt-1">100% Refund — Admin Cancel</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Form -->
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header" style="background:#fef2f2;border-bottom:2px solid #ef4444">
+                <i class="fa fa-exclamation-triangle text-danger me-2"></i>
+                <span class="fw-bold text-danger">Confirm Cancellation</span>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning py-2 mb-4">
+                    <i class="fa fa-info-circle me-2"></i>
+                    This will permanently cancel the booking and send an email notification to the customer.
+                </div>
+
+                <form asp-area="Admin" asp-controller="Bookings" asp-action="Cancel"
+                      asp-route-id="@Model.BookingId" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Cancellation Reason <span class="text-danger">*</span>
+                        </label>
+                        <select name="reason" required class="form-select">
+                            <option value="" disabled selected>— Select a reason —</option>
+                            @foreach (var r in reasons)
+                            {
+                                <option value="@r">@r</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Additional Notes (Optional)</label>
+                        <textarea name="reasonDetail" class="form-control" rows="3"
+                                  placeholder="Any additional details for the customer..."></textarea>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <a asp-area="Admin" asp-controller="Bookings"
+                           asp-action="Details" asp-route-id="@Model.BookingId"
+                           class="btn btn-outline-secondary flex-fill">
+                            <i class="fa fa-times me-1"></i>Go Back
+                        </a>
+                        <button type="submit" class="btn btn-danger flex-fill fw-bold">
+                            <i class="fa fa-trash me-1"></i>Cancel This Booking
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

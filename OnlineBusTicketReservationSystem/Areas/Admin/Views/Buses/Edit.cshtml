@@ -1,0 +1,101 @@
+﻿@model OnlineBusTicketReservationSystem.Models.Bus
+@{
+    ViewData["Title"] = "Edit Bus";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-edit me-2"></i>
+                    Edit Bus — <span class="text-warning">@Model.BusNumber</span>
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-warning">
+                    <i class="fa fa-lock me-1"></i>
+                    <small>
+                        Bus Code <strong>@Model.BusCode</strong>
+                        is auto-assigned and cannot be changed.
+                    </small>
+                </div>
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="BusId" />
+                    <input type="hidden" asp-for="BusCode" />
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Bus Code</label>
+                        <input class="form-control bg-light"
+                               value="@Model.BusCode" disabled />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BusNumber"
+                               class="form-label fw-semibold"></label>
+                        <input asp-for="BusNumber" class="form-control" />
+                        <span asp-validation-for="BusNumber"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BusType"
+                               class="form-label fw-semibold"></label>
+                        <select asp-for="BusType" class="form-select">
+                            <option value="Express">Express</option>
+                            <option value="Luxury">Luxury</option>
+                            <option value="Volvo-NonAC">Volvo-NonAC</option>
+                            <option value="Volvo-AC">Volvo-AC</option>
+                        </select>
+                        <span asp-validation-for="BusType"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TotalSeats"
+                               class="form-label fw-semibold"></label>
+                        <input asp-for="TotalSeats"
+                               class="form-control" type="number" />
+                        <span asp-validation-for="TotalSeats"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="OperatorName"
+                               class="form-label fw-semibold"></label>
+                        <input asp-for="OperatorName" class="form-control" />
+                        <span asp-validation-for="OperatorName"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   type="checkbox" />
+                            <label asp-for="IsActive"
+                                   class="form-check-label">Active</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save me-1"></i>Save Changes
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i>Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

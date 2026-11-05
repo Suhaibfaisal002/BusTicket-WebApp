@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SRC Travel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/site.css"/>
+    <style>
+        :root {
+            --primary: #0f3460;
+            --accent: #e94560;
+        }
+        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
+            position: fixed; top: 0; left: 0; z-index: 100;
+            padding-top: 70px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .sidebar::-webkit-scrollbar { width: 8px; }
+        .sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.35); border-radius: 99px; }
+        .sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.55); }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.75);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 2px 10px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            text-decoration: none !important;
+        }
+        a { text-decoration: none; }
+        a:hover { text-decoration: none; }
+
+        li {list-style-type: none;}
+     
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: rgba(233,69,96,0.25);
+            color: #fff;
+        }
+        .sidebar .nav-link i { width: 22px; }
+        .sidebar .nav-section {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.35);
+            padding: 12px 20px 4px;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding-top: 70px;
+            min-height: 100vh;
+        }
+        .topbar {
+            height: 60px;
+            background: linear-gradient(135deg, #0f3460, #e94560);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            display: flex; align-items: center; padding: 0 20px;
+        }
+        .topbar .brand {
+            color: #fff; font-weight: 700;
+            font-size: 1.2rem; margin-left: 10px;
+        }
+        .topbar .brand span { color: #ffd700; }
+        .card {
+            border: none; border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .card-header { border-radius: 12px 12px 0 0 !important; }
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-primary:hover {
+            background: #0a2540;
+            border-color: #0a2540;
+        }
+        .stat-card {
+            border-radius: 12px; color: #fff; padding: 20px;
+        }
+        .stat-card .stat-icon { font-size: 2.5rem; opacity: 0.4; }
+        .stat-card .stat-num { font-size: 2rem; font-weight: 700; }
+        .table-hover tbody tr:hover {
+            background: rgba(15,52,96,0.04);
+        }
+        .alert { border-radius: 10px; }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="topbar">
+        <i class="fa fa-bus text-white fs-5"></i>
+        <span class="brand ms-2">SRC <span>Travel</span> Agencies</span>
+        <div class="ms-auto d-flex align-items-center gap-3">
+            @if (User.Identity!.IsAuthenticated)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-area="Admin" asp-controller="Profile" asp-action="Index"
+                       style="color:#fff;text-decoration:none;font-size:0.88rem">
+                        <i class="fa fa-user-circle me-1"></i>@User.Identity.Name
+                        <span class="badge ms-1" style="background:var(--accent)">Admin</span>
+                    </a>
+                }
+                else if (User.IsInRole("Employee"))
+                {
+                    <a asp-area="Employee" asp-controller="Profile" asp-action="Index"
+                       style="color:#fff;text-decoration:none;font-size:0.88rem">
+                        <i class="fa fa-user-circle me-1"></i>@User.Identity.Name
+                        <span class="badge ms-1" style="background:var(--accent)">Employee</span>
+                    </a>
+                }
+                <form asp-area=""
+                      asp-controller="Account"
+                      asp-action="Logout"
+                      method="post" class="d-inline">
+                    <button type="submit"
+                            class="btn btn-sm btn-outline-light">
+                        <i class="fa fa-sign-out-alt me-1"></i>Logout
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <!-- Sidebar -->
+        <div class="sidebar">
+            @{
+                var ctrl   = ViewContext.RouteData.Values["controller"]?.ToString();
+                var action = ViewContext.RouteData.Values["action"]?.ToString();
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="nav-section">Main</div>
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+                   class="nav-link @(ctrl == "Dashboard" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+                <div class="nav-section">Management</div>
+                <a asp-area="Admin" asp-controller="Buses" asp-action="Index"
+                   class="nav-link @(ctrl == "Buses" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-bus me-2"></i>Buses
+                </a>
+                <a asp-area="Admin" asp-controller="Routes" asp-action="Index"
+                   class="nav-link @(ctrl == "Routes" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-route me-2"></i>Routes
+                </a>
+                <a asp-area="Admin" asp-controller="Schedules" asp-action="Index"
+                   class="nav-link @(ctrl == "Schedules" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-calendar-alt me-2"></i>Schedules
+                </a>
+                <a asp-area="Admin" asp-controller="PriceLists" asp-action="Index"
+                   class="nav-link @(ctrl == "PriceLists" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-tags me-2"></i>Price Lists
+                </a>
+                <a asp-area="Admin" asp-controller="PromoCodes" asp-action="Index"
+                   class="nav-link @(ctrl == "PromoCodes" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-percent me-2"></i>Promo Codes
+                </a>
+                <div class="nav-section">Users</div>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+                   class="nav-link @(ctrl == "Users" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-id-badge me-2"></i>Employees
+                </a>
+                <a asp-area="Admin" asp-controller="Customers" asp-action="Index"
+                   class="nav-link @(ctrl == "Customers" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-user-friends me-2"></i>Customers
+                </a>
+                <div class="nav-section">Bookings</div>
+                <a asp-area="Admin" asp-controller="Bookings" asp-action="Index"
+                   class="nav-link @(ctrl == "Bookings" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-ticket-alt me-2"></i>All Bookings
+                </a>
+                <a asp-area="Admin" asp-controller="Cancellations" asp-action="Index"
+                   class="nav-link @(ctrl == "Cancellations" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-undo me-2"></i>Cancellations & Refunds
+                    @if (ViewBag.PendingRefunds != null && (int)ViewBag.PendingRefunds > 0)
+                    {
+                        <span class="badge bg-warning text-dark ms-1" style="font-size:0.65rem">@ViewBag.PendingRefunds</span>
+                    }
+                </a>
+                <div class="nav-section">Messages</div>
+                <a asp-area="Admin" asp-controller="Messages" asp-action="Index"
+                   class="nav-link @(ctrl == "Messages" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-envelope me-2"></i>Messages & Reviews
+                    @if (ViewBag.UnreadMessages != null && (int)ViewBag.UnreadMessages > 0)
+                    {
+                        <span class="badge bg-danger ms-1" style="font-size:0.65rem">@ViewBag.UnreadMessages</span>
+                    }
+                </a>
+                <div class="nav-section">Reports</div>
+                <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
+                   class="nav-link @(ctrl == "Reports" && action == "Index" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-chart-bar me-2"></i>Reports & Analytics
+                </a>
+            }
+            else if (User.IsInRole("Employee"))
+            {
+                var empCtrl   = ViewContext.RouteData.Values["controller"]?.ToString();
+                var empAction = ViewContext.RouteData.Values["action"]?.ToString();
+                <div class="nav-section">Main</div>
+                <a asp-area="Employee" asp-controller="Dashboard" asp-action="Index"
+                   class="nav-link @(empCtrl == "Dashboard" && empAction == "Index" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+                <a asp-area="Employee" asp-controller="Profile" asp-action="Index"
+                   class="nav-link @(empCtrl == "Account" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-user-circle me-2"></i>My Profile
+                </a>
+                <a asp-area="Employee" asp-controller="Dashboard" asp-action="Enquiry"
+                   class="nav-link @(empCtrl == "Dashboard" && empAction == "Enquiry" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-search me-2"></i>Bus Enquiry
+                </a>
+                <div class="nav-section">Bookings</div>
+                <a asp-area="Employee" asp-controller="Bookings" asp-action="Create"
+                   class="nav-link @(empCtrl == "Bookings" && empAction == "Create" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-plus-circle me-2"></i>New Booking
+                </a>
+                <a asp-area="Employee" asp-controller="Bookings" asp-action="Index"
+                   class="nav-link @(empCtrl == "Bookings" && empAction == "Index" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-ticket-alt me-2"></i>My Bookings
+                </a>
+                <a asp-area="Employee" asp-controller="Cancellations" asp-action="Index"
+                   class="nav-link @(empCtrl == "Cancellations" ? "active" : "")" style="text-decoration:none">
+                    <i class="fa fa-times-circle me-2"></i>Cancellations
+                </a>
+
+            }
+        </div>
+    }
+
+    <!-- Main Content -->
+    <div class="@(User.Identity.IsAuthenticated ? "main-content" : "")">
+        <div class="p-4">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    <i class="fa fa-check-circle me-2"></i>
+                    @TempData["Success"]
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    @TempData["Error"]
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar scroll position yaad rakho
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            const savedPos = sessionStorage.getItem('sidebarScroll');
+            if (savedPos) sidebar.scrollTop = parseInt(savedPos);
+
+            sidebar.addEventListener('scroll', function () {
+                sessionStorage.setItem('sidebarScroll', sidebar.scrollTop);
+            });
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

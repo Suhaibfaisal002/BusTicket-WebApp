@@ -1,0 +1,109 @@
+@model OnlineBusTicketReservationSystem.Models.PromoCode
+@{
+    ViewData["Title"] = "New Promo Code";
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="text-muted small text-decoration-none">← Back to Promo Codes</a>
+    <h4 class="fw-bold mt-1"><i class="fa fa-tags me-2 text-primary"></i>New Promo Code</h4>
+</div>
+
+<div class="card border-0 shadow-sm" style="max-width:600px">
+    <div class="card-body p-4">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Code *</label>
+                <input asp-for="Code" class="form-control text-uppercase" placeholder="e.g. EID2026"
+                       oninput="this.value=this.value.toUpperCase()" />
+                <span asp-validation-for="Code" class="text-danger small"></span>
+                <small class="text-muted">Customers will enter this code at checkout</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Description</label>
+                <input asp-for="Description" class="form-control" placeholder="e.g. Eid Special Discount" />
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-semibold">Discount Type *</label>
+                    <select asp-for="DiscountType" class="form-select" onchange="toggleDiscountType(this.value)">
+                        <option value="Percentage">Percentage (%)</option>
+                        <option value="Fixed">Fixed Amount (Rs.)</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-semibold">Discount Value *</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="discountSymbol">%</span>
+                        <input asp-for="DiscountValue" class="form-control" type="number"
+                               step="0.01" min="0" placeholder="10" />
+                    </div>
+                    <span asp-validation-for="DiscountValue" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6" id="maxDiscountRow">
+                    <label class="form-label fw-semibold">Max Discount (Rs.)</label>
+                    <input asp-for="MaxDiscount" class="form-control" type="number"
+                           step="1" min="0" placeholder="Optional cap" />
+                    <small class="text-muted">Leave empty for no cap</small>
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-semibold">Min Order Amount (Rs.)</label>
+                    <input asp-for="MinOrderAmount" class="form-control" type="number"
+                           step="1" min="0" value="0" />
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-semibold">Usage Limit</label>
+                    <input asp-for="UsageLimit" class="form-control" type="number"
+                           min="1" placeholder="Leave empty for unlimited" />
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-semibold">Expiry Date</label>
+                    <input asp-for="ExpiryDate" class="form-control" type="date"
+                           min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    <small class="text-muted">Leave empty for no expiry</small>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                    <label class="form-check-label fw-semibold">Active (customers can use this code)</label>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fa fa-save me-1"></i> Create Code
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+function toggleDiscountType(type) {
+    const symbol = document.getElementById('discountSymbol');
+    const maxRow = document.getElementById('maxDiscountRow');
+    if (type === 'Percentage') {
+        symbol.textContent = '%';
+        maxRow.style.display = 'block';
+    } else {
+        symbol.textContent = 'Rs.';
+        maxRow.style.display = 'none';
+    }
+}
+</script>
+}

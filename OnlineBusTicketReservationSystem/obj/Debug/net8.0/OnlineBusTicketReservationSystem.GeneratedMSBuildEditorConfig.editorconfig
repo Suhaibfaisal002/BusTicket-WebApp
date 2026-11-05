@@ -1,0 +1,445 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = OnlineBusTicketReservationSystem
+build_property.RootNamespace = OnlineBusTicketReservationSystem
+build_property.ProjectDir = C:\Users\asp.APTECHNK1\Desktop\OnlineBusTicketReservationSystem\OnlineBusTicketReservationSystem\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\asp.APTECHNK1\Desktop\OnlineBusTicketReservationSystem\OnlineBusTicketReservationSystem
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Bookings/BookingDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9va2luZ3NcQm9va2luZ0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Bookings/CancelView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9va2luZ3NcQ2FuY2VsVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Bookings/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9va2luZ3NcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Bookings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9va2luZ3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Buses/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQnVzZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Buses/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQnVzZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Buses/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQnVzZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Buses/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQnVzZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Buses/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQnVzZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Cancellations/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2FuY2VsbGF0aW9uc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Customers/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Customers/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Customers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Messages/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWVzc2FnZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Messages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcTWVzc2FnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PriceLists/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJpY2VMaXN0c1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PriceLists/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJpY2VMaXN0c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PriceLists/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJpY2VMaXN0c1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PriceLists/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJpY2VMaXN0c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PriceLists/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJpY2VMaXN0c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Profile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZmlsZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PromoCodes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW9Db2Rlc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/PromoCodes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvbW9Db2Rlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Reports/BusUtilization.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwb3J0c1xCdXNVdGlsaXphdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Reports/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwb3J0c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Reports/RevenueReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwb3J0c1xSZXZlbnVlUmVwb3J0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Routes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUm91dGVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Routes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUm91dGVzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Routes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUm91dGVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Routes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUm91dGVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Routes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUm91dGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Schedules/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2NoZWR1bGVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Schedules/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2NoZWR1bGVzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Schedules/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2NoZWR1bGVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Schedules/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2NoZWR1bGVzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Schedules/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2NoZWR1bGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Users/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Users/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Users/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Users/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/Users/_EmployeePerformancePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcX0VtcGxveWVlUGVyZm9ybWFuY2VQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Account/register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxyZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Account/VerifyOtp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxWZXJpZnlPdHAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/Book.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xCb29rLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/BookingConfirmed.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xCb29raW5nQ29uZmlybWVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/Cancel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xDYW5jZWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/LeaveReview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xMZWF2ZVJldmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/MyBookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xNeUJvb2tpbmdzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/Payment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xQYXltZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/PaymentHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xQYXltZW50SGlzdG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/PrintTicket.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xQcmludFRpY2tldC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Booking/Search.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQm9va2luZ1xTZWFyY2guY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/Cancellation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxDYW5jZWxsYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/Contact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxDb250YWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/Faqs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxGYXFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/PriceList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxQcmljZUxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/PrivacyPolicy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxQcml2YWN5UG9saWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Home/Services.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcSG9tZVxTZXJ2aWNlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/Shared/_CustomerLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcU2hhcmVkXF9DdXN0b21lckxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Customer/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Bookings/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQm9va2luZ3NcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Bookings/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQm9va2luZ3NcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Bookings/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQm9va2luZ3NcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Bookings/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQm9va2luZ3NcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Bookings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQm9va2luZ3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Bookings/PrintTicket.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQm9va2luZ3NcUHJpbnRUaWNrZXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Cancellations/Cancel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQ2FuY2VsbGF0aW9uc1xDYW5jZWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Cancellations/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQ2FuY2VsbGF0aW9uc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Cancellations/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQ2FuY2VsbGF0aW9uc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Cancellations/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQ2FuY2VsbGF0aW9uc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Cancellations/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQ2FuY2VsbGF0aW9uc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Cancellations/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcQ2FuY2VsbGF0aW9uc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Dashboard/Enquiry.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcRGFzaGJvYXJkXEVucXVpcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/Profile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcUHJvZmlsZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Employee/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Account/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Error/NotFound.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JcTm90Rm91bmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/asp.APTECHNK1/Desktop/OnlineBusTicketReservationSystem/OnlineBusTicketReservationSystem/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-qz6xr0gowu

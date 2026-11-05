@@ -1,0 +1,119 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Cancel Booking";
+    int days        = ViewBag.DaysUntil    ?? 0;
+    decimal deductPct = ViewBag.DeductPct  ?? 0;
+    decimal deductAmt = ViewBag.DeductAmount ?? 0;
+    decimal refundAmt = ViewBag.RefundAmount ?? 0;
+    var passengers  = Model.Passengers ?? new List<OnlineBusTicketReservationSystem.Models.Passenger>();
+    var reasons     = ViewBag.CancelReasons as List<string> ?? new List<string>();
+}
+
+<section style="padding:3rem 0;background:var(--light);min-height:80vh">
+    <div style="max-width:600px;margin:0 auto;padding:0 1.5rem">
+
+        <div style="margin-bottom:2rem">
+            <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+               style="color:var(--accent);font-size:0.88rem;font-weight:600;text-decoration:none">
+                ← Back to My Bookings
+            </a>
+            <h1 style="font-family:var(--font-head);font-size:2rem;color:var(--dark);margin-top:0.5rem">
+                Cancel Booking
+            </h1>
+        </div>
+
+        <!-- Warning -->
+        <div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem">
+            <h3 style="color:#c2410c;font-size:1rem;font-weight:700;margin-bottom:0.5rem">
+                ⚠️ Are you sure you want to cancel?
+            </h3>
+            <p style="color:#92400e;font-size:0.88rem;margin:0">
+                This action cannot be undone. Please review the refund details below.
+            </p>
+        </div>
+
+        <!-- Booking Summary -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+            <h3 style="font-family:var(--font-head);font-size:1rem;color:var(--dark);margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                Booking #@Model.BookingId.ToString("D4")
+            </h3>
+            <div style="display:flex;flex-direction:column;gap:0;font-size:0.88rem">
+                <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+                    <span style="color:var(--muted)">Route</span>
+                    <strong style="color:var(--dark)">@Model.Schedule?.Route?.SourceCity → @Model.Schedule?.Route?.DestinationCity</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+                    <span style="color:var(--muted)">Departure</span>
+                    <strong style="color:var(--dark)">@(Model.Schedule?.DepartureTime.ToString("dd MMM yyyy, HH:mm") ?? "-")</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+                    <span style="color:var(--muted)">Passengers</span>
+                    <strong style="color:var(--dark)">@passengers.Count</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0.5rem 0">
+                    <span style="color:var(--muted)">Total Paid</span>
+                    <strong style="color:var(--dark)">Rs. @Model.TotalAmount.ToString("N0")</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Refund Breakdown -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:2px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+            <h3 style="font-family:var(--font-head);font-size:1rem;color:var(--dark);margin-bottom:1rem">
+                💰 Refund Calculation
+            </h3>
+            <div style="background:var(--light);border-radius:10px;padding:1rem;margin-bottom:1rem;text-align:center">
+                <div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.3rem">Days until departure</div>
+                <div style="font-family:var(--font-head);font-size:2rem;color:var(--dark)">@days day(s)</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0;font-size:0.9rem">
+                <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+                    <span style="color:var(--muted)">Total Paid</span>
+                    <span style="font-weight:600;color:var(--dark)">Rs. @Model.TotalAmount.ToString("N0")</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+                    <span style="color:var(--muted)">Cancellation Fee (@deductPct%)</span>
+                    <span style="font-weight:600;color:#b91c1c">- Rs. @deductAmt.ToString("N0")</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0.8rem 0">
+                    <span style="font-weight:700;color:var(--dark)">Refund Amount</span>
+                    <span style="font-family:var(--font-head);font-size:1.3rem;color:#16a34a">Rs. @refundAmt.ToString("N0")</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Form with Reason -->
+        <form asp-action="CancelConfirmed" asp-controller="Booking"
+              asp-area="Customer" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.BookingId" />
+
+            <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+                <label style="font-weight:700;color:var(--dark);font-size:0.9rem;display:block;margin-bottom:0.6rem">
+                    📋 Reason for Cancellation <span style="color:#b91c1c">*</span>
+                </label>
+                <select name="reason" required
+                        style="width:100%;padding:0.7rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:0.9rem;color:var(--dark);background:#fff;appearance:none;cursor:pointer">
+                    <option value="" disabled selected>— Select a reason —</option>
+                    @foreach (var r in reasons)
+                    {
+                        <option value="@r">@r</option>
+                    }
+                </select>
+                <textarea name="reasonDetail" rows="2" placeholder="Additional details (optional)..."
+                          style="width:100%;margin-top:0.75rem;padding:0.7rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:0.88rem;color:var(--dark);resize:none;box-sizing:border-box"></textarea>
+            </div>
+
+            <div style="display:flex;gap:1rem">
+                <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+                   style="flex:1;text-align:center;background:var(--light);color:var(--dark);padding:0.85rem;border-radius:50px;font-weight:700;border:2px solid var(--border);font-size:0.9rem;text-decoration:none">
+                    Keep Booking
+                </a>
+                <button type="submit"
+                        style="flex:1;background:var(--accent);color:#fff;padding:0.85rem;border-radius:50px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer">
+                    ✕ Confirm Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

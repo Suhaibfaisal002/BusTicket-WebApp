@@ -1,0 +1,76 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Leave a Review";
+}
+
+<div style="max-width:560px;margin:2rem auto;padding:0 1rem">
+    <div style="background:#fff;border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:1px solid #e2e8f0">
+        <h5 class="fw-bold mb-1"><i class="fa fa-star me-2 text-warning"></i>Rate Your Journey</h5>
+        <p class="text-muted small mb-4">
+            @Model.Schedule?.Route?.SourceCity → @Model.Schedule?.Route?.DestinationCity &nbsp;|&nbsp;
+            @Model.Schedule?.DepartureTime.ToString("dd MMM yyyy")
+        </p>
+
+        <form asp-action="SubmitReview" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="bookingId" value="@Model.BookingId" />
+
+            <!-- Star Rating -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Your Rating</label>
+                <div id="starRow" class="d-flex gap-2">
+                    @for (int s = 1; s <= 5; s++)
+                    {
+                        <div class="star-btn" data-val="@s"
+                             style="font-size:2.2rem;cursor:pointer;transition:transform 0.1s;color:#e2e8f0"
+                             onclick="setRating(@s)"
+                             onmouseover="hoverRating(@s)"
+                             onmouseout="resetHover()">★</div>
+                    }
+                </div>
+                <input type="hidden" name="rating" id="ratingInput" value="0" required />
+                <small id="ratingLabel" class="text-muted mt-1 d-block">Click to rate</small>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Comment <span class="text-muted fw-normal">(optional)</span></label>
+                <textarea name="comment" rows="4" class="form-control"
+                          placeholder="Share your experience..."></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" id="submitBtn" class="btn btn-warning fw-bold px-4" disabled>
+                    <i class="fa fa-paper-plane me-1"></i>Submit Review
+                </button>
+                <a asp-action="MyBookings" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    let currentRating = 0;
+    const labels = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+
+    function setRating(val) {
+        currentRating = val;
+        document.getElementById('ratingInput').value = val;
+        document.getElementById('submitBtn').disabled = false;
+        updateStars(val);
+        document.getElementById('ratingLabel').textContent = labels[val] + ' (' + val + '/5)';
+        document.getElementById('ratingLabel').style.color = val >= 4 ? '#16a34a' : val >= 3 ? '#f59e0b' : '#ef4444';
+    }
+
+    function hoverRating(val) { updateStars(val); }
+    function resetHover() { updateStars(currentRating); }
+
+    function updateStars(val) {
+        document.querySelectorAll('.star-btn').forEach((s, i) => {
+            s.style.color = (i + 1) <= val ? '#f59e0b' : '#e2e8f0';
+            s.style.transform = (i + 1) <= val ? 'scale(1.15)' : 'scale(1)';
+        });
+    }
+</script>
+}

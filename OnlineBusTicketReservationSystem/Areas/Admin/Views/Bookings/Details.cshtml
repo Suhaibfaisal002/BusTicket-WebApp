@@ -1,0 +1,239 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = $"Booking #{Model.BookingId:D4}";
+    string badgeClass = Model.BookingStatus switch {
+        "Confirmed" => "bg-success",
+        "Cancelled" => "bg-danger",
+        _           => "bg-warning text-dark"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a asp-action="Index" class="text-decoration-none text-muted small">
+            ← Back to Bookings
+        </a>
+        <h4 class="fw-bold mb-0 mt-1">Booking #@Model.BookingId.ToString("D4")</h4>
+    </div>
+    <span class="badge @badgeClass fs-6 px-3 py-2">@Model.BookingStatus</span>
+</div>
+
+
+
+<!-- Admin Actions -->
+@if (Model.BookingStatus == "Pending")
+{
+    <div class="card border-warning border-2 shadow-sm mb-4" id="actionCard">
+        <div class="card-body d-flex align-items-center gap-3 flex-wrap">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1">⏳ Booking Awaiting Admin Action</h6>
+                <small class="text-muted">Please confirm or cancel this booking.</small>
+            </div>
+            <button class="btn btn-success px-4" onclick="confirmBookingAjax(@Model.BookingId)">
+                <i class="fa fa-check me-1"></i> Confirm Booking
+            </button>
+            <form asp-action="Cancel" asp-route-id="@Model.BookingId" method="post" class="d-inline"
+                  onsubmit="return confirm('Cancel this booking? Full refund will be issued.')">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-danger px-4">
+                    <i class="fa fa-times me-1"></i> Cancel Booking
+                </button>
+            </form>
+        </div>
+    </div>
+}
+else if (Model.BookingStatus == "Confirmed")
+{
+    <div class="card border-success border-2 shadow-sm mb-4">
+        <div class="card-body d-flex align-items-center gap-3 flex-wrap">
+            <div class="flex-grow-1">
+                <h6 class="fw-bold mb-1 text-success">✅ Booking Confirmed</h6>
+                <small class="text-muted">You can still cancel this booking if needed.</small>
+            </div>
+            <form asp-action="Cancel" asp-route-id="@Model.BookingId" method="post" class="d-inline"
+                  onsubmit="return confirm('Cancel this confirmed booking? Full refund will be issued.')">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-outline-danger px-4">
+                    <i class="fa fa-times me-1"></i> Cancel Booking
+                </button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        ❌ This booking has been cancelled.
+        @if (Model.Cancellation != null)
+        {
+            <span>Refund: Rs. @Model.Cancellation.RefundAmount.ToString("N0") — Status: @Model.Cancellation.RefundStatus</span>
+        }
+    </div>
+}
+
+<div class="row g-4">
+    <!-- Booking Info -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header fw-bold bg-transparent">Booking Info</div>
+            <div class="card-body">
+                <table class="table table-sm table-borderless mb-0">
+                    <tr><td class="text-muted">Booking ID</td><td class="fw-semibold">#@Model.BookingId.ToString("D4")</td></tr>
+                    <tr><td class="text-muted">Booking Date</td><td>@Model.BookingDate.ToString("dd MMM yyyy, hh:mm tt")</td></tr>
+                    <tr><td class="text-muted">Customer</td><td>@Model.CustomerName</td></tr>
+                    <tr><td class="text-muted">Phone</td><td>@Model.CustomerPhone</td></tr>
+                    <tr><td class="text-muted">Email</td><td>@Model.BookedByUser?.Email</td></tr>
+                    <tr><td class="text-muted">Total Amount</td><td class="fw-bold text-success">Rs. @Model.TotalAmount.ToString("N0")</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Info -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header fw-bold bg-transparent">Schedule Info</div>
+            <div class="card-body">
+                <table class="table table-sm table-borderless mb-0">
+                    <tr><td class="text-muted">Route</td><td class="fw-semibold">@Model.Schedule?.Route?.SourceCity → @Model.Schedule?.Route?.DestinationCity</td></tr>
+                    <tr><td class="text-muted">Departure</td><td>@(Model.Schedule != null ? Model.Schedule.DepartureTime.ToString("dd MMM yyyy, hh:mm tt") : "—")</td></tr>
+                    <tr><td class="text-muted">Arrival</td><td>@(Model.Schedule != null ? Model.Schedule.ArrivalTime.ToString("dd MMM yyyy, hh:mm tt") : "—")</td></tr>
+                    <tr><td class="text-muted">Bus</td><td>@Model.Schedule?.Bus?.BusNumber (@Model.Schedule?.Bus?.BusType)</td></tr>
+                    <tr><td class="text-muted">Operator</td><td>@Model.Schedule?.Bus?.OperatorName</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passengers -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header fw-bold bg-transparent">Passengers (@(Model.Passengers?.Count ?? 0))</div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Seat</th>
+                                <th>Fare</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Passengers != null)
+                            {
+                                int i = 1;
+                                foreach (var p in Model.Passengers)
+                                {
+                                    <tr>
+                                        <td class="text-muted">@i</td>
+                                        <td>@p.FullName</td>
+                                        <td>@p.Age</td>
+                                        <td>@p.Gender</td>
+                                        <td>@p.SeatNumber</td>
+                                        <td>Rs. @p.FareAmount.ToString("N0")</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment -->
+    @if (Model.Payment != null)
+    {
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header fw-bold bg-transparent">Payment</div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tr><td class="text-muted">Method</td><td>@Model.Payment.PaymentMethod</td></tr>
+                        <tr><td class="text-muted">Amount Paid</td><td class="fw-bold">Rs. @Model.Payment.AmountPaid.ToString("N0")</td></tr>
+                        <tr><td class="text-muted">Payment Date</td><td>@(Model.Payment.PaymentDate.ToString("dd MMM yyyy"))</td></tr>
+                        <tr><td class="text-muted">Status</td><td><span class="badge bg-success">@Model.Payment.PaymentStatus</span></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+function confirmBookingAjax(bookingId) {
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> Confirming...';
+
+    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+    fetch(`/Admin/Bookings/Confirm/${bookingId}`, {
+        method: 'POST',
+        headers: {
+            'RequestVerificationToken': token,
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(r => {
+        if (r.redirected || r.ok) {
+            // Update UI without reload
+            const card = document.getElementById('actionCard');
+            card.className = 'card border-success border-2 shadow-sm mb-4';
+            card.innerHTML = `
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1 text-success">✅ Booking Confirmed Successfully!</h6>
+                        <small class="text-muted">Customer has been notified via email.</small>
+                    </div>
+                </div>`;
+
+            // Update status badge
+            const badge = document.querySelector('.badge.fs-6');
+            if (badge) {
+                badge.className = 'badge bg-success fs-6 px-3 py-2';
+                badge.textContent = 'Confirmed';
+            }
+
+            // Show success toast
+            showToast('Booking confirmed! Customer notified via email.', 'success');
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa fa-check me-1"></i> Confirm Booking';
+            showToast('Something went wrong. Please try again.', 'danger');
+        }
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa fa-check me-1"></i> Confirm Booking';
+        showToast('Network error. Please try again.', 'danger');
+    });
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position:fixed;top:20px;right:20px;z-index:9999;
+        background:${type === 'success' ? '#16a34a' : '#dc2626'};
+        color:#fff;padding:12px 20px;border-radius:10px;
+        font-weight:600;font-size:0.9rem;box-shadow:0 4px 20px rgba(0,0,0,0.2);
+        animation:slideIn 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
+}
+</script>
+<style>
+@@keyframes slideIn {
+    from { transform: translateX(100px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+}
+</style>
+}

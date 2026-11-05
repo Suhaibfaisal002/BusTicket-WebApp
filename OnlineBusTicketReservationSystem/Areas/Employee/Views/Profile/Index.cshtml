@@ -1,0 +1,80 @@
+@model OnlineBusTicketReservationSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0"><i class="fa fa-user-circle me-2 text-primary"></i>My Profile</h4>
+        <small class="text-muted">Manage your personal information</small>
+    </div>
+    <a asp-area="" asp-controller="Account" asp-action="ChangePassword" class="btn btn-outline-secondary btn-sm">
+        <i class="fa fa-key me-1"></i>Change Password
+    </a>
+</div>
+
+<div class="row g-4">
+    <!-- Avatar Card -->
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm text-center py-4">
+            <div style="width:80px;height:80px;background:linear-gradient(135deg,#0f3460,#e94560);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;margin:0 auto 1rem;font-weight:700">
+                @Model.FullName?.Substring(0,1).ToUpper()
+            </div>
+            <h5 class="fw-bold mb-1">@Model.FullName</h5>
+            <p class="text-muted small mb-2">@Model.Email</p>
+            <span class="badge" style="background:#0f3460">Employee</span>
+            <div class="text-muted small mt-2">Member since @Model.CreatedAt.ToString("MMM yyyy")</div>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="col-md-9">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header fw-bold bg-transparent">Edit Information</div>
+            <div class="card-body">
+                <form asp-action="Index" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Full Name *</label>
+                            <input name="fullName" type="text" class="form-control" value="@Model.FullName" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control" value="@Model.Email" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Phone</label>
+                            <input name="phone" type="tel" class="form-control" value="@Model.PhoneNumber" placeholder="03XX-XXXXXXX" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Gender</label>
+                            <select name="gender" class="form-select">
+                                <option value="">Select</option>
+                                @if (Model.Gender == "Male")   { <option value="Male"   selected>Male</option>   }
+                                else                           { <option value="Male">Male</option>               }
+                                @if (Model.Gender == "Female") { <option value="Female" selected>Female</option> }
+                                else                           { <option value="Female">Female</option>           }
+                                @if (Model.Gender == "Other")  { <option value="Other"  selected>Other</option>  }
+                                else                           { <option value="Other">Other</option>             }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Age</label>
+                            <input name="age" type="number" class="form-control" value="@Model.Age" min="18" max="100" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Address</label>
+                            <input name="address" type="text" class="form-control" value="@Model.Address" placeholder="Your address" />
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa fa-save me-1"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

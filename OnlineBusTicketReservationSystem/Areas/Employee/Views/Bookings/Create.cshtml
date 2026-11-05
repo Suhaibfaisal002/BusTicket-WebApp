@@ -1,0 +1,432 @@
+@model OnlineBusTicketReservationSystem.Models.ViewModels.CreateBookingViewModel
+@{
+    ViewData["Title"] = "New Booking";
+    int totalSeats = ViewBag.TotalSeats ?? 0;
+    int availableSeats = ViewBag.AvailableSeats ?? 0;
+    string bookedSeatsJson = ViewBag.BookedSeats ?? "[]";
+    int? selectedScheduleId = ViewBag.ScheduleIdSelected;
+}
+
+<div class="mb-4">
+    <h4 class="fw-bold mb-1">
+        <i class="fa fa-plus-circle me-2 text-primary"></i>New Booking
+    </h4>
+    <p class="text-muted mb-0">Create a new bus ticket booking</p>
+</div>
+
+<form asp-area="Employee" asp-controller="Bookings" asp-action="Create" method="post" id="bookingForm">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="row g-4">
+        <!-- Left Column -->
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header text-white"
+                     style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                    <h6 class="mb-0">
+                        <i class="fa fa-bus me-2"></i>Schedule & Customer
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="ScheduleId" class="form-label fw-semibold">Select Schedule</label>
+                        <select asp-for="ScheduleId"
+                                asp-items="@(ViewData["Schedules"] as SelectList)"
+                                class="form-select"
+                                onchange="onScheduleChange(this.value)">
+                            <option value="">-- Select Schedule --</option>
+                        </select>
+                        <span asp-validation-for="ScheduleId" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerName" class="form-label fw-semibold"></label>
+                        <input asp-for="CustomerName" class="form-control" placeholder="Customer full name" />
+                        <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerPhone" class="form-label fw-semibold"></label>
+                        <input asp-for="CustomerPhone" class="form-control" placeholder="03XX-XXXXXXX" />
+                        <span asp-validation-for="CustomerPhone" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Payment Method</label>
+                        <input type="hidden" name="PaymentMethod" id="paymentMethodInput" value="Cash" />
+                        <div class="d-flex gap-2 mt-1">
+                            <div class="flex-fill p-2 rounded-3 border border-2 text-center"
+                                 id="optCash" onclick="selectPayment('Cash')"
+                                 style="cursor:pointer;border-color:#16a34a!important;background:#f0fdf4">
+                                <div style="font-size:1.4rem">💵</div>
+                                <div class="fw-bold" style="font-size:0.78rem;color:#15803d">Cash</div>
+                                <div class="text-muted" style="font-size:0.65rem">Counter payment</div>
+                                <span class="badge mt-1" id="cashCheck" style="background:#16a34a;font-size:0.62rem">✓ Selected</span>
+                            </div>
+                            <div class="flex-fill p-2 rounded-3 border border-2 text-center"
+                                 id="optDigital" onclick="selectPayment('Digital')"
+                                 style="cursor:pointer;border-color:#e2e8f0;background:#fff">
+                                <div style="font-size:1.4rem">📱</div>
+                                <div class="fw-bold" style="font-size:0.78rem;color:#1d4ed8">Digital</div>
+                                <div class="text-muted" style="font-size:0.65rem">Customer's phone</div>
+                                <span class="badge mt-1 d-none" id="digitalCheck" style="background:#1d4ed8;font-size:0.62rem">✓ Selected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fare Rules -->
+            <div class="card border-0" style="background:linear-gradient(135deg,#0f3460,#1a4a8a)">
+                <div class="card-body text-white">
+                    <h6 class="mb-3"><i class="fa fa-info-circle me-2"></i>Fare Rules</h6>
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Age 0–5:</span><span class="badge bg-success">FREE</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Age 5–12:</span><span class="badge bg-info">Half Fare (50%)</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Age 12–50:</span><span class="badge bg-primary">Full Fare</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Age 50+:</span><span class="badge bg-warning text-dark">Senior (70%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Column — Passengers -->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center text-white"
+                     style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                    <h6 class="mb-0"><i class="fa fa-users me-2"></i>Passengers</h6>
+                    <button type="button" class="btn btn-sm btn-light" onclick="addPassenger()">
+                        <i class="fa fa-plus me-1"></i>Add Passenger
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="passengersContainer"></div>
+                    <div id="noPassengerMsg" class="text-center text-muted py-3">
+                        <i class="fa fa-user-plus fa-2x mb-2 d-block opacity-25"></i>
+                        Click "Add Passenger" to add passengers.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column — Seat Layout -->
+        <div class="col-md-3">
+            <div class="card h-auto">
+                <div class="card-header text-white"
+                     style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                    <h6 class="mb-0"><i class="fa fa-chair me-2"></i>Seat Layout
+                        @if (selectedScheduleId != null) {
+                            <span class="badge ms-1 bg-light text-dark" style="font-size:0.68rem">@availableSeats of @totalSeats available</span>
+                        }
+                    </h6>
+                </div>
+                <div class="card-body p-3">
+
+                    @if (selectedScheduleId == null)
+                    {
+                        <div id="noScheduleMsg" class="text-center text-muted py-3">
+                            <i class="fa fa-bus fa-2x mb-2 d-block opacity-25"></i>
+                            <small>Select a schedule to view seat layout</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="noScheduleMsg" style="display:none"></div>
+                        <div id="seatLayoutWrapper">
+                            <!-- Legend -->
+                            <div class="d-flex gap-2 flex-wrap mb-2">
+                                <div class="d-flex align-items-center gap-1" style="font-size:0.7rem">
+                                    <div style="width:13px;height:13px;background:#e2e8f0;border-radius:3px;border:1.5px solid #cbd5e1"></div>
+                                    <span class="text-muted">Free</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1" style="font-size:0.7rem">
+                                    <div style="width:13px;height:13px;background:#e94560;border-radius:3px"></div>
+                                    <span class="text-muted">Booked</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1" style="font-size:0.7rem">
+                                    <div style="width:13px;height:13px;background:#16a34a;border-radius:3px"></div>
+                                    <span class="text-muted">Selected</span>
+                                </div>
+                            </div>
+
+                            <div class="text-center bg-light rounded p-1 mb-2" style="font-size:0.7rem;font-weight:700;color:#64748b">
+                                🚌 FRONT
+                            </div>
+
+                            <!-- Column headers -->
+                            <div style="display:grid;grid-template-columns:1fr 1fr 6px 1fr 1fr;gap:3px;margin-bottom:3px;text-align:center">
+                                <div style="font-size:0.6rem;color:#94a3b8;font-weight:700">A</div>
+                                <div style="font-size:0.6rem;color:#94a3b8;font-weight:700">B</div>
+                                <div></div>
+                                <div style="font-size:0.6rem;color:#94a3b8;font-weight:700">C</div>
+                                <div style="font-size:0.6rem;color:#94a3b8;font-weight:700">D</div>
+                            </div>
+
+                            <div id="seatGrid"></div>
+
+                            <!-- Selected display -->
+                            <div class="mt-2 rounded p-2 text-center" style="background:#f0fdf4;border:1.5px solid #22c55e">
+                                <div style="font-size:0.62rem;color:#16a34a;font-weight:700;text-transform:uppercase">Selected</div>
+                                <div id="selectedSeatDisplay" style="font-weight:700;font-size:0.82rem">None</div>
+                            </div>
+                            <p class="text-muted text-center mt-1 mb-0" style="font-size:0.68rem">Seat selection is cumpulsory</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Promo Code -->
+    <div class="card mb-3 border-0 shadow-sm">
+        <div class="card-body">
+            <label class="form-label fw-semibold">🎟️ Promo Code (Optional)</label>
+            <div class="input-group" style="max-width:400px">
+                <input type="text" id="promoInput" name="promoCode"
+                       class="form-control text-uppercase"
+                       placeholder="Enter code e.g. EID2026"
+                       oninput="this.value=this.value.toUpperCase()" />
+                <button type="button" class="btn btn-outline-primary" onclick="applyPromo()">
+                    Apply
+                </button>
+            </div>
+            <input type="hidden" id="discountAmount" name="discountAmount" value="0" />
+            <div id="promoMsg" class="small mt-2" style="display:none"></div>
+        </div>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-success btn-lg">
+            <i class="fa fa-check me-2"></i>Confirm Booking
+        </button>
+        <a asp-action="Index" class="btn btn-secondary btn-lg">
+            <i class="fa fa-times me-1"></i>Cancel
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+    // ── Seat data from server ─────────────────────────────────────────────
+    let totalSeats    = @totalSeats;
+    let availableSeats = @availableSeats;
+    let bookedSeats   = @Html.Raw(bookedSeatsJson);
+    let selectedSeats = [];
+    let passengerCount = 0;
+
+    // ── Seat Grid ─────────────────────────────────────────────────────────
+    function buildSeatGrid() {
+        const grid = document.getElementById('seatGrid');
+        if (!grid || totalSeats === 0) return;
+        grid.innerHTML = '';
+        const bookedCount = totalSeats - availableSeats;
+        let seatCounter = 0;
+        const rows = Math.ceil(totalSeats / 4);
+
+        for (let row = 1; row <= rows; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 6px 1fr 1fr;gap:3px;margin-bottom:3px;align-items:center';
+
+            ['A','B',null,'C','D'].forEach(col => {
+                if (col === null) { rowDiv.appendChild(document.createElement('div')); return; }
+                const seatId  = row + col;
+                const seatNum = (row - 1) * 4 + ['A','B','C','D'].indexOf(col) + 1;
+                if (seatNum > totalSeats) { rowDiv.appendChild(document.createElement('div')); return; }
+
+                seatCounter++;
+                // Always use count-based booking display (accurate regardless of named/unnamed seats)
+                // bookedCount = totalSeats - availableSeats (server-calculated, always correct)
+                        const isBooked   = bookedSeats.includes(seatId);
+        const isSelected = selectedSeats.includes(seatId);
+
+                const s = document.createElement('div');
+                s.id = 'seat_' + seatId;
+                s.textContent = seatId;
+                s.style.cssText = `
+                    padding:4px 2px;border-radius:4px;font-size:0.6rem;font-weight:700;
+                    text-align:center;user-select:none;
+                    cursor:${isBooked ? 'not-allowed' : 'pointer'};
+                    background:${isBooked ? '#e94560' : isSelected ? '#16a34a' : '#e2e8f0'};
+                    color:${isBooked || isSelected ? '#fff' : '#374151'};
+                    border:1px solid ${isBooked ? '#b91c1c' : isSelected ? '#15803d' : '#cbd5e1'};
+                    transition:all 0.1s;
+                `;
+                if (!isBooked) s.onclick = () => toggleSeat(seatId);
+                rowDiv.appendChild(s);
+            });
+            grid.appendChild(rowDiv);
+        }
+    }
+
+    function toggleSeat(seatId) {
+        const paxCount = document.querySelectorAll('.passenger-card').length;
+        const idx = selectedSeats.indexOf(seatId);
+
+        if (idx === -1) {
+            if (selectedSeats.length >= paxCount) {
+                if (paxCount === 0) alert('Please add a passenger first!');
+                else alert('You can only select ' + paxCount + ' seat(s). Add more passengers first.');
+                return;
+            }
+            selectedSeats.push(seatId);
+        } else {
+            selectedSeats.splice(idx, 1);
+        }
+
+        updateSeatInputs();
+        buildSeatGrid();
+        document.getElementById('selectedSeatDisplay').textContent =
+            selectedSeats.length ? selectedSeats.join(', ') : 'None';
+    }
+
+    function updateSeatInputs() {
+        document.querySelectorAll('input.seat-input').forEach((inp, i) => {
+            inp.value = selectedSeats[i] || '';
+        });
+    }
+
+    // ── Schedule change — reload page with scheduleId ─────────────────────
+    function onScheduleChange(val) {
+        if (!val) return;
+        // Submit form fields via GET to reload with seat data
+        window.location.href = window.location.pathname + '?scheduleId=' + val;
+    }
+
+    // ── Passenger Form ────────────────────────────────────────────────────
+    function addPassenger() {
+        const i = passengerCount++;
+        document.getElementById('noPassengerMsg').style.display = 'none';
+
+        const div = document.createElement('div');
+        div.className = 'card mb-2 passenger-card';
+        div.innerHTML = `
+            <div class="card-body py-2 px-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong class="small">Passenger ${i + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                            onclick="removePassenger(this)">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md-5">
+                        <input type="text"
+                               name="Passengers[${i}].FullName"
+                               class="form-control form-control-sm"
+                               placeholder="Full Name" required />
+                    </div> 
+                    <div class="col-md-2">
+                        <input type="number"
+                               name="Passengers[${i}].Age"
+                               class="form-control form-control-sm"
+                               placeholder="Age" min="0" max="120" required />
+                        </div>
+                    <div class="col-md-3">
+                        <select name="Passengers[${i}].Gender"
+                                class="form-select form-select-sm">
+                            <option value="">Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text"
+                               name="Passengers[${i}].SeatNumber"
+                               class="form-control form-control-sm seat-input"
+                               placeholder="Seat"
+                               readonly
+                               title="Select seat from layout" />
+                    </div>
+                </div>
+            </div>`;
+        document.getElementById('passengersContainer').appendChild(div);
+        buildSeatGrid();
+    }
+
+    function removePassenger(btn) {
+        btn.closest('.passenger-card').remove();
+        const container = document.getElementById('passengersContainer');
+        if (container.children.length === 0)
+            document.getElementById('noPassengerMsg').style.display = 'block';
+
+        // Trim extra selected seats
+        const remaining = container.children.length;
+        while (selectedSeats.length > remaining) selectedSeats.pop();
+        updateSeatInputs();
+        buildSeatGrid();
+        document.getElementById('selectedSeatDisplay').textContent =
+            selectedSeats.length ? selectedSeats.join(', ') : 'None';
+    }
+
+    // ── Payment Selector ─────────────────────────────────────────────────
+    function selectPayment(method) {
+        const isCash = method === 'Cash';
+        document.getElementById('paymentMethodInput').value = method;
+        document.getElementById('optCash').style.borderColor    = isCash ? '#16a34a' : '#e2e8f0';
+        document.getElementById('optCash').style.background     = isCash ? '#f0fdf4' : '#fff';
+        document.getElementById('optDigital').style.borderColor = !isCash ? '#1d4ed8' : '#e2e8f0';
+        document.getElementById('optDigital').style.background  = !isCash ? '#eff6ff' : '#fff';
+        document.getElementById('cashCheck').classList.toggle('d-none', !isCash);
+        document.getElementById('digitalCheck').classList.toggle('d-none', isCash);
+    }
+
+    // ── Form Validation - seat required ──────────────────────────────────
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        const paxCards = document.querySelectorAll('.passenger-card');
+        if (paxCards.length === 0) { e.preventDefault(); alert('Please add at least one passenger.'); return; }
+        let allSeatsSelected = true;
+        document.querySelectorAll('input.seat-input').forEach(inp => {
+            if (!inp.value) allSeatsSelected = false;
+        });
+        if (!allSeatsSelected) {
+            e.preventDefault();
+            alert('Please select a seat for each passenger from the seat layout.');
+        }
+    });
+
+    // Init
+    buildSeatGrid();
+    addPassenger();
+
+    // ✅ Promo Code AJAX
+    function applyPromo() {
+        const code = document.getElementById('promoInput').value.trim();
+
+        if (!code) { showPromoMsg('Please enter a promo code.', false); return; }
+
+        const paxCount = document.querySelectorAll('.passenger-card').length;
+        if (paxCount === 0) { showPromoMsg('Please add at least one passenger first.', false); return; }
+
+        fetch(`/Admin/PromoCodes/Validate?code=${encodeURIComponent(code)}&amount=99999`)
+            .then(r => r.json())
+            .then(d => {
+                if (d.valid) {
+                    document.getElementById('discountAmount').value = d.discount;
+                    showPromoMsg('✅ Code applied! Discount will be applied at checkout.', true);
+                } else {
+                    document.getElementById('discountAmount').value = 0;
+                    showPromoMsg(d.message, false);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showPromoMsg('Could not validate. Try again.', false);
+            });
+    }
+
+    function showPromoMsg(msg, success) {
+        const el = document.getElementById('promoMsg');
+        el.style.display = 'block';
+        el.style.color   = success ? '#16a34a' : '#b91c1c';
+        el.textContent   = msg;
+    }
+</script>
+}

@@ -1,0 +1,167 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\employee\\views\\bookings\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\employee\\views\\bookings\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\admin\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\admin\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\admin\\views\\messages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\admin\\views\\messages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\admin\\views\\messages\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\admin\\views\\messages\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\admin\\views\\reports\\revenuereport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\admin\\views\\reports\\revenuereport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\customer\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\customer\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|c:\\users\\asp.aptechnk1\\desktop\\onlinebusticketreservationsystem\\onlinebusticketreservationsystem\\areas\\employee\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B7CEE4BE-D6E8-4354-BD4F-41FA521187C0}|OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem.csproj|solutionrelative:onlinebusticketreservationsystem\\areas\\employee\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Bookings\\Create.cshtml",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Bookings\\Create.cshtml",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Bookings\\Create.cshtml*",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Bookings\\Create.cshtml*",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAAALEAAAB+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-18T04:44:34.763Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MessagesController.cs",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Controllers\\MessagesController.cs",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Controllers\\MessagesController.cs",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Controllers\\MessagesController.cs",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Controllers\\MessagesController.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAgwDYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-17T18:31:36.647Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Index.cshtml",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Index.cshtml",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Index.cshtml",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Index.cshtml",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAIwHoAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-17T18:15:36.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RevenueReport.cshtml",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Reports\\RevenueReport.cshtml",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Reports\\RevenueReport.cshtml",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Reports\\RevenueReport.cshtml",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Reports\\RevenueReport.cshtml",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAUwJAAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-17T17:15:03.205Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Employee\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAACYAAAAAAAAAAAAIwDkAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-17T17:03:33.224Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Customer\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Customer\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Customer\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Customer\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAAAKcAAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-17T16:55:45.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\appsettings.json",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\appsettings.json",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\appsettings.json",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-17T16:50:19.765Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Program.cs",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Program.cs",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Program.cs",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-17T16:50:00.934Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Details.cshtml",
+              "RelativeDocumentMoniker": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Details.cshtml",
+              "ToolTip": "C:\\Users\\asp.APTECHNK1\\Desktop\\OnlineBusTicketReservationSystem\\OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Details.cshtml",
+              "RelativeToolTip": "OnlineBusTicketReservationSystem\\Areas\\Admin\\Views\\Messages\\Details.cshtml",
+              "ViewState": "AgIAABkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-17T18:16:04.605Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

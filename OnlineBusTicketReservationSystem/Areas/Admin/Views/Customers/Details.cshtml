@@ -1,0 +1,128 @@
+@model OnlineBusTicketReservationSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Customer Details";
+    var bookings = ViewBag.Bookings as List<OnlineBusTicketReservationSystem.Models.Booking> ?? new();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a asp-action="Index" class="text-decoration-none text-muted small">← Back to Customers</a>
+        <h4 class="fw-bold mb-0 mt-1">@Model.FullName</h4>
+    </div>
+    <form asp-action="ToggleBlock" asp-route-id="@Model.Id" method="post"
+          onsubmit="return confirm('@(Model.IsActive ? "Block" : "Unblock") this customer?')">
+        @Html.AntiForgeryToken()
+        <button class="btn @(Model.IsActive ? "btn-danger" : "btn-success")">
+            <i class="fa @(Model.IsActive ? "fa-ban" : "fa-check") me-1"></i>
+            @(Model.IsActive ? "Block Customer" : "Unblock Customer")
+        </button>
+    </form>
+</div>
+
+
+
+<!-- Status Banner -->
+@if (!Model.IsActive)
+{
+    <div class="alert alert-danger fw-semibold">
+        🚫 This customer is currently blocked and cannot login.
+    </div>
+}
+
+<div class="row g-4">
+    <!-- Profile -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-4">
+                <div style="width:80px;height:80px;background:#e2e8f0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1rem">
+                    👤
+                </div>
+                <h5 class="fw-bold mb-0">@Model.FullName</h5>
+                <small class="text-muted">@Model.Email</small>
+                <div class="mt-2">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Blocked</span>
+                    }
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <table class="table table-sm table-borderless mb-0 small">
+                    <tr><td class="text-muted">Phone</td><td>@(Model.PhoneNumber ?? "—")</td></tr>
+                    <tr><td class="text-muted">Gender</td><td>@(Model.Gender ?? "—")</td></tr>
+                    <tr><td class="text-muted">Age</td><td>@(Model.Age?.ToString() ?? "—")</td></tr>
+                    <tr><td class="text-muted">Joined</td><td>@Model.CreatedAt.ToString("dd MMM yyyy")</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="card border-0 shadow-sm mt-3">
+            <div class="card-body">
+                <h6 class="fw-bold mb-3">Activity Summary</h6>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Total Bookings</span>
+                    <span class="fw-semibold">@ViewBag.TotalBookings</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Total Spent</span>
+                    <span class="fw-semibold text-success">Rs. @((decimal)ViewBag.TotalSpent).ToString("N0")</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">Cancelled</span>
+                    <span class="fw-semibold text-danger">@ViewBag.CancelledCount</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking History -->
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header fw-bold bg-transparent">Booking History</div>
+            <div class="card-body p-0">
+                @if (!bookings.Any())
+                {
+                    <div class="text-center py-4 text-muted">No bookings yet.</div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Route</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var b in bookings)
+                                {
+                                    string bc = b.BookingStatus switch {
+                                        "Confirmed" => "bg-success",
+                                        "Cancelled" => "bg-danger",
+                                        _           => "bg-warning text-dark"
+                                    };
+                                    <tr>
+                                        <td class="small text-muted">#@b.BookingId.ToString("D4")</td>
+                                        <td><small>@b.Schedule?.Route?.SourceCity → @b.Schedule?.Route?.DestinationCity</small></td>
+                                        <td><small>@b.BookingDate.ToString("dd MMM yyyy")</small></td>
+                                        <td>Rs. @b.TotalAmount.ToString("N0")</td>
+                                        <td><span class="badge @bc">@b.BookingStatus</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

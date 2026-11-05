@@ -1,0 +1,191 @@
+@{
+    ViewData["Title"] = "Complete Payment";
+    Layout = null;
+    int bookingId   = ViewBag.BookingId;
+    decimal amount  = ViewBag.Amount;
+    string route    = ViewBag.Route ?? "";
+    string departure = ViewBag.Departure ?? "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Complete Payment — SRC Travel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: linear-gradient(135deg,#0f3460 0%,#16213e 100%); min-height:100vh; font-family:'Segoe UI',sans-serif; display:flex; align-items:center; justify-content:center; padding:20px; }
+        .pay-card { background:#fff; border-radius:20px; overflow:hidden; width:100%; max-width:480px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        .pay-header { background:linear-gradient(135deg,#0f3460,#e94560); color:#fff; padding:24px; text-align:center; }
+        .pay-header .brand { font-size:1.3rem; font-weight:800; }
+        .pay-header .brand span { color:#ffd700; }
+        .pay-amount { font-size:2.2rem; font-weight:800; margin-top:8px; }
+        .pay-body { padding:24px; }
+        .tab-btn { flex:1; padding:10px; border:2px solid #e2e8f0; background:#f8fafc; border-radius:10px; cursor:pointer; font-weight:600; font-size:0.85rem; transition:all 0.2s; text-align:center; }
+        .tab-btn.active { border-color:#0f3460; background:#0f3460; color:#fff; }
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+        .form-field { margin-bottom:14px; }
+        .form-field label { display:block; font-weight:600; font-size:0.82rem; margin-bottom:5px; color:#374151; }
+        .form-field input { width:100%; padding:10px 14px; border:2px solid #e2e8f0; border-radius:10px; font-size:0.9rem; outline:none; transition:border-color 0.2s; }
+        .form-field input:focus { border-color:#0f3460; }
+        .pay-btn { width:100%; padding:14px; background:linear-gradient(135deg,#0f3460,#e94560); color:#fff; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; margin-top:8px; transition:opacity 0.2s; }
+        .pay-btn:hover { opacity:0.9; }
+        .secure-badge { text-align:center; font-size:0.72rem; color:#94a3b8; margin-top:12px; }
+        .booking-info { background:#f8fafc; border-radius:10px; padding:12px; margin-bottom:20px; font-size:0.82rem; }
+        .booking-info .row-info { display:flex; justify-content:space-between; margin-bottom:4px; }
+        .spinner-overlay { display:none; position:fixed; inset:0; background:rgba(255,255,255,0.92); z-index:999; flex-direction:column; align-items:center; justify-content:center; }
+        .spinner-overlay.show { display:flex; }
+        .success-check { font-size:4rem; color:#16a34a; }
+        .easypaisa-color { color:#2ecc40; font-weight:700; }
+        .jazz-color { color:#d63031; font-weight:700; }
+        a { text-decoration: none !important; }
+    </style>
+</head>
+<body>
+
+<!-- Processing Overlay -->
+<div class="spinner-overlay" id="processingOverlay">
+    <div class="spinner-border text-primary mb-3" style="width:3rem;height:3rem;"></div>
+    <h5 class="fw-bold" id="processingMsg">Processing Payment...</h5>
+    <p class="text-muted small" id="processingSubMsg">Please wait, do not refresh</p>
+</div>
+
+<div class="pay-card">
+    <div class="pay-header">
+        <div class="brand">SRC <span>Travel</span></div>
+        <div style="font-size:0.8rem;opacity:0.8;margin-top:4px">Secure Payment Gateway</div>
+        <div class="pay-amount">Rs. @amount.ToString("N0")</div>
+        <div style="font-size:0.78rem;opacity:0.75;margin-top:4px">@route &bull; @departure</div>
+    </div>
+
+    <div class="pay-body">
+        <!-- Booking summary -->
+        <div class="booking-info">
+            <div class="row-info"><span class="text-muted">Booking #</span><strong>@bookingId.ToString("D6")</strong></div>
+            <div class="row-info"><span class="text-muted">Route</span><strong>@route</strong></div>
+            <div class="row-info"><span class="text-muted">Amount</span><strong>Rs. @amount.ToString("N0")</strong></div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="d-flex gap-2 mb-3">
+            <div class="tab-btn active" onclick="switchTab('card',this)">💳 Card</div>
+            <div class="tab-btn" onclick="switchTab('easypaisa',this)">📱 Easypaisa</div>
+            <div class="tab-btn" onclick="switchTab('jazz',this)">🎵 JazzCash</div>
+        </div>
+
+        <!-- Card Tab -->
+        <div class="tab-content active" id="tab-card">
+            <div class="form-field">
+                <label>Card Number</label>
+                <input type="text" placeholder="1234 5678 9012 3456" maxlength="19"
+                       oninput="formatCard(this)" id="cardNum"/>
+            </div>
+            <div class="d-flex gap-2">
+                <div class="form-field flex-fill">
+                    <label>Expiry</label>
+                    <input type="text" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"/>
+                </div>
+                <div class="form-field flex-fill">
+                    <label>CVV</label>
+                    <input type="password" placeholder="•••" maxlength="3"/>
+                </div>
+            </div>
+            <div class="form-field">
+                <label>Cardholder Name</label>
+                <input type="text" placeholder="Name on card"/>
+            </div>
+            <button class="pay-btn" onclick="processPayment('Card')">
+                🔒 Pay Rs. @amount.ToString("N0") with Card
+            </button>
+        </div>
+
+        <!-- Easypaisa Tab -->
+        <div class="tab-content" id="tab-easypaisa">
+            <div style="background:#e8fdf0;border-radius:12px;padding:14px;margin-bottom:16px;text-align:center">
+                <div class="easypaisa-color" style="font-size:1.1rem">📱 Easypaisa</div>
+                <div style="font-size:0.8rem;color:#374151;margin-top:4px">Enter your Easypaisa mobile number</div>
+            </div>
+            <div class="form-field">
+                <label>Easypaisa Number</label>
+                <input type="tel" placeholder="03XX-XXXXXXX" maxlength="11"/>
+            </div>
+            <div class="form-field">
+                <label>Easypaisa PIN</label>
+                <input type="password" placeholder="4-digit PIN" maxlength="4"/>
+            </div>
+            <div style="background:#fff8e1;border-radius:10px;padding:10px;font-size:0.75rem;color:#92400e;margin-bottom:12px">
+                ⚠️ <strong>Simulation only</strong> — no real transaction. Booking will be confirmed instantly.
+            </div>
+            <button class="pay-btn" onclick="processPayment('Easypaisa')">
+                📱 Pay Rs. @amount.ToString("N0") via Easypaisa
+            </button>
+        </div>
+
+        <!-- JazzCash Tab -->
+        <div class="tab-content" id="tab-jazz">
+            <div style="background:#fff0f0;border-radius:12px;padding:14px;margin-bottom:16px;text-align:center">
+                <div class="jazz-color" style="font-size:1.1rem">🎵 JazzCash</div>
+                <div style="font-size:0.8rem;color:#374151;margin-top:4px">Enter your JazzCash mobile number</div>
+            </div>
+            <div class="form-field">
+                <label>JazzCash Number</label>
+                <input type="tel" placeholder="03XX-XXXXXXX" maxlength="11"/>
+            </div>
+            <div class="form-field">
+                <label>JazzCash MPIN</label>
+                <input type="password" placeholder="4-digit MPIN" maxlength="4"/>
+            </div>
+            <div style="background:#fff8e1;border-radius:10px;padding:10px;font-size:0.75rem;color:#92400e;margin-bottom:12px">
+                ⚠️ <strong>Simulation only</strong> — no real transaction. Booking will be confirmed instantly.
+            </div>
+            <button class="pay-btn" onclick="processPayment('JazzCash')">
+                🎵 Pay Rs. @amount.ToString("N0") via JazzCash
+            </button>
+        </div>
+
+        <div class="secure-badge">
+            🔒 SSL Secured &bull; 256-bit Encryption &bull; PCI DSS Compliant (Simulation)
+        </div>
+    </div>
+</div>
+
+<script>
+function switchTab(name, el) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+}
+
+function formatCard(inp) {
+    let v = inp.value.replace(/\D/g,'').substring(0,16);
+    inp.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(inp) {
+    let v = inp.value.replace(/\D/g,'');
+    if (v.length > 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+    inp.value = v;
+}
+
+function processPayment(method) {
+    const overlay = document.getElementById('processingOverlay');
+    const msg     = document.getElementById('processingMsg');
+    const sub     = document.getElementById('processingSubMsg');
+    overlay.classList.add('show');
+
+    setTimeout(() => {
+        msg.innerHTML = '✅ Payment Successful!';
+        sub.innerHTML = 'Redirecting to your booking...';
+        document.querySelector('.spinner-border').style.display = 'none';
+    }, 2000);
+
+    setTimeout(() => {
+        window.location.href = '/Customer/Booking/PaymentSuccess?id=@bookingId&paymentMethod=' + encodeURIComponent(method);
+    }, 3000);
+}
+</script>
+</body>
+</html>

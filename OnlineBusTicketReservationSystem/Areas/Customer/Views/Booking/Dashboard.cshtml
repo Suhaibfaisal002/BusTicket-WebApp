@@ -1,0 +1,183 @@
+@model OnlineBusTicketReservationSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "My Dashboard";
+    var upcoming = ViewBag.UpcomingBookings as List<OnlineBusTicketReservationSystem.Models.Booking> ?? new();
+    var recent   = ViewBag.RecentBookings   as List<OnlineBusTicketReservationSystem.Models.Booking> ?? new();
+}
+
+<section style="padding:2rem 0;background:var(--light);min-height:80vh">
+<div style="max-width:1100px;margin:0 auto;padding:0 1.5rem">
+
+    <!-- Header -->
+    <div style="margin-bottom:2rem">
+        <h1 style="font-family:var(--font-head);font-size:1.8rem;color:var(--dark)">
+            👋 Welcome back, @Model.FullName!
+        </h1>
+        <p style="color:var(--muted)">Here's your travel summary</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem">
+        <div style="background:#fff;border-radius:16px;padding:1.2rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+            <div style="font-size:0.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px">Total Bookings</div>
+            <div style="font-family:var(--font-head);font-size:2rem;color:var(--dark);margin-top:0.3rem">@ViewBag.TotalBookings</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:1.2rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+            <div style="font-size:0.75rem;color:#16a34a;font-weight:700;text-transform:uppercase;letter-spacing:1px">Confirmed</div>
+            <div style="font-family:var(--font-head);font-size:2rem;color:#16a34a;margin-top:0.3rem">@ViewBag.ConfirmedCount</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:1.2rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+            <div style="font-size:0.75rem;color:#d97706;font-weight:700;text-transform:uppercase;letter-spacing:1px">Pending</div>
+            <div style="font-family:var(--font-head);font-size:2rem;color:#d97706;margin-top:0.3rem">@ViewBag.PendingCount</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:1.2rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+            <div style="font-size:0.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px">Total Passengers</div>
+            <div style="font-family:var(--font-head);font-size:2rem;color:var(--dark);margin-top:0.3rem">@ViewBag.TotalPassengers</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#0f3460,#e94560);border-radius:16px;padding:1.2rem 1.5rem;box-shadow:var(--shadow)">
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);font-weight:700;text-transform:uppercase;letter-spacing:1px">Total Spent</div>
+            <div style="font-family:var(--font-head);font-size:1.6rem;color:#fff;margin-top:0.3rem">Rs. @(((decimal)ViewBag.TotalSpent).ToString("N0"))</div>
+        </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+
+        <!-- Upcoming Journeys -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+            <h5 style="font-family:var(--font-head);color:var(--dark);margin-bottom:1.2rem">🚌 Upcoming Journeys</h5>
+            @if (upcoming.Any())
+            {
+                @foreach (var b in upcoming)
+                {
+                    var daysLeft = (b.Schedule!.DepartureTime.Date - DateTime.Today).Days;
+                    <div style="padding:0.8rem;background:var(--light);border-radius:10px;margin-bottom:0.8rem;border-left:3px solid var(--accent)">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <div>
+                                <strong style="color:var(--dark);font-size:0.9rem">
+                                    @b.Schedule?.Route?.SourceCity → @b.Schedule?.Route?.DestinationCity
+                                </strong>
+                                <div style="font-size:0.78rem;color:var(--muted);margin-top:2px">
+                                    @b.Schedule?.DepartureTime.ToString("dd MMM, HH:mm") • @b.Schedule?.Bus?.BusType
+                                </div>
+                                @if (!string.IsNullOrEmpty(b.PNR))
+                                {
+                                    <div style="font-size:0.75rem;color:var(--accent);font-weight:700;margin-top:2px">PNR: @b.PNR</div>
+                                }
+                            </div>
+                            <div style="text-align:right">
+                                <span style="background:@(daysLeft == 0 ? "#fde8ea" : "#dcfce7");color:@(daysLeft == 0 ? "#b91c1c" : "#16a34a");padding:3px 8px;border-radius:50px;font-size:0.72rem;font-weight:700">
+                                    @(daysLeft == 0 ? "Today!" : daysLeft + "d left")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div style="text-align:center;padding:2rem;color:var(--muted)">
+                    <div style="font-size:2rem;margin-bottom:0.5rem">🎫</div>
+                    <p style="font-size:0.88rem">No upcoming journeys</p>
+                    <a asp-area="Customer" asp-controller="Booking" asp-action="Search"
+                       style="color:var(--accent);font-size:0.85rem;font-weight:600">Book a ticket →</a>
+                </div>
+            }
+        </div>
+
+        <!-- Spending Chart -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow)">
+            <h5 style="font-family:var(--font-head);color:var(--dark);margin-bottom:1.2rem">📊 Monthly Spending</h5>
+            <canvas id="spendChart" height="180"></canvas>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);grid-column:span 2">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem">
+                <h5 style="font-family:var(--font-head);color:var(--dark);margin:0">📋 Recent Bookings</h5>
+                <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+                   style="font-size:0.82rem;color:var(--accent);font-weight:600">View all →</a>
+            </div>
+            @if (recent.Any())
+            {
+                <div style="overflow-x:auto">
+                    <table style="width:100%;border-collapse:collapse;font-size:0.85rem">
+                        <thead>
+                            <tr style="border-bottom:2px solid var(--border)">
+                                <th style="padding:0.5rem 0.8rem;text-align:left;color:var(--muted);font-weight:600">PNR</th>
+                                <th style="padding:0.5rem 0.8rem;text-align:left;color:var(--muted);font-weight:600">Route</th>
+                                <th style="padding:0.5rem 0.8rem;text-align:left;color:var(--muted);font-weight:600">Date</th>
+                                <th style="padding:0.5rem 0.8rem;text-align:left;color:var(--muted);font-weight:600">Amount</th>
+                                <th style="padding:0.5rem 0.8rem;text-align:left;color:var(--muted);font-weight:600">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var b in recent)
+                            {
+                                string sc = b.BookingStatus == "Confirmed" ? "#dcfce7" : b.BookingStatus == "Cancelled" ? "#fee2e2" : "#fef3c7";
+                                string tc = b.BookingStatus == "Confirmed" ? "#16a34a" : b.BookingStatus == "Cancelled" ? "#b91c1c" : "#d97706";
+                                <tr style="border-bottom:1px solid var(--border)">
+                                    <td style="padding:0.6rem 0.8rem;font-weight:700;color:var(--accent);font-size:0.8rem">@(b.PNR ?? $"#{b.BookingId:D4}")</td>
+                                    <td style="padding:0.6rem 0.8rem">@b.Schedule?.Route?.SourceCity → @b.Schedule?.Route?.DestinationCity</td>
+                                    <td style="padding:0.6rem 0.8rem;color:var(--muted)">@b.BookingDate.ToString("dd MMM yyyy")</td>
+                                    <td style="padding:0.6rem 0.8rem;font-weight:700">Rs. @b.TotalAmount.ToString("N0")</td>
+                                    <td style="padding:0.6rem 0.8rem">
+                                        <span style="background:@sc;color:@tc;padding:2px 10px;border-radius:50px;font-size:0.75rem;font-weight:700">@b.BookingStatus</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap">
+        <a asp-area="Customer" asp-controller="Booking" asp-action="Search"
+           style="background:var(--accent);color:#fff;padding:0.65rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem;text-decoration:none">
+            🔍 Search Buses
+        </a>
+        <a asp-area="Customer" asp-controller="Booking" asp-action="MyBookings"
+           style="background:var(--dark);color:#fff;padding:0.65rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem;text-decoration:none">
+            🎫 My Bookings
+        </a>
+        <a asp-area="Customer" asp-controller="Booking" asp-action="PaymentHistory"
+           style="background:#fff;color:var(--dark);padding:0.65rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem;border:2px solid var(--border);text-decoration:none">
+            💳 Payment History
+        </a>
+        <a asp-area="Customer" asp-controller="Account" asp-action="Profile"
+           style="background:#fff;color:var(--dark);padding:0.65rem 1.5rem;border-radius:50px;font-weight:700;font-size:0.88rem;border:2px solid var(--border);text-decoration:none">
+            👤 My Profile
+        </a>
+    </div>
+
+</div>
+</section>
+
+@section Scripts {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+    const raw = @Html.Raw(ViewBag.MonthlySpend ?? "[]");
+    new Chart(document.getElementById('spendChart'), {
+        type: 'bar',
+        data: {
+            labels: raw.map(d => d.month),
+            datasets: [{
+                label: 'Spending (Rs.)',
+                data: raw.map(d => d.amount),
+                backgroundColor: 'rgba(233,69,96,0.15)',
+                borderColor: '#e94560',
+                borderWidth: 2,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rs.' + v.toLocaleString() } } }
+        }
+    });
+</script>
+}

@@ -1,0 +1,163 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.Booking>
+@{
+    ViewData["Title"] = "Manage Bookings";
+    string currentStatus = ViewBag.Status ?? "";
+    string currentSearch = ViewBag.Search ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0">Manage Bookings</h4>
+        <small class="text-muted">Review, confirm or cancel customer bookings</small>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3">
+            <div class="fs-3 fw-bold text-dark">@ViewBag.TotalCount</div>
+            <div class="text-muted small">Total</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #f59e0b!important">
+            <div class="fs-3 fw-bold text-warning">@ViewBag.PendingCount</div>
+            <div class="text-muted small">Pending</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #16a34a!important">
+            <div class="fs-3 fw-bold text-success">@ViewBag.ConfirmedCount</div>
+            <div class="text-muted small">Confirmed</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #dc2626!important">
+            <div class="fs-3 fw-bold text-danger">@ViewBag.CancelledCount</div>
+            <div class="text-muted small">Cancelled</div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Quick Links -->
+<div class="d-flex gap-2 mb-4 flex-wrap align-items-center">
+    <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
+       class="btn btn-outline-primary btn-sm" style="text-decoration:none">
+        <i class="fa fa-chart-bar me-1"></i>Reports
+    </a>
+    <a asp-area="Admin" asp-controller="Cancellations" asp-action="Index"
+       class="btn btn-warning btn-sm fw-semibold" style="text-decoration:none">
+        <i class="fa fa-undo me-1"></i>Cancellations & Refunds
+        @if (ViewBag.PendingRefunds != null && (int)ViewBag.PendingRefunds > 0)
+        {
+            <span class="badge bg-danger ms-1" style="font-size:0.65rem">@ViewBag.PendingRefunds pending</span>
+        }
+    </a>
+</div>
+
+<!-- Filters -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <input name="search" value="@currentSearch" type="text"
+                       class="form-control" placeholder="Search by name, phone or email..." />
+            </div>
+            <div class="col-md-4">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    @if (currentStatus == "Pending")
+                    {
+                        <option value="Pending" selected>Pending</option>
+                    }
+                    else
+                    {
+                        <option value="Pending">Pending</option>
+                    }
+                    @if (currentStatus == "Confirmed")
+                    {
+                        <option value="Confirmed" selected>Confirmed</option>
+                    }
+                    else
+                    {
+                        <option value="Confirmed">Confirmed</option>
+                    }
+                    @if (currentStatus == "Cancelled")
+                    {
+                        <option value="Cancelled" selected>Cancelled</option>
+                    }
+                    else
+                    {
+                        <option value="Cancelled">Cancelled</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="fa fa-ticket-alt fa-3x mb-3 d-block opacity-25"></i>
+                <p>No bookings found.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Route</th>
+                            <th>Booked On</th>
+                            <th>Passengers</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model)
+                        {
+                            string badgeClass = "bg-warning text-dark";
+                            if (b.BookingStatus == "Confirmed") badgeClass = "bg-success";
+                            else if (b.BookingStatus == "Cancelled") badgeClass = "bg-danger";
+
+                            <tr>
+                                <td class="text-muted small">#@b.BookingId.ToString("D4")</td>
+                                <td>
+                                    <div class="fw-semibold">@b.CustomerName</div>
+                                    <small class="text-muted">@b.BookedByUser?.Email</small>
+                                </td>
+                                <td>
+                                    <small>@b.Schedule?.Route?.SourceCity → @b.Schedule?.Route?.DestinationCity</small><br />
+                                    <small class="text-muted">@(b.Schedule != null ? b.Schedule.DepartureTime.ToString("dd MMM, hh:mm tt") : "—")</small>
+                                </td>
+                                <td><small>@b.BookingDate.ToString("dd MMM yyyy")</small></td>
+                                <td class="text-center">@(b.Passengers?.Count ?? 0)</td>
+                                <td class="fw-semibold">Rs. @b.TotalAmount.ToString("N0")</td>
+                                <td><span class="badge @badgeClass">@b.BookingStatus</span></td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@b.BookingId"
+                                       class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

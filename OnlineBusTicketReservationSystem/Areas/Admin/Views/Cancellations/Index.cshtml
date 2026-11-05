@@ -1,0 +1,172 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.Cancellation>
+@{
+    ViewData["Title"] = "Cancellations & Refunds";
+    string currentFilter = ViewBag.RefundStatus ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h4 class="fw-bold mb-0"><i class="fa fa-times-circle me-2 text-danger"></i>Cancellations & Refunds</h4>
+        <small class="text-muted">Manage all cancelled bookings and process refunds</small>
+    </div>
+    @if (ViewBag.PendingCount != null && (int)ViewBag.PendingCount > 0)
+    {
+        <form asp-action="MarkAllRefunded" method="post"
+              onsubmit="return confirm('Mark ALL pending refunds as processed?')">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-check-double me-1"></i>Process All Pending (@ViewBag.PendingCount)
+            </button>
+        </form>
+    }
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3">
+            <div class="fs-3 fw-bold">@ViewBag.TotalCount</div>
+            <div class="text-muted small">Total Cancellations</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #f59e0b!important">
+            <div class="fs-3 fw-bold text-warning">@ViewBag.PendingCount</div>
+            <div class="text-muted small">Pending Refunds</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #16a34a!important">
+            <div class="fs-3 fw-bold text-success">@ViewBag.ProcessedCount</div>
+            <div class="text-muted small">Processed</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #0f3460!important">
+            <div class="fs-3 fw-bold text-primary">Rs.@((ViewBag.TotalRefund ?? 0m).ToString("N0"))</div>
+            <div class="text-muted small">Total Refunded</div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="d-flex gap-2 mb-4 flex-wrap">
+    <a asp-action="Index" class="btn btn-sm @(currentFilter=="" ? "btn-primary" : "btn-outline-primary")" style="text-decoration:none">All</a>
+    <a asp-action="Index" asp-route-refundStatus="pending"
+       class="btn btn-sm @(currentFilter=="pending" ? "btn-warning" : "btn-outline-warning")" style="text-decoration:none">
+        Pending Refunds
+    </a>
+    <a asp-action="Index" asp-route-refundStatus="processed"
+       class="btn btn-sm @(currentFilter=="processed" ? "btn-success" : "btn-outline-success")" style="text-decoration:none">
+        Processed
+    </a>
+</div>
+
+<!-- Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="fa fa-times-circle fa-3x mb-3 d-block opacity-25"></i>
+                <p>No cancellations found.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="background:linear-gradient(135deg,#0f3460,#e94560);color:#fff">
+                        <tr>
+                            <th>#</th>
+                            <th>Booking</th>
+                            <th>Customer</th>
+                            <th>Route</th>
+                            <th>Cancelled On</th>
+                            <th>Cancelled By</th>
+                            <th>Total Paid</th>
+                            <th>Deduction</th>
+                            <th>Refund</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int i = 1; }
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td class="text-muted small">@i</td>
+                                <td><span class="badge bg-secondary">#@c.BookingId</span></td>
+                                <td>
+                                    <div class="fw-semibold small">@(c.Booking?.CustomerName ?? c.Booking?.BookedByUser?.FullName ?? "—")</div>
+                                </td>
+                                <td>
+                                    <small>
+                                        @(c.Booking?.Schedule?.Route?.SourceCity) →
+                                        @(c.Booking?.Schedule?.Route?.DestinationCity)
+                                    </small>
+                                </td>
+                                <td><small>@c.CancellationDate.ToString("dd-MMM-yy HH:mm")</small></td>
+                                <td>
+                                    @if (c.CancelledBy == "Admin")
+                                    {
+                                        <span class="badge bg-danger">Admin</span>
+                                    }
+                                    else if (c.CancelledBy == "Employee")
+                                    {
+                                        <span class="badge bg-warning text-dark">Employee</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Customer</span>
+                                    }
+                                </td>
+                                <td><small>Rs.@c.Booking?.TotalAmount.ToString("N0")</small></td>
+                                <td>
+                                    @if (c.DeductionPercent == 0)
+                                    {
+                                        <span class="badge bg-success">Full Refund</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">@c.DeductionPercent%</span>
+                                    }
+                                </td>
+                                <td><strong class="text-success small">Rs.@c.RefundAmount.ToString("N0")</strong></td>
+                                <td>
+                                    @if (c.RefundStatus == "Processed")
+                                    {
+                                        <span class="badge bg-success">✓ Processed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">⏳ Pending</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (c.RefundStatus == "Pending")
+                                    {
+                                        <form asp-action="MarkRefunded" asp-route-id="@c.CancellationId"
+                                              method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-success"
+                                                    title="Mark refund as processed">
+                                                <i class="fa fa-check me-1"></i>Process
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">Done</span>
+                                    }
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

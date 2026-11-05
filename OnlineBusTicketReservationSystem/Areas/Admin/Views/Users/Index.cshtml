@@ -1,0 +1,167 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Employee Management";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h4 class="fw-bold mb-1"><i class="fa fa-users me-2 text-primary"></i>Employee Management</h4>
+        <p class="text-muted mb-0">Manage all system employees and view performance</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-user-plus me-1"></i>Add Employee
+    </a>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-4" id="empTabs">
+    <li class="nav-item">
+        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#tabEmployees" style="text-decoration:none">
+            👥 All Employees
+            <span class="badge bg-primary ms-1" style="font-size:0.65rem">@Model.Count()</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-semibold" data-bs-toggle="tab" href="#tabPerformance" style="text-decoration:none;color:#e94560">
+            📊 Employee Performance
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+<!-- TAB 1: Employees List -->
+<div class="tab-pane fade show active" id="tabEmployees">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="fa fa-users fa-3x mb-3 d-block opacity-25"></i>
+                    No employees found. <a asp-action="Create">Add your first employee.</a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead style="background:linear-gradient(135deg,#0f3460,#e94560);color:white;">
+                            <tr>
+                                <th>Code</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Location</th>
+                                <th>Age / Gender</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-primary">@user.EmployeeCode</span></td>
+                                    <td><strong>@user.FullName</strong></td>
+                                    <td><small class="text-muted">@user.Email</small></td>
+                                    <td>@(user.Location ?? "—")</td>
+                                    <td>
+                                        <small>
+                                            @(user.Age.HasValue ? user.Age + " yrs" : "—")
+                                            @(user.Gender != null ? " / " + user.Gender : "")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            <a asp-action="Details" asp-route-id="@user.Id"
+                                               class="btn btn-sm btn-outline-info" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@user.Id"
+                                               class="btn btn-sm btn-outline-primary" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <form asp-action="ToggleStatus" asp-route-id="@user.Id"
+                                                  method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit"
+                                                        class="btn btn-sm @(user.IsActive ? "btn-outline-warning" : "btn-outline-success")"
+                                                        title="@(user.IsActive ? "Deactivate" : "Activate")">
+                                                    <i class="fa @(user.IsActive ? "fa-user-slash" : "fa-user-check")"></i>
+                                                </button>
+                                            </form>
+                                            <a asp-action="Delete" asp-route-id="@user.Id"
+                                               class="btn btn-sm btn-outline-danger" title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- TAB 2: Employee Performance -->
+<div class="tab-pane fade" id="tabPerformance">
+    <div id="perfContent">
+        <div class="text-center py-4 text-muted">
+            <i class="fa fa-spinner fa-spin fa-2x mb-2 d-block"></i>
+            Loading performance data...
+        </div>
+    </div>
+</div>
+
+</div><!-- /tab-content -->
+
+@section Scripts {
+<script>
+    // ✅ Tab persistence — refresh pe same tab rehta hai
+    const userTabs = document.querySelectorAll('.nav-tabs a[data-bs-toggle="tab"]');
+
+    // Page load pe hash check karo
+    const savedHash = window.location.hash;
+    if (savedHash) {
+        const targetTab = document.querySelector(`.nav-tabs a[href="${savedHash}"]`);
+        if (targetTab) {
+            bootstrap.Tab.getOrCreateInstance(targetTab).show();
+            // Performance tab tha toh data bhi load karo
+            if (savedHash === '#tabPerformance') loadPerformance();
+        }
+    }
+
+    // Tab click pe hash update karo
+    userTabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function (e) {
+            window.location.hash = e.target.getAttribute('href');
+        });
+    });
+
+    // Performance data load function
+    function loadPerformance() {
+        fetch('@Url.Action("EmployeePerformancePartial", "Users", new { area = "Admin" })')
+            .then(r => r.text())
+            .then(html => { document.getElementById('perfContent').innerHTML = html; })
+            .catch(() => {
+                document.getElementById('perfContent').innerHTML =
+                    '<div class="alert alert-warning">Could not load performance data.</div>';
+            });
+    }
+
+    // Performance tab click pe data load karo
+    document.querySelector('[href="#tabPerformance"]').addEventListener('shown.bs.tab', loadPerformance);
+</script>
+}

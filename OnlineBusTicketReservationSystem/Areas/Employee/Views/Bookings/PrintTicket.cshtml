@@ -1,0 +1,201 @@
+@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Print Ticket";
+    Layout = null;
+    var passengers  = Model.Passengers ?? new List<OnlineBusTicketReservationSystem.Models.Passenger>();
+    string bookingNum  = Model.BookingId.ToString("D6");
+    string pnrDisplay  = !string.IsNullOrEmpty(Model.PNR) ? Model.PNR : $"#{bookingNum}";
+    string bookingDate = Model.BookingDate.ToString("dd MMM yyyy");
+    string fromCity    = Model.Schedule?.Route?.SourceCity        ?? "-";
+    string toCity      = Model.Schedule?.Route?.DestinationCity   ?? "-";
+    string depTime     = Model.Schedule?.DepartureTime.ToString("HH:mm")       ?? "-";
+    string depDate     = Model.Schedule?.DepartureTime.ToString("dd MMM yyyy") ?? "-";
+    string arrTime     = Model.Schedule?.ArrivalTime.ToString("HH:mm")         ?? "-";
+    string arrDate     = Model.Schedule?.ArrivalTime.ToString("dd MMM yyyy")   ?? "-";
+    string busCode     = Model.Schedule?.Bus?.BusCode    ?? "-";
+    string busType     = Model.Schedule?.Bus?.BusType    ?? "-";
+    string busNumber   = Model.Schedule?.Bus?.BusNumber  ?? "-";
+    string totalAmt    = "Rs. " + Model.TotalAmount.ToString("N0");
+    string qrData      = $"SRC-TRAVEL|PNR:{pnrDisplay}|BK:{Model.BookingId:D6}|FROM:{fromCity}|TO:{toCity}|DEP:{depDate} {depTime}|BUS:{busCode}|PAX:{passengers.Count}|AMT:{Model.TotalAmount:N0}|STATUS:{Model.BookingStatus}";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Ticket #@bookingNum — SRC Travel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/print-ticket.css" />
+    <style>
+        .no-print {
+            display:flex;gap:10px;flex-wrap:wrap;padding:16px 20px;
+            background:#f1f5f9;border-bottom:1px solid #e2e8f0;
+        }
+        .btn-action {
+            padding:10px 22px;border-radius:50px;border:none;
+            font-weight:700;cursor:pointer;font-size:0.88rem;
+        }
+        .btn-print { background:#0f3460;color:#fff; }
+        .btn-pdf   { background:#e94560;color:#fff; }
+        .btn-back  { background:#fff;color:#0f3460;border:2px solid #0f3460;text-decoration:none;display:inline-flex;align-items:center; }
+        @@media print { .no-print { display:none !important; } body { margin:0; } }
+
+        .tk-qr-row {
+            display:flex;align-items:center;justify-content:space-between;
+            padding:14px 20px;background:#f8fafc;
+            border-top:2px dashed #e2e8f0;gap:16px;flex-wrap:wrap;
+        }
+        .qr-box { display:flex;flex-direction:column;align-items:center;gap:4px; }
+        .qr-label { font-size:0.6rem;color:#64748b;font-weight:700;letter-spacing:1px;text-transform:uppercase; }
+        .tk-footer { padding:8px 20px;text-align:center;font-size:0.65rem;color:#94a3b8;border-top:1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <button class="btn-action btn-pdf" onclick="downloadPDF()">⬇️ Download / Print Ticket</button>
+    <a href="/Employee/Bookings/Index" class="btn-action btn-back">← All Bookings</a>
+</div>
+
+<div class="wrap">
+<div class="ticket">
+
+    <!-- Header -->
+    <div class="tk-top">
+        <div class="tk-logo">SRC<span>Travel</span></div>
+        <div class="tk-ref">
+            <strong>@pnrDisplay</strong>
+            <div style="font-size:0.72rem;opacity:0.7">Booking #@bookingNum</div>
+            <div>@bookingDate</div>
+            <div class="confirmed">@Model.BookingStatus.ToUpper()</div>
+        </div>
+    </div>
+
+    <!-- Route -->
+    <div class="tk-route">
+        <div class="tk-city">
+            <label>From</label>
+            <strong>@fromCity</strong>
+        </div>
+        <div style="font-size:1.5rem;flex-shrink:0">&#8594;</div>
+        <div class="tk-city right">
+            <label>To</label>
+            <strong>@toCity</strong>
+        </div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="tk-grid">
+        <div class="tk-field">
+            <label>Departure</label>
+            <strong>@depTime</strong>
+            <strong class="muted-sm">@depDate</strong>
+        </div>
+        <div class="tk-field">
+            <label>Arrival</label>
+            <strong>@arrTime</strong>
+            <strong class="muted-sm">@arrDate</strong>
+        </div>
+        <div class="tk-field">
+            <label>Bus</label>
+            <strong>@busCode</strong>
+            <strong class="muted-sm">@busType</strong>
+        </div>
+        <div class="tk-field">
+            <label>Contact</label>
+            <strong>@Model.CustomerName</strong>
+            <strong class="muted-sm">@Model.CustomerPhone</strong>
+        </div>
+    </div>
+
+    <!-- Passengers -->
+    <div class="tk-pax">
+        <h4>Passengers (@passengers.Count)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Seat</th>
+                    <th style="text-align:right">Fare</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int n = 1;
+                    decimal baseTotal = passengers.Sum(p => p.FareAmount);
+                    decimal discountRatio = baseTotal > 0 && Model.DiscountAmount > 0
+                        ? (baseTotal - Model.DiscountAmount) / baseTotal : 1m;
+                }
+                @foreach (var p in passengers)
+                {
+                    decimal displayFare = Model.DiscountAmount > 0 && p.FareAmount > 0
+                        ? Math.Round(p.FareAmount * discountRatio, 0)
+                        : p.FareAmount;
+                    <tr>
+                        <td>@(n++)</td>
+                        <td><strong>@p.FullName</strong></td>
+                        <td>@p.Age yrs</td>
+                        <td>@p.Gender</td>
+                        <td><strong style="color:#0f3460">@(p.SeatNumber ?? "—")</strong></td>
+                        <td class="fare-cell">@(displayFare == 0 ? "FREE" : "Rs. " + displayFare.ToString("N0"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- QR + Total -->
+    <div class="tk-qr-row">
+        <div>
+            @if (Model.DiscountAmount > 0)
+            {
+                <div style="font-size:0.68rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">Subtotal</div>
+                <div style="font-size:1rem;font-weight:700;color:#64748b;text-decoration:line-through">Rs. @((Model.TotalAmount + Model.DiscountAmount).ToString("N0"))</div>
+                <div style="font-size:0.75rem;color:#16a34a;font-weight:700;margin-bottom:3px">
+                    Promo: @Model.PromoCode — Discount: -Rs. @Model.DiscountAmount.ToString("N0")
+                </div>
+            }
+            <div style="font-size:0.68rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Total Amount</div>
+            <div style="font-size:1.7rem;font-weight:800;color:#0f3460;font-family:'Syne',sans-serif">@totalAmt</div>
+            <div style="font-size:0.75rem;color:#64748b;margin-top:6px;line-height:1.7">
+                <strong style="color:#0f3460">Bus No:</strong> @busNumber &nbsp;|&nbsp;
+                <strong style="color:#0f3460">Payment:</strong> @(Model.Payment?.PaymentMethod ?? "Cash")<br/>
+                <strong style="color:#0f3460">Issued:</strong> @bookingDate
+            </div>
+        </div>
+        <div class="qr-box">
+            <div id="qrcode"></div>
+            <div class="qr-label">Scan to Verify</div>
+        </div>
+    </div>
+
+    <div class="tk-footer">
+        Official ticket issued by SRC Travel Agencies &bull; Carry this ticket while travelling &bull; www.srctravel.pk
+    </div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    new QRCode(document.getElementById("qrcode"), {
+        text: "@Html.Raw(qrData.Replace("\\", "\\\\").Replace("\"", "\\\""))",
+        width: 100,
+        height: 100,
+        colorDark: "#0f3460",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+    });
+
+    function downloadPDF() {
+        const orig = document.title;
+        document.title = 'SRC_Ticket_@bookingNum';
+        window.print();
+        document.title = orig;
+    }
+</script>
+</body>
+</html>

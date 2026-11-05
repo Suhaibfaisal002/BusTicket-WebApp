@@ -1,0 +1,123 @@
+﻿@model OnlineBusTicketReservationSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card mb-4">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-user me-2"></i>
+                    @Model.FullName
+                    <span class="badge ms-2"
+                          style="background:var(--accent)">
+                        @Model.EmployeeCode
+                    </span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th>Email</th>
+                                <td>@Model.Email</td>
+                            </tr>
+                            <tr>
+                                <th>Age</th>
+                                <td>
+                                    @(Model.Age.HasValue
+                                                                        ? Model.Age + " years" : "N/A")
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Gender</th>
+                                <td>@(Model.Gender ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <th>Location</th>
+                                <td>@(Model.Location ?? "N/A")</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th>Qualification</th>
+                                <td>@(Model.Qualification ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>@(Model.Address ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Inactive
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Created</th>
+                                <td>
+                                    @Model.CreatedAt.ToString("dd-MMM-yyyy")
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id"
+                   class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit me-1"></i>Edit
+                </a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-arrow-left me-1"></i>Back
+                </a>
+            </div>
+        </div>
+
+        <!-- Reset Password Card -->
+        <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="mb-0">
+                    <i class="fa fa-key me-2"></i>Reset Password
+                </h6>
+            </div>
+            <div class="card-body">
+                <form asp-action="ResetPassword" method="post"
+                      class="row g-2 align-items-end">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="col-md-8">
+                        <label class="form-label fw-semibold small">
+                            New Password
+                        </label>
+                        <input type="password" name="newPassword"
+                               class="form-control"
+                               placeholder="Min 6 characters"
+                               required minlength="6" />
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit"
+                                class="btn btn-warning w-100">
+                            <i class="fa fa-key me-1"></i>Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

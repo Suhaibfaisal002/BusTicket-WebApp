@@ -1,0 +1,82 @@
+﻿@model OnlineBusTicketReservationSystem.Models.Route
+@{
+    ViewData["Title"] = "Route Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-route me-2"></i>
+                    @Model.SourceCity → @Model.DestinationCity
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Source City:</strong>
+                        <span class="text-success ms-1">@Model.SourceCity</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Destination City:</strong>
+                        <span class="text-danger ms-1">
+                            @Model.DestinationCity
+                        </span>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>Distance:</strong>
+                        <span class="ms-1">
+                            @(Model.DistanceKm.HasValue
+                                                        ? $"{Model.DistanceKm} km" : "N/A")
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Duration:</strong>
+                        <span class="ms-1">
+                            @(Model.EstimatedDuration.HasValue
+                                                        ? Model.EstimatedDuration.Value
+                                                        .ToString(@"hh\:mm") + " hrs" : "N/A")
+                        </span>
+                    </div>
+                </div>
+
+                @if (Model.RouteStops?.Any() == true)
+                {
+                    <h6 class="fw-semibold mb-3">
+                        <i class="fa fa-map-pin me-2 text-primary"></i>
+                        Route Stops
+                    </h6>
+                    @foreach (var stop in Model.RouteStops
+                                    .OrderBy(s => s.StopOrder))
+                    {
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-primary me-3">
+                                @stop.StopOrder
+                            </span>
+                            <span>@stop.StopName</span>
+                            @if (stop.DistanceFromSource.HasValue)
+                            {
+                                <span class="text-muted ms-2 small">
+                                    (@stop.DistanceFromSource km)
+                                </span>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.RouteId"
+                   class="btn btn-primary btn-sm">
+                    <i class="fa fa-edit me-1"></i>Edit
+                </a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-arrow-left me-1"></i>Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

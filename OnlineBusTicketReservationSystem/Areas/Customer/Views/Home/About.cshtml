@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "About Us";
+}
+
+<!-- Inner Hero -->
+<section class="c-inner-hero"
+         style="background-image:url('https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=1400&q=80')">
+    <div class="c-hero-overlay"></div>
+    <div class="c-hero-content">
+        <span class="sec-badge white">Our Story</span>
+        <h1>About <span class="text-accent">SRC Travel</span></h1>
+        <p>Pakistan's most trusted bus reservation platform since 2009</p>
+    </div>
+</section>
+
+<!-- Who We Are -->
+<section style="padding:5rem 0">
+    <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-bottom:5rem">
+            <div>
+                <span class="sec-badge">Who We Are</span>
+                <h2 class="sec-title">Connecting Pakistan,<br /><span class="text-accent">One Journey at a Time</span></h2>
+                <p style="color:#475569;line-height:1.8;margin-bottom:1rem">
+                    SRC Travel Agencies is Pakistan's leading online bus ticket reservation system, connecting passengers across the country. Founded by a team passionate about making travel easier, we've grown into a platform trusted by thousands of passengers.
+                </p>
+                <p style="color:#475569;line-height:1.8;margin-bottom:1.5rem">
+                    We work directly with Pakistan's top bus operators to bring you real-time seat availability, instant booking confirmation, and hassle-free cancellations.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:0.75rem">
+                    @foreach (var badge in new[] { "✅ Safety Certified", "🔒 Secure Payments", "🇵🇰 Pakistan Registered" })
+                    {
+                        <span style="background:var(--light);border:1px solid var(--border);padding:0.5rem 1rem;border-radius:50px;font-size:0.82rem;font-weight:600;color:var(--dark)">
+                            @badge
+                        </span>
+                    }
+                </div>
+            </div>
+            <div>
+                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80"
+                     alt="Team"
+                     style="border-radius:20px;width:100%;height:420px;object-fit:cover;box-shadow:var(--shadow-lg)" />
+            </div>
+        </div>
+
+        <!-- Mission / Vision / Values -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-bottom:5rem">
+            @foreach (var mv in new[] {
+                        new { icon="🎯", title="Our Mission", bg="linear-gradient(135deg,#e94560,#c0392b)", desc="To make intercity bus travel in Pakistan accessible, affordable, and dignified for every citizen — from Karachi to Khyber." },
+                        new { icon="🌟", title="Our Vision", bg="linear-gradient(135deg,#0f3460,#1a4a8a)", desc="To become Pakistan's most trusted travel-tech platform, expanding across major cities with modern bus services." },
+                        new { icon="💎", title="Our Values", bg="linear-gradient(135deg,#1d4ed8,#1e40af)", desc="Transparency, safety, and relentless innovation. We never compromise on passenger safety or honest pricing." }
+                        })
+            {
+                <div style="background:@mv.bg;border-radius:20px;padding:2.5rem;text-align:center;color:#fff">
+                    <div style="font-size:2.5rem;margin-bottom:1rem">@mv.icon</div>
+                    <h3 style="font-family:var(--font-head);font-size:1.5rem;margin-bottom:0.8rem">@mv.title</h3>
+                    <p style="opacity:0.85;font-size:0.9rem;line-height:1.7">@mv.desc</p>
+                </div>
+            }
+        </div>
+
+        <!-- Stats -->
+        <div style="background:var(--dark);border-radius:24px;padding:3rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem;text-align:center;margin-bottom:5rem">
+            @foreach (var stat in new[] {
+                        new { num="15+", label="Years of Service" },
+                        new { num="50+", label="Cities Covered" },
+                        new { num="4", label="Bus Types" },
+                        new { num="24/7", label="Customer Support" }
+                        })
+            {
+                <div>
+                    <div style="font-family:var(--font-head);font-size:2.5rem;color:#fff;line-height:1;margin-bottom:0.5rem">@stat.num</div>
+                    <div style="font-size:0.85rem;color:#64748b;font-weight:500">@stat.label</div>
+                </div>
+            }
+        </div>
+
+        <!-- Team -->
+        <div style="text-align:center;margin-bottom:2.5rem">
+            <span class="sec-badge">Our People</span>
+            <h2 class="sec-title">Meet Our <span class="text-accent">Leadership</span></h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem">
+            @foreach (var member in new[] {
+                        new { name="Bilal Ahmed", role="CEO & Founder", img="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face" },
+                        new { name="Sana Malik", role="Chief Technology Officer", img="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face" },
+                        new { name="Tariq Hassan", role="Chief Operations Officer", img="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" },
+                        new { name="Ayesha Raza", role="Head of Marketing", img="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face" }
+                        })
+            {
+                <div style="text-align:center;background:#fff;border-radius:20px;padding:2rem;border:1px solid var(--border);box-shadow:var(--shadow);transition:all 0.25s"
+                     onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'"
+                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow)'">
+                    <img src="@member.img" alt="@member.name"
+                         style="width:90px;height:90px;border-radius:50%;object-fit:cover;margin:0 auto 1rem;border:3px solid #fde8ea;display:block" />
+                    <h4 style="color:var(--dark);font-size:1rem;font-weight:700;margin-bottom:0.3rem">@member.name</h4>
+                    <span style="color:var(--muted);font-size:0.82rem">@member.role</span>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:4rem 0;background:linear-gradient(135deg,var(--accent),#c0392b)">
+    <div style="max-width:1280px;margin:0 auto;padding:0 1.5rem;text-align:center">
+        <h2 style="font-family:var(--font-head);font-size:2.2rem;color:#fff;margin-bottom:1rem">
+            Join Thousands of Happy Passengers
+        </h2>
+        <p style="color:rgba(255,255,255,0.8);margin-bottom:2rem">
+            Book your first ticket today and experience the SRC Travel difference.
+        </p>
+        <a asp-area="Customer" asp-controller="Account" asp-action="Register"
+           style="background:#fff;color:var(--accent);padding:0.85rem 2.5rem;border-radius:50px;font-weight:800;font-size:1rem">
+            Get Started Free
+        </a>
+    </div>
+</section>

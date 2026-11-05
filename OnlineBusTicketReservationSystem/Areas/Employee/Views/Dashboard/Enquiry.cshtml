@@ -1,0 +1,175 @@
+﻿@model IEnumerable<OnlineBusTicketReservationSystem.Models.Schedule>
+@{
+    ViewData["Title"] = "Bus Enquiry";
+}
+
+<div class="mb-4">
+    <h4 class="fw-bold mb-1">
+        <i class="fa fa-search me-2 text-primary"></i>Bus Enquiry
+    </h4>
+    <p class="text-muted mb-0">Search available buses</p>
+</div>
+
+<!-- Search Form -->
+<div class="card mb-4">
+    <div class="card-header text-white"
+         style="background:linear-gradient(135deg,#0f3460,#e94560)">
+        <h6 class="mb-0">
+            <i class="fa fa-filter me-2"></i>Search Filters
+        </h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Enquiry" method="get">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">From City</label>
+                    <input type="text" name="sourceCity"
+                           class="form-control"
+                           value="@ViewBag.SourceCity"
+                           placeholder="e.g. Karachi" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">To City</label>
+                    <input type="text" name="destinationCity"
+                           class="form-control"
+                           value="@ViewBag.DestinationCity"
+                           placeholder="e.g. Lahore" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Travel Date</label>
+                    <input type="date" name="travelDate"
+                           class="form-control"
+                           value="@ViewBag.TravelDate" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Bus Type</label>
+                    <select name="busType" class="form-select">
+                        <option value="">All Types</option>
+                        <option value="Express"
+                                selected="@(ViewBag.BusType == "Express" ? "selected" : null)">
+                            Express
+                        </option>
+                        <option value="Luxury"
+                                selected="@(ViewBag.BusType == "Luxury" ? "selected" : null)">
+                            Luxury
+                        </option>
+                        <option value="Volvo-NonAC"
+                                selected="@(ViewBag.BusType == "Volvo-NonAC" ? "selected" : null)">
+                            Volvo-NonAC
+                        </option>
+                        <option value="Volvo-AC"
+                                selected="@(ViewBag.BusType == "Volvo-AC" ? "selected" : null)">
+                            Volvo-AC
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa fa-search me-1"></i>Search
+                    </button>
+                    <a asp-action="Enquiry" class="btn btn-secondary">
+                        <i class="fa fa-undo"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Results -->
+@if (Model != null && Model.Any())
+{
+    <div class="row g-3">
+        @foreach (var s in Model)
+        {
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between
+                                align-items-center py-2"
+                         style="background:#f8f9fa">
+                        <span class="fw-bold">
+                            <i class="fa fa-bus me-2 text-primary"></i>
+                            @s.Bus?.BusNumber
+                        </span>
+                        <span class="badge bg-primary">
+                            @s.Bus?.BusType
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="text-center">
+                                <div class="fw-bold text-success fs-5">
+                                    @s.Route?.SourceCity
+                                </div>
+                                <small class="text-muted">
+                                    @s.DepartureTime.ToString("HH:mm")
+                                </small>
+                                <div class="text-muted small">
+                                    @s.DepartureTime.ToString("dd-MMM-yyyy")
+                                </div>
+                            </div>
+                            <div class="text-center align-self-center">
+                                <i class="fa fa-arrow-right text-muted"></i>
+                            </div>
+                            <div class="text-center">
+                                <div class="fw-bold text-danger fs-5">
+                                    @s.Route?.DestinationCity
+                                </div>
+                                <small class="text-muted">
+                                    @s.ArrivalTime.ToString("HH:mm")
+                                </small>
+                                <div class="text-muted small">
+                                    @s.ArrivalTime.ToString("dd-MMM-yyyy")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between
+                                    align-items-center">
+                            <div>
+                                @if (s.AvailableSeats > 10)
+                                {
+                                    <span class="badge bg-success">
+                                        <i class="fa fa-chair me-1"></i>
+                                        @s.AvailableSeats seats
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fa fa-chair me-1"></i>
+                                        Only @s.AvailableSeats left!
+                                    </span>
+                                }
+                                <span class="ms-2 text-muted small">
+                                    @s.Bus?.OperatorName
+                                </span>
+                            </div>
+                            <a asp-area="Employee"
+                               asp-controller="Bookings"
+                               asp-action="Create"
+                               asp-route-scheduleId="@s.ScheduleId"
+                               class="btn btn-sm btn-primary">
+                                <i class="fa fa-ticket-alt me-1"></i>Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else if (ViewBag.SourceCity != null || ViewBag.DestinationCity != null
+         || ViewBag.TravelDate != null)
+{
+    <div class="text-center text-muted py-5">
+        <i class="fa fa-bus fa-3x mb-3 d-block opacity-25"></i>
+        No buses found for your search.
+    </div>
+}
+else
+{
+    <div class="text-center text-muted py-5">
+        <i class="fa fa-search fa-3x mb-3 d-block opacity-25"></i>
+        Use the search form above to find available buses.
+    </div>
+}

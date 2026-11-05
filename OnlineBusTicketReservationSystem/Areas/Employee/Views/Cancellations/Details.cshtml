@@ -1,0 +1,149 @@
+﻿@model OnlineBusTicketReservationSystem.Models.Cancellation
+@{
+    ViewData["Title"] = "Cancellation Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-times-circle me-2"></i>
+                    Cancellation — Booking #@Model.BookingId
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold text-primary">Journey</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th>Route</th>
+                                <td>
+                                    @Model.Booking?.Schedule?.Route?.SourceCity →
+                                    @Model.Booking?.Schedule?.Route?.DestinationCity
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Bus</th>
+                                <td>
+                                    @Model.Booking?.Schedule?.Bus?.BusNumber
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Departure</th>
+                                <td>
+                                    @(Model.Booking?.Schedule?.DepartureTime
+                                    .ToString("dd-MMM-yyyy HH:mm"))
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Customer</th>
+                                <td>@Model.Booking?.CustomerName</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold text-danger">
+                            Cancellation Info
+                        </h6>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th>Cancelled On</th>
+                                <td>
+                                    @(Model.CancellationDate
+                                    .ToString("dd-MMM-yyyy HH:mm"))
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Total Paid</th>
+                                <td>
+                                    Rs.@(Model.Booking?.TotalAmount.ToString("N2"))
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Deduction</th>
+                                <td>
+                                    @Model.DeductionPercent%
+                                    (Rs.@Model.DeductedAmount.ToString("N2"))
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Refund</th>
+                                <td>
+                                    <strong class="text-success">
+                                        Rs.@Model.RefundAmount.ToString("N2")
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>
+                                    @if (Model.RefundStatus == "Processed")
+                                    {
+                                        <span class="badge bg-success">
+                                            Processed
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning
+                                                         text-dark">
+                                            Pending
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Passengers -->
+                @if (Model.Booking?.Passengers?.Any() == true)
+                {
+                    <h6 class="fw-semibold text-primary mb-2">Passengers</h6>
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Fare Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int n = 1;
+                            }
+                            @foreach (var p in Model.Booking.Passengers)
+                            {
+                                <tr>
+                                    <td>@n++</td>
+                                    <td>@p.FullName</td>
+                                    <td>@p.Age</td>
+                                    <td>Rs.@p.FareAmount.ToString("N2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="card-footer d-flex gap-2">
+                @if (Model.RefundStatus == "Pending")
+                {
+                    <form asp-action="MarkRefunded"
+                          asp-route-id="@Model.CancellationId"
+                          method="post">
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fa fa-check me-1"></i>Mark Refunded
+                        </button>
+                    </form>
+                }
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-arrow-left me-1"></i>Back
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

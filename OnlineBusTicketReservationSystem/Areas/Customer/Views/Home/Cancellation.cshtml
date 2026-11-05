@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "Cancellation Policy";
+}
+
+<section class="c-inner-hero"
+         style="background-image:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1400&q=80')">
+    <div class="c-hero-overlay"></div>
+    <div class="c-hero-content">
+        <span class="sec-badge white">Refund Policy</span>
+        <h1>Cancellation <span class="text-accent">Policy</span></h1>
+        <p>Transparent and fair cancellation rules for all our passengers</p>
+    </div>
+</section>
+
+<!-- Refund Cards -->
+<section style="padding:5rem 0;background:var(--light)">
+    <div style="max-width:900px;margin:0 auto;padding:0 1.5rem">
+        <div style="text-align:center;margin-bottom:3rem">
+            <span class="sec-badge">Refund Rates</span>
+            <h2 class="sec-title">How Much <span class="text-accent">You Get Back</span></h2>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-bottom:3rem">
+            <div style="background:#fff;border-radius:20px;padding:2.5rem;border:2px solid #86efac;box-shadow:var(--shadow);text-align:center">
+                <div style="font-size:3rem;margin-bottom:0.8rem">✅</div>
+                <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:0.5rem">2+ Days Before</div>
+                <div style="font-family:var(--font-head);font-size:4rem;color:#15803d;line-height:1;margin-bottom:0.8rem">100%</div>
+                <p style="color:var(--muted);font-size:0.88rem">Full refund — no deductions whatsoever.</p>
+            </div>
+            <div style="background:#fff;border-radius:20px;padding:2.5rem;border:2px solid #fcd34d;box-shadow:var(--shadow);text-align:center">
+                <div style="font-size:3rem;margin-bottom:0.8rem">⚠️</div>
+                <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:0.5rem">1 Day Before</div>
+                <div style="font-family:var(--font-head);font-size:4rem;color:#b45309;line-height:1;margin-bottom:0.8rem">85%</div>
+                <p style="color:var(--muted);font-size:0.88rem">15% deduction applied on total fare paid.</p>
+            </div>
+            <div style="background:#fff;border-radius:20px;padding:2.5rem;border:2px solid #fca5a5;box-shadow:var(--shadow);text-align:center">
+                <div style="font-size:3rem;margin-bottom:0.8rem">❌</div>
+                <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:0.5rem">Same Day</div>
+                <div style="font-family:var(--font-head);font-size:4rem;color:#b91c1c;line-height:1;margin-bottom:0.8rem">70%</div>
+                <p style="color:var(--muted);font-size:0.88rem">30% deduction applied on total fare paid.</p>
+            </div>
+        </div>
+
+        <!-- How to Cancel -->
+        <div style="background:#fff;border-radius:20px;padding:2.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:2rem">
+            <h3 style="font-family:var(--font-head);font-size:1.4rem;color:var(--dark);margin-bottom:1.5rem">
+                📋 How to Cancel Your Booking
+            </h3>
+            <div style="display:flex;flex-direction:column;gap:1rem">
+                @{
+                    var howSteps = new[] {
+                        new { n="1", text="Login to your Customer account on SRC Travel." },
+                        new { n="2", text="Go to My Bookings from the navigation menu." },
+                        new { n="3", text="Find the booking you want to cancel and click Details." },
+                        new { n="4", text="Click Cancel Booking and review the refund amount." },
+                        new { n="5", text="Confirm cancellation — refund will be processed in 3-5 business days." }
+                    };
+                }
+                @foreach (var s in howSteps)
+                {
+                    <div style="display:flex;gap:1rem;align-items:flex-start">
+                        <div style="width:32px;height:32px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0">@s.n</div>
+                        <p style="color:#475569;font-size:0.9rem;padding-top:0.4rem">@s.text</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:16px;padding:1.5rem">
+            <h4 style="color:#c2410c;font-weight:700;margin-bottom:1rem">⚠️ Important Notes</h4>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem">
+                <li style="color:#92400e;font-size:0.88rem">• Cancellations are only allowed before departure time.</li>
+                <li style="color:#92400e;font-size:0.88rem">• No-show (not cancelling and not travelling) results in no refund.</li>
+                <li style="color:#92400e;font-size:0.88rem">• Refund is processed to your original payment method.</li>
+                <li style="color:#92400e;font-size:0.88rem">• Processing time is 3-5 business days.</li>
+                <li style="color:#92400e;font-size:0.88rem">• Contact support if refund is not received within 7 days.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:4rem 0;background:var(--dark);text-align:center">
+    <div style="max-width:600px;margin:0 auto;padding:0 1.5rem">
+        <h2 style="font-family:var(--font-head);font-size:2rem;color:#fff;margin-bottom:1rem">
+            Ready to <span style="color:var(--accent)">Book?</span>
+        </h2>
+        <p style="color:#94a3b8;margin-bottom:2rem">
+            Flexible cancellation gives you peace of mind. Book now with confidence!
+        </p>
+        <a asp-area="Customer" asp-controller="Booking" asp-action="Search"
+           style="background:var(--accent);color:#fff;padding:0.85rem 2.5rem;border-radius:50px;font-weight:700;font-size:1rem">
+            Search Buses
+        </a>
+    </div>
+</section>

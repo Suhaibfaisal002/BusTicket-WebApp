@@ -1,0 +1,91 @@
+﻿@model OnlineBusTicketReservationSystem.Models.Schedule
+@{
+    ViewData["Title"] = "Edit Schedule";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-edit me-2"></i>Edit Schedule
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="ScheduleId" />
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="BusId"
+                               class="form-label fw-semibold">Bus</label>
+                        <select asp-for="BusId"
+                                asp-items="ViewBag.BusId"
+                                class="form-select">
+                            <option value="">-- Select Bus --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="RouteId"
+                               class="form-label fw-semibold">Route</label>
+                        <select asp-for="RouteId"
+                                asp-items="ViewBag.RouteId"
+                                class="form-select">
+                            <option value="">-- Select Route --</option>
+                        </select>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="DepartureTime"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="DepartureTime"
+                                   class="form-control"
+                                   type="datetime-local" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ArrivalTime"
+                                   class="form-label fw-semibold"></label>
+                            <input asp-for="ArrivalTime"
+                                   class="form-control"
+                                   type="datetime-local" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AvailableSeats"
+                               class="form-label fw-semibold"></label>
+                        <input asp-for="AvailableSeats"
+                               class="form-control" type="number" />
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   type="checkbox" />
+                            <label asp-for="IsActive"
+                                   class="form-check-label">Active</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save me-1"></i>Save Changes
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i>Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

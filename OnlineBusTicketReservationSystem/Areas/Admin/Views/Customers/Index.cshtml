@@ -1,0 +1,157 @@
+@model IEnumerable<OnlineBusTicketReservationSystem.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Manage Customers";
+    string currentSearch = ViewBag.Search ?? "";
+    string currentStatus = ViewBag.Status ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0">Manage Customers</h4>
+        <small class="text-muted">View, block or unblock registered customers</small>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-4">
+        <div class="card border-0 shadow-sm text-center py-3">
+            <div class="fs-3 fw-bold">@ViewBag.TotalCount</div>
+            <div class="text-muted small">Total</div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #16a34a!important">
+            <div class="fs-3 fw-bold text-success">@ViewBag.ActiveCount</div>
+            <div class="text-muted small">Active</div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border-0 shadow-sm text-center py-3" style="border-left:4px solid #dc2626!important">
+            <div class="fs-3 fw-bold text-danger">@ViewBag.BlockedCount</div>
+            <div class="text-muted small">Blocked</div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Filters -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-6">
+                <input name="search" value="@currentSearch" type="text"
+                       class="form-control" placeholder="Search by name, email or phone..." />
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Customers</option>
+                    @if (currentStatus == "active")
+                    {
+                        <option value="active" selected>Active Only</option>
+                    }
+                    else
+                    {
+                        <option value="active">Active Only</option>
+                    }
+                    @if (currentStatus == "blocked")
+                    {
+                        <option value="blocked" selected>Blocked Only</option>
+                    }
+                    else
+                    {
+                        <option value="blocked">Blocked Only</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="fa fa-users fa-3x mb-3 d-block opacity-25"></i>
+                <p>No customers found.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Joined</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int i = 1; }
+                        @foreach (var u in Model)
+                        {
+                            <tr>
+                                <td class="text-muted small">@i</td>
+                                <td class="fw-semibold">@u.FullName</td>
+                                <td><small>@u.Email</small></td>
+                                <td><small>@(u.PhoneNumber ?? "—")</small></td>
+                                <td><small>@u.CreatedAt.ToString("dd MMM yyyy")</small></td>
+                                <td>
+                                    @if (u.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Blocked</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-1 flex-wrap">
+                                        <a asp-action="Details" asp-route-id="@u.Id"
+                                           class="btn btn-sm btn-outline-info" title="View">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <form asp-action="ToggleBlock" asp-route-id="@u.Id"
+                                              method="post" class="d-inline"
+                                              onsubmit="return confirm('Are you sure?')">
+                                            @Html.AntiForgeryToken()
+                                            @if (u.IsActive)
+                                            {
+                                                <button class="btn btn-sm btn-outline-warning" title="Block">
+                                                    <i class="fa fa-user-slash"></i>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm btn-outline-success" title="Unblock">
+                                                    <i class="fa fa-user-check"></i>
+                                                </button>
+                                            }
+                                        </form>
+                                        <a asp-action="Delete" asp-route-id="@u.Id"
+                                           class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

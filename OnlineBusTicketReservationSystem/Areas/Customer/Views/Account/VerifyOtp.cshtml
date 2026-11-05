@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Verify OTP";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
+    string email = ViewBag.Email ?? "";
+}
+
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;background:var(--light);padding:2rem">
+    <div style="width:100%;max-width:420px;background:#fff;border-radius:20px;padding:2.5rem;box-shadow:var(--shadow-lg)">
+
+        <div style="text-align:center;margin-bottom:2rem">
+            <div style="width:70px;height:70px;background:linear-gradient(135deg,#0f3460,#e94560);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1rem">
+                🔐
+            </div>
+            <h2 style="font-family:var(--font-head);font-size:1.8rem;color:var(--dark);margin-bottom:0.3rem">Verify OTP</h2>
+            <p style="color:var(--muted);font-size:0.88rem">
+                A 6-digit OTP has been sent to<br />
+                <strong style="color:var(--dark)">@email</strong>
+            </p>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div style="background:#fde8ea;border:1px solid #fca5a5;border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.85rem;color:#b91c1c">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>⚠️ @error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form asp-action="VerifyOtp" asp-controller="Account" asp-area="Customer" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="email" value="@email" />
+
+            <div style="margin-bottom:1.5rem">
+                <label style="font-size:0.82rem;font-weight:700;color:var(--dark);display:block;margin-bottom:0.5rem">
+                    Enter 6-Digit OTP
+                </label>
+                <input name="otp" type="text" maxlength="6" placeholder="_ _ _ _ _ _"
+                       autocomplete="one-time-code"
+                       style="width:100%;padding:1rem;border:2px solid var(--border);border-radius:12px;font-size:1.8rem;font-weight:700;text-align:center;letter-spacing:10px;color:var(--dark);background:var(--light)"
+                       oninput="this.value=this.value.replace(/\D/g,'')" required />
+            </div>
+
+            <!-- Timer -->
+            <div style="text-align:center;margin-bottom:1.2rem;font-size:0.85rem;color:var(--muted)">
+                OTP expires in <span id="timer" style="font-weight:700;color:#e94560">10:00</span>
+            </div>
+
+            <button type="submit"
+                    style="width:100%;background:var(--accent);color:#fff;padding:0.85rem;border-radius:50px;font-weight:700;font-size:1rem;border:none;cursor:pointer;margin-bottom:1rem">
+                ✅ Verify OTP
+            </button>
+
+            <div style="text-align:center">
+                <a asp-action="Login" asp-controller="Account" asp-area="Customer"
+                   style="font-size:0.85rem;color:var(--muted)">
+                    ← Back to Login
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Countdown timer
+    let seconds = 600;
+    const timerEl = document.getElementById('timer');
+    const interval = setInterval(() => {
+        seconds--;
+        const m = Math.floor(seconds / 60).toString().padStart(2,'0');
+        const s = (seconds % 60).toString().padStart(2,'0');
+        timerEl.textContent = m + ':' + s;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            timerEl.textContent = 'Expired';
+            timerEl.style.color = '#b91c1c';
+        }
+    }, 1000);
+</script>
+}

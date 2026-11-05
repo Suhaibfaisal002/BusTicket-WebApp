@@ -1,0 +1,402 @@
+@model OnlineBusTicketReservationSystem.Models.Schedule
+@{
+    ViewData["Title"] = "Book Ticket";
+    decimal basePrice = ViewBag.BasePrice ?? 0;
+    int freeAge    = ViewBag.FreeAge   ?? 5;
+    int halfAge    = ViewBag.HalfAge   ?? 12;
+    int seniorAge  = ViewBag.SeniorAge ?? 50;
+    int totalSeats     = ViewBag.TotalSeats     ?? 40;
+    int availableSeats = ViewBag.AvailableSeats ?? Model.AvailableSeats;
+    string bookedSeatsJson = ViewBag.BookedSeats ?? "[]";
+    decimal halfPrice   = basePrice * 0.5m;
+    decimal seniorPrice = basePrice * 0.7m;
+}
+
+<section style="padding:3rem 0;background:var(--light);min-height:80vh">
+    <div style="max-width:1050px;margin:0 auto;padding:0 1.5rem">
+
+        <div style="margin-bottom:2rem">
+            <a asp-area="Customer" asp-controller="Booking" asp-action="Search"
+               style="color:var(--accent);font-size:0.88rem;font-weight:600;text-decoration:none">← Back to Search</a>
+            <h1 style="font-family:var(--font-head);font-size:2rem;color:var(--dark);margin-top:0.5rem">Book Your Ticket</h1>
+        </div>
+
+        <!-- Journey Card -->
+        <div style="background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;color:#fff">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:2rem">
+                <div>
+                    <span style="font-size:0.7rem;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase">From</span>
+                    <div style="font-family:var(--font-head);font-size:1.8rem">@Model.Route?.SourceCity</div>
+                    <div style="color:rgba(255,255,255,0.6);font-size:0.85rem">@Model.DepartureTime.ToString("HH:mm") • @Model.DepartureTime.ToString("dd MMM yyyy")</div>
+                </div>
+                <div style="flex:1;text-align:center;font-size:1.5rem">🚌</div>
+                <div style="text-align:right">
+                    <span style="font-size:0.7rem;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase">To</span>
+                    <div style="font-family:var(--font-head);font-size:1.8rem">@Model.Route?.DestinationCity</div>
+                    <div style="color:rgba(255,255,255,0.6);font-size:0.85rem">@Model.ArrivalTime.ToString("HH:mm") • @Model.ArrivalTime.ToString("dd MMM yyyy")</div>
+                </div>
+                <div style="border-left:1px solid rgba(255,255,255,0.1);padding-left:2rem">
+                    <div style="font-size:0.75rem;color:rgba(255,255,255,0.5)">Bus</div>
+                    <div style="font-weight:700">@Model.Bus?.BusCode</div>
+                    <div style="font-size:0.82rem;color:rgba(255,255,255,0.6)">@Model.Bus?.BusType</div>
+                    <div style="font-size:0.82rem;color:rgba(255,255,255,0.6)">@Model.AvailableSeats seats left</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fare Rules -->
+        <div style="background:#fff;border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.5rem;border:1px solid var(--border);display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+            <span style="font-size:0.8rem;font-weight:700;color:var(--dark)">💰 Fare Rules:</span>
+            <span style="font-size:0.8rem;color:#16a34a;font-weight:600">Age 0-@freeAge: FREE</span>
+            <span style="font-size:0.8rem;color:#2563eb;font-weight:600">Age @(freeAge+1)-@halfAge: Rs. @halfPrice.ToString("N0")</span>
+            <span style="font-size:0.8rem;color:#475569;font-weight:600">Age @(halfAge+1)-@(seniorAge-1): Rs. @basePrice.ToString("N0")</span>
+            <span style="font-size:0.8rem;color:#d97706;font-weight:600">Age @seniorAge+: Rs. @seniorPrice.ToString("N0")</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start" id="bookingGrid">
+
+            <!-- LEFT — Booking Form -->
+            <form asp-action="Book" asp-controller="Booking" asp-area="Customer" method="post" id="bookingForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="scheduleId" value="@Model.ScheduleId" />
+
+                <!-- Contact Info -->
+                <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+                    <h3 style="font-family:var(--font-head);font-size:1.1rem;color:var(--dark);margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                        📋 Contact Information
+                    </h3>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+                        <div style="display:flex;flex-direction:column;gap:0.4rem">
+                            <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Contact Name *</label>
+                            <input name="customerName" type="text" placeholder="Your full name" required
+                                   style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem" />
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:0.4rem">
+                            <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Contact Phone *</label>
+                            <input name="customerPhone" type="tel" placeholder="03XX-XXXXXXX" required
+                                   style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passengers -->
+                <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.5rem">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                        <h3 style="font-family:var(--font-head);font-size:1.1rem;color:var(--dark);margin:0">👥 Passengers</h3>
+                        <button type="button" onclick="addPassenger()"
+                                style="background:var(--dark);color:#fff;padding:0.4rem 1rem;border-radius:8px;font-size:0.82rem;font-weight:600;border:none;cursor:pointer">
+                            + Add Passenger
+                        </button>
+                    </div>
+                    <div id="passengerList" style="display:flex;flex-direction:column;gap:0.8rem"></div>
+
+                    <!-- ✅ Promo Code Box -->
+                    <div style="margin-top:1rem;padding:1rem;background:var(--light);border-radius:12px;border:1px solid var(--border)">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark);display:block;margin-bottom:0.5rem">
+                            🎟️ Promo Code
+                        </label>
+                        <div style="display:flex;gap:0.5rem">
+                            <input type="text" id="promoInput" name="promoCode"
+                                   placeholder="Enter code e.g. EID2026"
+                                   style="flex:1;padding:0.6rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:0.9rem;text-transform:uppercase"
+                                   oninput="this.value=this.value.toUpperCase()" />
+                            <button type="button" onclick="applyPromo()"
+                                    style="background:var(--dark);color:#fff;padding:0.6rem 1.2rem;border-radius:10px;border:none;font-weight:700;font-size:0.85rem;cursor:pointer;white-space:nowrap">
+                                Apply
+                            </button>
+                        </div>
+                        <div id="promoMsg" style="font-size:0.82rem;margin-top:0.5rem;display:none"></div>
+                        <input type="hidden" id="discountAmount" name="discountAmount" value="0" />
+                    </div>
+
+                    <div style="margin-top:1rem;padding-top:1rem;border-top:2px solid var(--light)">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem">
+                            <span style="color:var(--muted);font-size:0.88rem">Subtotal:</span>
+                            <span id="subtotalDisplay" style="font-weight:600;color:var(--dark)">Rs. 0</span>
+                        </div>
+                        <div id="discountRow" style="display:none;justify-content:space-between;align-items:center;margin-bottom:0.3rem">
+                            <span style="color:#16a34a;font-size:0.88rem">Discount:</span>
+                            <span id="discountDisplay" style="font-weight:600;color:#16a34a">-Rs. 0</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <span style="font-weight:700;color:var(--dark)">Total Amount:</span>
+                            <span id="totalDisplay" style="font-family:var(--font-head);font-size:1.5rem;color:var(--accent)">Rs. 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn"
+                        style="width:100%;background:var(--accent);color:#fff;padding:1rem;border-radius:50px;font-weight:700;font-size:1rem;border:none;cursor:pointer">
+                    ✅ Proceed to Payment
+                </button>
+            </form>
+
+            <!-- RIGHT — Seat Layout -->
+            <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow);position:sticky;top:80px">
+                <h3 style="font-family:var(--font-head);font-size:1rem;color:var(--dark);margin-bottom:0.8rem;padding-bottom:0.8rem;border-bottom:2px solid var(--light)">
+                    🪑 Seat Layout
+                </h3>
+
+                <!-- Legend -->
+                <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.8rem">
+                    <div style="display:flex;align-items:center;gap:0.3rem;font-size:0.72rem;color:var(--muted)">
+                        <div style="width:14px;height:14px;background:#e2e8f0;border-radius:3px;border:1.5px solid #cbd5e1"></div>Available
+                    </div>
+                    <div style="display:flex;align-items:center;gap:0.3rem;font-size:0.72rem;color:var(--muted)">
+                        <div style="width:14px;height:14px;background:#e94560;border-radius:3px"></div>Booked
+                    </div>
+                    <div style="display:flex;align-items:center;gap:0.3rem;font-size:0.72rem;color:var(--muted)">
+                        <div style="width:14px;height:14px;background:#16a34a;border-radius:3px"></div>Selected
+                    </div>
+                </div>
+
+                <!-- Bus Front indicator -->
+                <div style="text-align:center;background:#f1f5f9;border-radius:8px;padding:0.35rem;margin-bottom:0.6rem;font-size:0.72rem;color:var(--muted);font-weight:600">
+                    🚌 FRONT
+                </div>
+
+                <!-- Column headers -->
+                <div style="display:grid;grid-template-columns:1fr 1fr 8px 1fr 1fr;gap:4px;margin-bottom:4px;text-align:center">
+                    <div style="font-size:0.65rem;color:var(--muted);font-weight:700">A</div>
+                    <div style="font-size:0.65rem;color:var(--muted);font-weight:700">B</div>
+                    <div></div>
+                    <div style="font-size:0.65rem;color:var(--muted);font-weight:700">C</div>
+                    <div style="font-size:0.65rem;color:var(--muted);font-weight:700">D</div>
+                </div>
+
+                <!-- Seat Grid -->
+                <div id="seatGrid"></div>
+
+                <!-- Selected seats display -->
+                <div style="margin-top:0.8rem;background:#f0fdf4;border:1.5px solid #22c55e;border-radius:8px;padding:0.6rem;text-align:center">
+                    <div style="font-size:0.68rem;color:#16a34a;font-weight:700;margin-bottom:0.2rem">SELECTED</div>
+                    <div id="selectedSeatDisplay" style="font-weight:700;color:var(--dark);font-size:0.85rem">None</div>
+                </div>
+
+                <p style="font-size:0.72rem;color:#e94560;margin-top:0.6rem;text-align:center;font-weight:600">
+                    ⚠️ Seat selection is required for each passenger
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+    const basePrice  = @basePrice;
+    const freeAge    = @freeAge;
+    const halfAge    = @halfAge;
+    const seniorAge  = @seniorAge;
+    const totalSeats = @totalSeats;
+    const bookedSeats       = @Html.Raw(bookedSeatsJson);
+    const actualBookedCount = totalSeats - @availableSeats;
+    let selectedSeats = [];
+    let paxCount = 0;
+
+    // ── SEAT GRID ──────────────────────────────────────────────────────────
+    function buildSeatGrid() {
+        const grid = document.getElementById('seatGrid');
+        grid.innerHTML = '';
+        let seatCounter = 0;
+        const rows = Math.ceil(totalSeats / 4);
+
+        for (let row = 1; row <= rows; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 8px 1fr 1fr;gap:4px;margin-bottom:4px;align-items:center';
+
+            const cols = ['A','B',null,'C','D'];
+            cols.forEach(col => {
+                if (col === null) {
+                    // aisle
+                    rowDiv.appendChild(document.createElement('div'));
+                    return;
+                }
+                const seatId = row + col;
+                const seatNum = (row - 1) * 4 + ['A','B','C','D'].indexOf(col) + 1;
+                if (seatNum > totalSeats) {
+                    rowDiv.appendChild(document.createElement('div'));
+                    return;
+                }
+                        seatCounter++;
+        const isBooked   = bookedSeats.includes(seatId);
+        const isSelected = selectedSeats.includes(seatId) && !isBooked;
+
+                const s = document.createElement('div');
+                s.id = 'seat_' + seatId;
+                s.textContent = seatId;
+                s.style.cssText = `
+                    padding:5px 2px;border-radius:5px;font-size:0.65rem;font-weight:700;
+                    text-align:center;
+                    cursor:${isBooked ? 'not-allowed' : 'pointer'};
+                    background:${isBooked ? '#e94560' : isSelected ? '#16a34a' : '#e2e8f0'};
+                    color:${isBooked || isSelected ? '#fff' : '#374151'};
+                    border:1.5px solid ${isBooked ? '#b91c1c' : isSelected ? '#15803d' : '#cbd5e1'};
+                    transition:all 0.12s;
+                    user-select:none;
+                `;
+                if (!isBooked) s.onclick = () => toggleSeat(seatId);
+                rowDiv.appendChild(s);
+            });
+            grid.appendChild(rowDiv);
+        }
+    }
+
+    function toggleSeat(seatId) {
+        const paxRows = document.querySelectorAll('#passengerList > div').length;
+        const idx = selectedSeats.indexOf(seatId);
+        if (idx === -1) {
+            if (selectedSeats.length >= paxRows) {
+                alert(paxRows === 0
+                    ? 'Please add a passenger first!'
+                    : 'You have selected ' + paxRows + ' seat(s). Add more passengers to select more.');
+                return;
+            }
+            selectedSeats.push(seatId);
+        } else {
+            selectedSeats.splice(idx, 1);
+        }
+        updateSeatInputs();
+        buildSeatGrid();
+        document.getElementById('selectedSeatDisplay').textContent =
+            selectedSeats.length ? selectedSeats.join(', ') : 'None';
+    }
+
+    function updateSeatInputs() {
+        const inputs = document.querySelectorAll('input[name="passengerSeats"]');
+        inputs.forEach((inp, i) => { inp.value = selectedSeats[i] || ''; });
+    }
+
+    // ── PASSENGER FORM ─────────────────────────────────────────────────────
+    function calcFare(age) {
+        if (age <= freeAge)   return 0;
+        if (age <= halfAge)   return basePrice * 0.5;
+        if (age >= seniorAge) return basePrice * 0.7;
+        return basePrice;
+    }
+
+    function addPassenger() {
+        paxCount++;
+        const div = document.createElement('div');
+        div.id = 'pax_' + paxCount;
+        div.style.cssText = 'background:var(--light);padding:0.8rem 1rem;border-radius:10px;border:1px solid var(--border)';
+        div.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem">
+                <div style="display:flex;align-items:center;gap:0.5rem">
+                    <div style="width:24px;height:24px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem">${paxCount}</div>
+                    <span style="font-weight:700;font-size:0.85rem;color:var(--dark)">Passenger ${paxCount}</span>
+                </div>
+                <button type="button" onclick="removePassenger(${paxCount})"
+                        style="background:#fee2e2;color:#b91c1c;border:none;border-radius:6px;padding:0.25rem 0.55rem;cursor:pointer;font-weight:700;font-size:0.78rem">✕</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 80px 100px;gap:0.5rem">
+                <input name="passengerNames" type="text" placeholder="Full Name" required
+                       style="padding:0.5rem 0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;background:#fff" />
+                <input name="passengerAges" type="number" placeholder="Age" min="0" max="120" required
+                       onchange="updateTotal()" oninput="updateTotal()"
+                       style="padding:0.5rem 0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;background:#fff" />
+                <select name="passengerGenders"
+                        style="padding:0.5rem 0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;background:#fff">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <input type="hidden" name="passengerSeats" value="" />
+        `;
+        document.getElementById('passengerList').appendChild(div);
+        updateTotal();
+        buildSeatGrid();
+    }
+
+    function removePassenger(id) {
+        document.getElementById('pax_' + id)?.remove();
+        const rem = document.querySelectorAll('#passengerList > div').length;
+        while (selectedSeats.length > rem) selectedSeats.pop();
+        updateSeatInputs();
+        buildSeatGrid();
+        document.getElementById('selectedSeatDisplay').textContent =
+            selectedSeats.length ? selectedSeats.join(', ') : 'None';
+        updateTotal();
+    }
+
+    function updateTotal() {
+        let subtotal = 0;
+        document.querySelectorAll('input[name="passengerAges"]').forEach(a => {
+            subtotal += calcFare(parseInt(a.value) || 0);
+        });
+        const discount = parseFloat(document.getElementById('discountAmount').value) || 0;
+        const total    = Math.max(0, subtotal - discount);
+
+        document.getElementById('subtotalDisplay').textContent = 'Rs. ' + subtotal.toLocaleString();
+        document.getElementById('totalDisplay').textContent    = 'Rs. ' + total.toLocaleString();
+
+        if (discount > 0) {
+            document.getElementById('discountRow').style.display = 'flex';
+            document.getElementById('discountDisplay').textContent = '-Rs. ' + discount.toLocaleString();
+        }
+    }
+
+    // ✅ Promo Code AJAX
+    function applyPromo() {
+        const code   = document.getElementById('promoInput').value.trim();
+        const msgEl  = document.getElementById('promoMsg');
+        const subtotal = parseFloat(document.querySelector('#subtotalDisplay')
+            ?.textContent.replace('Rs. ', '').replace(',', '') || '0');
+
+        if (!code) { showPromoMsg('Please enter a promo code.', false); return; }
+        if (subtotal <= 0) { showPromoMsg('Please add passengers first.', false); return; }
+
+        fetch(`/Admin/PromoCodes/Validate?code=${encodeURIComponent(code)}&amount=${subtotal}`)
+            .then(r => r.json())
+            .then(d => {
+                if (d.valid) {
+                    document.getElementById('discountAmount').value = d.discount;
+                    showPromoMsg(d.message, true);
+                    updateTotal();
+                } else {
+                    document.getElementById('discountAmount').value = 0;
+                    showPromoMsg(d.message, false);
+                    document.getElementById('discountRow').style.display = 'none';
+                    updateTotal();
+                }
+            })
+            .catch(() => showPromoMsg('Could not validate code. Try again.', false));
+    }
+
+    function showPromoMsg(msg, success) {
+        const el = document.getElementById('promoMsg');
+        el.style.display = 'block';
+        el.style.color   = success ? '#16a34a' : '#b91c1c';
+        el.textContent   = msg;
+    }
+
+    buildSeatGrid();
+    addPassenger();
+
+    // ── Form submit validation ─────────────────────────────────────────────
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        const paxRows = document.querySelectorAll('#passengerList > div').length;
+        if (paxRows === 0) { e.preventDefault(); alert('Please add at least one passenger.'); return; }
+        const seatInputs = document.querySelectorAll('input[name="passengerSeats"]');
+        let allSelected = true;
+        seatInputs.forEach(inp => { if (!inp.value) allSelected = false; });
+        if (!allSelected) {
+            e.preventDefault();
+            alert('Please select a seat for each passenger from the seat layout on the right.');
+        }
+    });
+</script>
+
+@* ✅ Mobile responsive fix *@
+<style>
+    @@media (max-width: 768px) {
+        #bookingGrid {
+            grid-template-columns: 1fr !important;
+        }
+        #bookingGrid > div:last-child {
+            position: static !important;
+        }
+    }
+</style>
+}

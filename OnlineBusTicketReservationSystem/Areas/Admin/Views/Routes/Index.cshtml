@@ -1,0 +1,101 @@
+﻿@model IEnumerable<OnlineBusTicketReservationSystem.Models.Route>
+@{
+    ViewData["Title"] = "Routes";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">
+            <i class="fa fa-route me-2 text-primary"></i>Route Management
+        </h4>
+        <p class="text-muted mb-0">Manage all bus routes</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fa fa-plus me-1"></i>Add New Route
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background:linear-gradient(135deg,#0f3460,#e94560);color:white;">
+                    <tr>
+                        <th>#ID</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Distance</th>
+                        <th>Duration</th>
+                        <th>Stops</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var route in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="badge bg-secondary">
+                                    @route.RouteId
+                                </span>
+                            </td>
+                            <td>
+                                <strong>
+                                    <i class="fa fa-map-marker-alt me-1 text-success"></i>
+                                    @route.SourceCity
+                                </strong>
+                            </td>
+                            <td>
+                                <strong>
+                                    <i class="fa fa-map-marker-alt me-1 text-danger"></i>
+                                    @route.DestinationCity
+                                </strong>
+                            </td>
+                            <td>
+                                @(route.DistanceKm.HasValue
+                                                            ? $"{route.DistanceKm} km" : "-")
+                                                                                         </td>
+                                                                                         <td>
+                                @(route.EstimatedDuration.HasValue
+                                                            ? route.EstimatedDuration.Value
+                                                            .ToString(@"hh\:mm") + " hrs" : "-")
+                        </td>
+                        <td>
+                            <span class="badge bg-info">
+                                @(route.RouteStops?.Count ?? 0) stops
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a asp-action="Details"
+                                   asp-route-id="@route.RouteId"
+                                   class="btn btn-sm btn-outline-info">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a asp-action="Edit"
+                                   asp-route-id="@route.RouteId"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete"
+                                   asp-route-id="@route.RouteId"
+                                   class="btn btn-sm btn-outline-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                                        }
+                </tbody>
+            </table>
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa fa-route fa-3x mb-3 d-block opacity-25"></i>
+                No routes found.
+                <a asp-action="Create">Add your first route.</a>
+            </div>
+        }
+    </div>
+</div>

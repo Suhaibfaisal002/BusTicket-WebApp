@@ -1,0 +1,48 @@
+﻿@model OnlineBusTicketReservationSystem.Models.PriceList
+@{
+    ViewData["Title"] = "Delete Price";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    Confirm Delete
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-danger fw-semibold">
+                    Delete this price entry?
+                </p>
+                <table class="table table-borderless table-sm">
+                    <tr>
+                        <th>Route</th>
+                        <td>
+                            @Model.Route?.SourceCity →
+                            @Model.Route?.DestinationCity
+                        </td>
+                    </tr>
+                    <tr><th>Bus Type</th><td>@Model.BusType</td></tr>
+                    <tr>
+                        <th>Base Price</th>
+                        <td>Rs.@Model.BasePrice.ToString("N2")</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" name="id"
+                           value="@Model.PriceId" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash me-1"></i>Yes, Delete
+                    </button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fa fa-times me-1"></i>Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

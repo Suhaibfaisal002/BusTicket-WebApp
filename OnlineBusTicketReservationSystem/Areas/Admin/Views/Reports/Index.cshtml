@@ -1,0 +1,245 @@
+@model List<OnlineBusTicketReservationSystem.Models.Booking>
+@{
+    ViewData["Title"] = "Reports & Analytics";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h4 class="fw-bold mb-1"><i class="fa fa-chart-bar me-2 text-primary"></i>Reports & Analytics</h4>
+        <p class="text-muted mb-0">Booking and revenue report by date range</p>
+    </div>
+    <div class="d-flex gap-2 d-print-none">
+        <a asp-action="ExportBookings"
+           asp-route-fromDate="@ViewBag.FromDate"
+           asp-route-toDate="@ViewBag.ToDate"
+           class="btn btn-success">
+            <i class="fa fa-file-excel me-1"></i> Export Excel
+        </a>
+        <button onclick="window.print()" class="btn btn-outline-secondary">
+            <i class="fa fa-print me-1"></i> Print Report
+        </button>
+    </div>
+</div>
+
+<!-- Report Navigation Tabs -->
+<ul class="nav nav-tabs mb-4 d-print-none" style="flex-wrap:wrap">
+    <li class="nav-item">
+        <a class="nav-link active fw-semibold" href="#" style="text-decoration:none">📊 Booking Report</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-semibold" style="text-decoration:none"
+           asp-area="Admin" asp-controller="Reports" asp-action="RevenueReport">💰 Revenue Report</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link fw-semibold" style="text-decoration:none"
+           asp-area="Admin" asp-controller="Reports" asp-action="BusUtilization">🚌 Bus Utilization</a>
+    </li>
+</ul>
+
+<!-- Print Header (only shows when printing) -->
+<div class="d-none d-print-block mb-3 text-center">
+    <h3 class="fw-bold">SRC Travel — Booking Report</h3>
+    <p class="text-muted">Period: @ViewBag.FromDate to @ViewBag.ToDate &nbsp;|&nbsp; Generated: @DateTime.Now.ToString("dd MMM yyyy HH:mm")</p>
+    <hr/>
+</div>
+
+<!-- Date Filter -->
+<div class="card border-0 shadow-sm mb-4 d-print-none">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">From Date</label>
+                <input type="date" name="fromDate" value="@ViewBag.FromDate" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">To Date</label>
+                <input type="date" name="toDate" value="@ViewBag.ToDate" class="form-control" />
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fa fa-search me-1"></i> Generate
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-2 col-sm-4">
+        <div class="card border-0 shadow-sm text-center p-3" style="border-left:4px solid #0f3460 !important">
+            <div style="font-size:1.6rem;font-weight:900;color:#0f3460">@ViewBag.TotalBookings</div>
+            <div class="text-muted small">Total Bookings</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card border-0 shadow-sm text-center p-3" style="border-left:4px solid #22c55e !important">
+            <div style="font-size:1.6rem;font-weight:900;color:#22c55e">@ViewBag.ConfirmedCount</div>
+            <div class="text-muted small">Confirmed</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card border-0 shadow-sm text-center p-3" style="border-left:4px solid #f59e0b !important">
+            <div style="font-size:1.6rem;font-weight:900;color:#f59e0b">@ViewBag.PendingCount</div>
+            <div class="text-muted small">Pending</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card border-0 shadow-sm text-center p-3" style="border-left:4px solid #ef4444 !important">
+            <div style="font-size:1.6rem;font-weight:900;color:#ef4444">@ViewBag.CancelledCount</div>
+            <div class="text-muted small">Cancelled</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card border-0 shadow-sm text-center p-3" style="border-left:4px solid #8b5cf6 !important">
+            <div style="font-size:1.6rem;font-weight:900;color:#8b5cf6">@ViewBag.TotalPassengers</div>
+            <div class="text-muted small">Passengers</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card border-0 shadow-sm text-center p-3" style="border-left:4px solid #e94560 !important">
+            <div style="font-size:1.1rem;font-weight:900;color:#e94560">Rs.@(((decimal)ViewBag.TotalRevenue).ToString("N0"))</div>
+            <div class="text-muted small">Revenue</div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart + Popular Routes -->
+<div class="row g-3 mb-4 d-print-none">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent fw-bold">📈 Daily Revenue</div>
+            <div class="card-body">
+                @if (Model.Any())
+                {
+                    <canvas id="dailyChart" height="120"></canvas>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-4">No data for selected range</div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent fw-bold">🏆 Top Routes</div>
+            <div class="card-body p-0">
+                @if (ViewBag.PopularRoutes != null)
+                {
+                    int rank = 1;
+                    foreach (var r in ViewBag.PopularRoutes)
+                    {
+                        <div class="d-flex justify-content-between align-items-center px-3 py-2"
+                             style="border-bottom:1px solid #f1f5f9">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge" style="background:@(rank==1?"#fbbf24":rank==2?"#94a3b8":rank==3?"#cd7f32":"#e2e8f0");color:@(rank<=3?"#fff":"#333")">#@rank</span>
+                                <span class="fw-semibold small">@r.Route</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold small text-success">Rs. @r.Revenue.ToString("N0")</div>
+                                <div class="text-muted" style="font-size:0.75rem">@r.Count bookings</div>
+                            </div>
+                        </div>
+                        rank++;
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bookings Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+        <span class="fw-bold">📋 Booking Details</span>
+        <span class="badge bg-secondary">@Model.Count records</span>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#ID</th>
+                            <th>Customer</th>
+                            <th>Route</th>
+                            <th>Bus</th>
+                            <th>Pax</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model)
+                        {
+                            <tr>
+                                <td><span class="badge bg-secondary">#@b.BookingId</span></td>
+                                <td>
+                                    <div class="fw-semibold small">@b.CustomerName</div>
+                                    <div class="text-muted" style="font-size:0.75rem">@b.CustomerPhone</div>
+                                </td>
+                                <td><small>@(b.Schedule?.Route != null ? $"{b.Schedule.Route.SourceCity} → {b.Schedule.Route.DestinationCity}" : "—")</small></td>
+                                <td><small>@b.Schedule?.Bus?.BusNumber</small></td>
+                                <td class="text-center"><span class="badge bg-light text-dark">@b.Passengers.Count</span></td>
+                                <td><small>@b.BookingDate.ToString("dd MMM yy")</small></td>
+                                <td><strong>Rs.@b.TotalAmount.ToString("N0")</strong></td>
+                                <td>
+                                    @if (b.BookingStatus == "Confirmed")
+                                    { <span class="badge bg-success">Confirmed</span> }
+                                    else if (b.BookingStatus == "Pending")
+                                    { <span class="badge bg-warning text-dark">Pending</span> }
+                                    else
+                                    { <span class="badge bg-danger">Cancelled</span> }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <i class="fa fa-inbox fa-2x mb-2 d-block"></i>No bookings found for selected range
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+    @if (Model.Any())
+    {
+        <text>
+        new Chart(document.getElementById('dailyChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(ViewBag.ChartDates),
+                datasets: [{ label: 'Revenue', data: @Html.Raw(ViewBag.ChartRevenues),
+                    backgroundColor: 'rgba(233,69,96,0.15)', borderColor: '#e94560',
+                    borderWidth: 2, borderRadius: 6 }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rs.' + v.toLocaleString() } } }
+            }
+        });
+        </text>
+    }
+</script>
+}
+
+<style>
+    @@media print {
+        .sidebar, .topbar, .d-print-none { display: none !important; }
+        .main-content { margin: 0 !important; padding: 0 !important; }
+        body { background: white !important; }
+        .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+    }
+</style>

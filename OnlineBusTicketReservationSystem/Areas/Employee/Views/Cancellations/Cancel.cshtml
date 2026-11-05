@@ -1,0 +1,131 @@
+﻿@model OnlineBusTicketReservationSystem.Models.Booking
+@{
+    ViewData["Title"] = "Cancel Booking";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    Cancel Booking #@Model.BookingId
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Journey Info -->
+                <div class="card mb-3 border-0 bg-light">
+                    <div class="card-body py-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Route:</strong>
+                                @Model.Schedule?.Route?.SourceCity →
+                                @Model.Schedule?.Route?.DestinationCity
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Departure:</strong>
+                                @Model.Schedule?.DepartureTime
+                                .ToString("dd-MMM-yyyy HH:mm")
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-6">
+                                <strong>Customer:</strong>
+                                @Model.CustomerName
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Passengers:</strong>
+                                @(Model.Passengers?.Count ?? 0)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refund Calculation -->
+                <div class="card mb-3"
+                     style="border-color:#0f3460">
+                    <div class="card-header text-white"
+                         style="background:#0f3460">
+                        <h6 class="mb-0">
+                            <i class="fa fa-calculator me-2"></i>
+                            Refund Calculation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th>Days until departure:</th>
+                                <td>
+                                    <span class="badge
+                                        @(ViewBag.DaysLeft >= 2
+                                                                                      ? "bg-success"
+                                                                                      : ViewBag.DaysLeft == 1
+                                                                                          ? "bg-warning text-dark"
+                                                                                          : "bg-danger")">
+                                        @ViewBag.DaysLeft days
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Total Paid:</th>
+                                <td>
+                                    <strong>
+                                        Rs.@Model.TotalAmount.ToString("N2")
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Deduction:</th>
+                                <td>
+                                    @if (ViewBag.DeductionPercent == 0)
+                                    {
+                                        <span class="badge bg-success">
+                                            No Deduction
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger fw-bold">
+                                            @ViewBag.DeductionPercent% =
+                                            Rs.@ViewBag.DeductedAmount
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="table-light">
+                                <th class="fs-6">Refund Amount:</th>
+                                <td>
+                                    <span class="text-success fw-bold fs-5">
+                                        Rs.@ViewBag.RefundAmount
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <i class="fa fa-info-circle me-1"></i>
+                    <strong>This action cannot be undone.</strong>
+                    Once cancelled, seats will be restored automatically.
+                </div>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form asp-action="ProcessCancel" method="post">
+                    <input type="hidden" name="bookingId"
+                           value="@Model.BookingId" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-times me-1"></i>
+                        Yes, Cancel Booking
+                    </button>
+                </form>
+                <a asp-area="Employee"
+                   asp-controller="Bookings"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    <i class="fa fa-arrow-left me-1"></i>Keep Booking
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

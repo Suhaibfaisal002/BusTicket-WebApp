@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr">
+    <!-- Left Side -->
+    <div style="position:relative;overflow:hidden">
+        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80"
+             alt="Bus"
+             style="width:100%;height:100%;object-fit:cover" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,23,42,0.6),rgba(15,23,42,0.92));display:flex;flex-direction:column;justify-content:flex-end;padding:3rem">
+            <div style="font-family:var(--font-head);font-size:2.2rem;color:#fff;letter-spacing:1px;margin-bottom:0.5rem">
+                SRC<span style="color:var(--accent)">Travel</span>
+            </div>
+            <h2 style="font-family:var(--font-head);font-size:1.8rem;color:#fff;margin-bottom:1rem">
+                Join Thousands of Happy Travelers
+            </h2>
+            <p style="color:#94a3b8;line-height:1.7;margin-bottom:2rem">
+                Create your free account and enjoy exclusive discounts, easy booking, and hassle-free cancellations.
+            </p>
+            <div style="display:flex;flex-direction:column;gap:0.75rem">
+                @foreach (var benefit in new[] {
+                                "✅ Free account — no credit card needed",
+                                "🎫 Book tickets in under 2 minutes",
+                                "💰 Age-based fare discounts applied automatically",
+                                "📱 Access your bookings anytime"
+                                })
+                {
+                    <div style="color:rgba(255,255,255,0.8);font-size:0.88rem">@benefit</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side — Form -->
+    <div style="display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--light);overflow-y:auto">
+        <div style="width:100%;max-width:460px;background:#fff;border-radius:20px;padding:2.5rem;box-shadow:var(--shadow-lg)">
+            <h2 style="font-family:var(--font-head);font-size:2rem;color:var(--dark);margin-bottom:0.3rem">
+                Create Account
+            </h2>
+            <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem">
+                Already have an account?
+                <a asp-area="Customer" asp-controller="Account"
+                   asp-action="Login"
+                   style="color:var(--accent);font-weight:600">Login here</a>
+            </p>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div style="background:#fde8ea;border:1px solid #fca5a5;border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.85rem;color:#b91c1c">
+                    @foreach (var error in ViewData.ModelState.Values
+                                    .SelectMany(v => v.Errors))
+                    {
+                        <div>⚠️ @error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="Register" asp-controller="Account"
+                  asp-area="Customer" method="post">
+                @Html.AntiForgeryToken()
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                    <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">
+                            Full Name <span style="color:var(--accent)">*</span>
+                        </label>
+                        <input name="fullName" type="text"
+                               placeholder="Your full name"
+                               required
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%" />
+                    </div>
+                    <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">
+                            Email Address <span style="color:var(--accent)">*</span>
+                        </label>
+                        <input name="email" type="email"
+                               placeholder="your@email.com"
+                               required
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%" />
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">
+                            Password <span style="color:var(--accent)">*</span>
+                        </label>
+                        <input name="password" type="password"
+                               placeholder="Min 6 characters"
+                               required minlength="6"
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%" />
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">
+                            Confirm Password <span style="color:var(--accent)">*</span>
+                        </label>
+                        <input name="confirmPassword" type="password"
+                               placeholder="Repeat password"
+                               required
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%" />
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Phone</label>
+                        <input name="phone" type="tel"
+                               placeholder="03XX-XXXXXXX"
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%" />
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Age</label>
+                        <input name="age" type="number"
+                               placeholder="Your age"
+                               min="1" max="120"
+                               style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%" />
+                    </div>
+                    <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.4rem">
+                        <label style="font-size:0.82rem;font-weight:700;color:var(--dark)">Gender</label>
+                        <select name="gender"
+                                style="padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--light);color:var(--dark);font-size:0.9rem;width:100%">
+                            <option value="">-- Select Gender --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit"
+                        style="width:100%;background:var(--accent);color:#fff;padding:0.85rem;border-radius:50px;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:all 0.25s;margin-bottom:1rem"
+                        onmouseover="this.style.background='var(--accent-dark)'"
+                        onmouseout="this.style.background='var(--accent)'">
+                    <i class="fa fa-user-plus me-2"></i>Create Account
+                </button>
+
+                <p style="text-align:center;font-size:0.78rem;color:var(--muted)">
+                    By registering, you agree to our terms and conditions.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

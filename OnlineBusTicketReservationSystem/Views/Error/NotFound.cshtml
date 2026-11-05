@@ -1,0 +1,87 @@
+@{
+    ViewData["Title"] = "Page Not Found";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 — Page Not Found | SRC Travel</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 60%, #16213e 100%);
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+        .container { max-width: 560px; }
+        .bus-emoji {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 1rem;
+            animation: bounce 1.5s infinite;
+        }
+        @@keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-15px); }
+        }
+        .code {
+            font-size: 7rem;
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; }
+        p  { color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.6; margin-bottom: 2rem; }
+        .btn-home {
+            display: inline-block;
+            background: #e94560;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            margin: 0.3rem;
+            transition: opacity 0.2s;
+        }
+        .btn-home:hover { opacity: 0.85; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: #fff;
+        }
+        .road {
+            margin-top: 2.5rem;
+            border-top: 3px dashed rgba(255,255,255,0.15);
+            padding-top: 1.5rem;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.35);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="bus-emoji">🚌</span>
+        <div class="code">404</div>
+        <h1>Oops! This bus went off-route.</h1>
+        <p>The page you're looking for doesn't exist or has been moved.<br/>Let us take you back to the right destination!</p>
+        <div>
+            <a href="/Customer/Home/Index" class="btn-home">🏠 Go to Home</a>
+            <a onclick="history.back()" class="btn-home btn-outline" style="cursor:pointer">← Go Back</a>
+        </div>
+        <div class="road">SRC Travel &mdash; Safe • Reliable • Comfortable</div>
+    </div>
+</body>
+</html>

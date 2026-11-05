@@ -1,0 +1,74 @@
+﻿@model OnlineBusTicketReservationSystem.Models.PriceList
+@{
+    ViewData["Title"] = "Add Price";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#0f3460,#e94560)">
+                <h5 class="mb-0">
+                    <i class="fa fa-plus me-2"></i>Add Price Entry
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="RouteId"
+                               class="form-label fw-semibold">Route</label>
+                        <select asp-for="RouteId"
+                                asp-items="ViewBag.RouteId"
+                                class="form-select">
+                            <option value="">-- Select Route --</option>
+                        </select>
+                        <span asp-validation-for="RouteId"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BusType"
+                               class="form-label fw-semibold"></label>
+                        <select asp-for="BusType"
+                                asp-items="ViewBag.BusTypes"
+                                class="form-select">
+                            <option value="">-- Select Bus Type --</option>
+                        </select>
+                        <span asp-validation-for="BusType"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="BasePrice"
+                               class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rs.</span>
+                            <input asp-for="BasePrice"
+                                   class="form-control"
+                                   type="number" step="0.01"
+                                   min="0" placeholder="0.00" />
+                        </div>
+                        <span asp-validation-for="BasePrice"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save me-1"></i>Save Price
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i>Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
